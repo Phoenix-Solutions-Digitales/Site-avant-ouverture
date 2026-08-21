@@ -25,4 +25,7 @@ Contact
 
 Phoenix Solutions Digitales 16 — Yannick Richard Gond Pontouvre, Charente (16) — Nouvelle-Aquitaine — PhoenixSolutionsDigitales16@outlook.fr — 06 09 44 53 19 — Lien à mettre à jour — Facebook et Instagram (PhoenixSolutionsDigitales16)
 
+CLIQUEZ ICI POUR VOIR LE SITE :
+https://github.com/Phoenix-Solutions-Digitales/Site-avant-ouverture/blob/main/landing_page.html
+
 Auto-entrepreneur — APE 6201Z. Tarifs communiqués sur devis. Les prestations de conseil et les missions de plusieurs jours font l'objet d'un devis détaillé et d'un contrat de prestation avant démarrage.
