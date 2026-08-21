@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phoenix Solutions Digitales 16 — Bientôt à Angoulême</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;background:#FBF7EF;color:#1C1008;line-height:1.6;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px;}
+
+  /* HERO */
+  header{background:linear-gradient(160deg,rgba(232,196,104,.15) 0%,#E8C468 60%,#C9A134 100%);color:#F5F0E8;padding:70px 0 90px;text-align:center;}
+  header img{width:600px;height:auto;margin-bottom:18px;}
+  header h1{font-family:'Playfair Display',serif;font-size:44px;font-weight:700;letter-spacing:.02em;}
+  header .triptyque{margin-top:14px;font-size:15px;font-weight:700;letter-spacing:.18em;color:#6E1414;text-transform:uppercase;}
+  header .slogan{margin-top:10px;font-size:19px;font-style:italic;color:rgba(232,196,104,.15);}
+  .badge{display:inline-block;margin-top:30px;background:rgba(232,196,104,.15);border:1px solid rgba(232,196,104,.15);color:#8B1A1A;padding:9px 22px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+  section{padding:64px 0;}
+  h2{font-family:'Playfair Display',serif;font-size:30px;color:#8B1A1A;text-align:center;margin-bottom:10px;}
+  .subtitle{text-align:center;color:#6b5c4a;font-size:16px;max-width:640px;margin:0 auto 40px;}
+
+  /* POLES */
+  .poles{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;}
+  .pole-card{background:#F2E9D8;border:1px solid #ecdfc4;border-radius:14px;padding:28px 24px;text-align:center;box-shadow:0 6px 18px rgba(139,26,26,.05);border-top:3px solid #C9A134;}
+  .pole-card .emoji{font-size:34px;margin-bottom:12px;}
+  .pole-card h3{font-family:'Playfair Display',serif;font-size:19px;color:#1C1008;margin-bottom:8px;}
+  .pole-card p{font-size:14px;color:#6b5c4a;}
+
+/*BANDEAU DEFILANT*/
+.bande-defilante {width: 100%;height: 100px;background-color: #6E1414;color: #C9A134;display: flex;align-items: center;overflow: hidden;white-space: nowrap;box-sizing: border-box;}    
+.texte-defilant {display: inline-block;padding-left: 100%;animation: defilement 45s linear infinite;font-family: Arial, sans-serif;font-size: 36px;font-weight: bold;}
+@keyframes defilement {from {transform: translateX(0);}to {transform: translateX(-100%);}}
+
+  /* METHODE */
+  .methode{background:#F2E9D8;}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-top:10px;}
+  .step{background:#FBF7EF;border-radius:12px;padding:26px 20px;position:relative;border-top:3px solid #C9A134;}
+  .step .num{font-family:'Playfair Display',serif;font-size:30px;color:#C9A134;font-weight:700;margin-bottom:8px;}
+  .step h4{font-size:16px;font-weight:700;margin-bottom:6px;color:#1C1008;}
+  .step p{font-size:13.5px;color:#6b5c4a;}
+
+  /* ENGAGEMENT */
+  .engagement ul{list-style:none;max-width:640px;margin:0 auto;}
+  .engagement li{padding:12px 0 12px 32px;position:relative;font-size:15.5px;color:#3a2f24;border-bottom:1px solid #ecdfc4;}
+  .engagement li:before{content:"—";position:absolute;left:0;color:#C9A134;font-weight:700;}
+
+  /* ZONE */
+  .zone{text-align:center;background:#1C1008;color:#e8ded0;}
+  .zone h2{color:#E8C468;}
+  .zone p{max-width:600px;margin:0 auto;font-size:15.5px;}
+
+  /* CTA / CONTACT */
+  .cta{text-align:center;}
+  .cta .btn{display:inline-block;margin-top:20px;background:#8B1A1A;color:#fff;padding:16px 34px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;}
+  .contact-info{margin-top:28px;font-size:14.5px;color:#6b5c4a;}
+  .contact-info span{display:inline-block;margin:0 10px;}
+
+  footer{background:#1C1008;color:#a08a70;text-align:center;padding:28px 0;font-size:12.5px;}
+  footer .brand{color:#E8C468;font-family:'Playfair Display',serif;font-size:15px;margin-bottom:6px;}
+
+  @media(max-width:600px){
+    header h1{font-size:32px;}
+    header .triptyque{font-size:12px;letter-spacing:.12em;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <img src="asset\Phoenix Long-banderole-minitexte.png" alt="Logo Phoenix">
+    <div class="triptyque">Imaginer · Renaître · Accompagner</div>
+    <div class="slogan">Ensemble, créons votre renaissance digitale.</div>
+    <div class="badge">✦ Ouverture prochaine — Angoulême &amp; Charente</div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>Une agence, six expertises</h2>
+    <p class="subtitle">Un seul interlocuteur pour l'ensemble de votre communication visuelle et digitale — de l'image de votre entreprise à sa présence en ligne.</p>
+    <div class="poles">
+      <div class="pole-card">
+        <div class="emoji">🎬</div>
+        <h3>Multimédia numérique</h3>
+        <p>Photographie, vidéo et prises de vue par drone — une seule équipe pour raconter votre activité en images, au sol comme dans les airs.</p>
+      </div>
+      <div class="pole-card">
+        <div class="emoji">💻</div>
+        <h3>Développement web</h3>
+        <p>Sites vitrines, boutiques en ligne et refontes, pensés pour votre activité — pas un modèle générique.</p>
+      </div>
+      <div class="pole-card">
+        <div class="emoji">📈</div>
+        <h3>Marketing digital</h3>
+        <p>Stratégie, réseaux sociaux, référencement et publicité en ligne pour donner de la voix à votre marque.</p>
+      </div>
+      <div class="pole-card">
+        <div class="emoji">🎨</div>
+        <h3>Graphisme &amp; identité visuelle</h3>
+        <p>Logo, charte graphique et supports de communication cohérents, du numérique à l'imprimé.</p>
+      </div>
+      <div class="pole-card">
+        <div class="emoji">🎓</div>
+        <h3>Formation professionnelle</h3>
+        <p>Des ateliers courts et concrets pour monter en compétence sur vos outils numériques.</p>
+      </div>
+      <div class="pole-card">
+        <div class="emoji">🖨</div>
+        <h3>Supports imprimés</h3>
+        <p>Cartes de visite, flyers et brochures, de la conception à l'impression, en toute simplicité.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bande-defilante">
+  <div class="texte-defilant">
+      Ouverture prochaine  ***  N'hésitez pas à nous contacter pour toute demande d'information  ***  La date d'ouverture sera annoncée prochainement  ***  Pour ne rien manquer, suivez-nous sur nos réseaux sociaux  ***  Merci pour votre patience et votre soutien  ***  Nous sommes présent sur Facebook et Instagram sous le nom de PhoenixSoltionsDigitales16
+  </div>
+</section>
+
+<section class="methode">
+  <div class="wrap">
+    <h2>Notre méthode</h2>
+    <p class="subtitle">Une approche claire, en cinq étapes, du premier échange à la livraison finale.</p>
+    <div class="steps">
+      <div class="step"><div class="num">01</div><h4>Brief</h4><p>Échange sur vos besoins, vos objectifs et votre budget.</p></div>
+      <div class="step"><div class="num">02</div><h4>Devis</h4><p>Une proposition personnalisée, claire et sans engagement.</p></div>
+      <div class="step"><div class="num">03</div><h4>Production</h4><p>Réalisation selon le brief validé, en échange avec vous à chaque étape.</p></div>
+      <div class="step"><div class="num">04</div><h4>Retouches</h4><p>Des allers-retours inclus, jusqu'à votre entière satisfaction.</p></div>
+      <div class="step"><div class="num">05</div><h4>Livraison</h4><p>Tous les formats nécessaires, livrés simplement et en toute sécurité.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="engagement">
+  <div class="wrap">
+    <h2>Notre engagement</h2>
+    <ul>
+      <li>Un interlocuteur unique pour l'ensemble de vos projets digitaux et visuels.</li>
+      <li>Une approche transparente : rien n'est engagé sans un devis clair, discuté ensemble.</li>
+      <li>Une zone d'intervention privilégiée sur Angoulême et la Charente, avec possibilité de déplacement.</li>
+      <li>Un accompagnement pensé pour durer, de la stratégie à la réalisation.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="zone">
+  <div class="wrap">
+    <h2>Angoulême &amp; Charente</h2>
+    <p>Phoenix Solutions Digitales 16 est une agence locale, indépendante, au service des entreprises, artisans, associations et professionnels de Nouvelle-Aquitaine.</p>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>Une idée, un projet ?</h2>
+    <p class="subtitle">Le site complet arrive bientôt. En attendant, parlons de votre projet.</p>
+    <a href="mailto:[À CONFIRMER]" class="btn">Nous contacter</a>
+    <div class="contact-info">
+      <span>📍 Angoulême &amp; Charente (16)</span>
+      <span>✉️ [À CONFIRMER — pas encore défini]</span>
+      <span>📞 [À CONFIRMER — pas encore défini]</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand">PHOENIX SOLUTIONS DIGITALES 16</div>
+  <div>Imaginer · Renaître · Accompagner — Ensemble, créons votre renaissance digitale.</div>
+</footer>
+
+</body>
+</html>
