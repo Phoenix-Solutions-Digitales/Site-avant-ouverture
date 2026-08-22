@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maison Verlac — Épicerie fine de Charente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12151C; --navy:#1F2A3D; --parchment:#F6F1E4; --parchment-deep:#EAE1CB;
+    --copper:#B8702E; --copper-light:#DDA868; --charcoal:#201C16; --radius:6px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--parchment); color:var(--charcoal); font-family:'Inter', sans-serif; line-height:1.6;}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  h1,h2,h3{font-family:'Playfair Display', serif; margin:0;}
+  .container{max-width:1140px; margin:0 auto; padding:0 24px;}
+  a{color:inherit;} button{font-family:inherit;}
+
+  /* NAV */
+  nav{background:var(--ink); color:var(--parchment); padding:16px 0; position:sticky; top:0; z-index:30;}
+  nav .container{display:flex; align-items:center; justify-content:space-between;}
+  .brand{font-family:'Playfair Display', serif; font-weight:600; font-size:21px; letter-spacing:0.02em;}
+  .nav-links{display:flex; gap:26px; list-style:none; margin:0; padding:0; font-size:13px; text-transform:uppercase; letter-spacing:0.06em;}
+  .nav-links a{text-decoration:none; opacity:0.8; transition:opacity .15s;}
+  .nav-links a:hover{opacity:1; color:var(--copper-light);}
+  @media(max-width:720px){ .nav-links{display:none;} }
+  .cart-btn{
+    position:relative; background:var(--copper); color:var(--ink); border:none; border-radius:4px;
+    padding:9px 16px; font-weight:600; font-size:13px; cursor:pointer; display:flex; align-items:center; gap:8px;
+  }
+  .cart-btn:hover{background:var(--copper-light);}
+  .cart-count{
+    background:var(--ink); color:var(--copper-light); border-radius:50%; width:19px; height:19px;
+    display:flex; align-items:center; justify-content:center; font-size:11px; font-family:'IBM Plex Mono', monospace;
+  }
+
+  /* HERO */
+  .hero{background:linear-gradient(160deg, var(--ink), var(--navy)); color:var(--parchment); padding:70px 0 76px;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--copper-light); display:flex; align-items:center; gap:10px;}
+  .eyebrow::before{content:""; width:22px; height:1px; background:var(--copper-light);}
+  .hero h1{font-size:clamp(32px,4.6vw,50px); line-height:1.1; margin:16px 0 16px; max-width:16ch;}
+  .hero h1 em{font-style:italic; color:var(--copper-light);}
+  .hero p{max-width:48ch; color:#D8D0BC; font-size:16px;}
+
+  /* CATEGORY FILTER */
+  .filter-bar{background:var(--parchment-deep); padding:18px 0; position:sticky; top:60px; z-index:20; border-bottom:1px solid #DCCFAE;}
+  .filter-row{display:flex; gap:10px; flex-wrap:wrap;}
+  .filter-chip{
+    background:#fff; border:1px solid #DCCFAE; border-radius:20px; padding:8px 16px; font-size:13px;
+    cursor:pointer; transition:all .15s ease;
+  }
+  .filter-chip:hover{border-color:var(--copper);}
+  .filter-chip.active{background:var(--ink); color:var(--parchment); border-color:var(--ink);}
+
+  /* PRODUCT GRID */
+  .section{padding:48px 0 64px;}
+  .products-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:22px;}
+  .product-card{background:#fff; border:1px solid var(--parchment-deep); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column;}
+  .product-photo{
+    aspect-ratio:1; position:relative; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:#a7876a;
+  }
+  .product-photo img{width:100%; height:100%; object-fit:cover; display:block;}
+  .product-body{padding:16px 18px; display:flex; flex-direction:column; flex:1;}
+  .product-cat{font-family:'IBM Plex Mono', monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:0.06em; color:var(--copper); margin-bottom:6px;}
+  .product-body h3{font-size:17px; margin-bottom:6px;}
+  .product-body p{font-size:13px; color:#6b5f4d; margin:0 0 14px; flex:1;}
+  .product-footer{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .product-price{font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:15px; color:var(--charcoal);}
+  .add-btn{
+    background:var(--ink); color:var(--parchment); border:none; border-radius:4px; padding:8px 14px;
+    font-size:12.5px; font-weight:600; cursor:pointer; transition:background .15s ease;
+  }
+  .add-btn:hover{background:var(--navy);}
+  .add-btn.added{background:var(--copper);}
+
+  /* CART DRAWER */
+  .overlay{
+    position:fixed; inset:0; background:rgba(18,21,28,0.5); z-index:40; opacity:0; pointer-events:none; transition:opacity .25s ease;
+  }
+  .overlay.open{opacity:1; pointer-events:auto;}
+  .drawer{
+    position:fixed; top:0; right:0; bottom:0; width:min(420px, 92vw); background:var(--parchment);
+    z-index:50; transform:translateX(100%); transition:transform .3s cubic-bezier(.2,.8,.2,1);
+    display:flex; flex-direction:column;
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{background:var(--ink); color:var(--parchment); padding:20px 22px; display:flex; justify-content:space-between; align-items:center;}
+  .drawer-head h2{font-size:19px;}
+  .close-btn{background:none; border:none; color:var(--parchment); font-size:22px; cursor:pointer; line-height:1;}
+  .drawer-items{flex:1; overflow-y:auto; padding:16px 22px;}
+  .cart-empty{color:#8a7d68; font-size:14px; text-align:center; margin-top:40px;}
+  .cart-item{display:flex; gap:12px; padding:14px 0; border-bottom:1px solid var(--parchment-deep);}
+  .cart-item-photo{width:56px; height:56px; border-radius:4px; flex-shrink:0; overflow:hidden;}
+  .cart-item-photo img{width:100%; height:100%; object-fit:cover; display:block;}
+  .cart-item-info{flex:1;}
+  .cart-item-info h4{font-size:14px; font-weight:600; margin:0 0 4px; font-family:'Inter',sans-serif;}
+  .qty-row{display:flex; align-items:center; gap:10px; margin-top:6px;}
+  .qty-btn{
+    width:22px; height:22px; border-radius:4px; border:1px solid var(--parchment-deep); background:#fff;
+    cursor:pointer; font-size:13px; display:flex; align-items:center; justify-content:center;
+  }
+  .qty-val{font-family:'IBM Plex Mono', monospace; font-size:13px; min-width:16px; text-align:center;}
+  .cart-item-price{font-family:'IBM Plex Mono', monospace; font-size:13.5px; font-weight:600; white-space:nowrap;}
+  .remove-link{font-size:11.5px; color:#a04a2f; background:none; border:none; cursor:pointer; padding:0; margin-top:6px; text-decoration:underline;}
+
+  .drawer-foot{border-top:1px solid var(--parchment-deep); padding:18px 22px 22px;}
+  .subtotal-row{display:flex; justify-content:space-between; font-size:14.5px; margin-bottom:14px;}
+  .subtotal-row strong{font-family:'IBM Plex Mono', monospace; font-size:18px;}
+  .checkout-btn{
+    width:100%; background:var(--copper); color:var(--ink); border:none; border-radius:4px; padding:14px;
+    font-weight:700; font-size:14.5px; cursor:pointer; transition:background .15s ease;
+  }
+  .checkout-btn:hover{background:var(--copper-light);}
+  .checkout-btn:disabled{opacity:0.45; cursor:not-allowed;}
+
+  /* CHECKOUT MODAL */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(18,21,28,0.65); z-index:60; display:none;
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{background:#fff; border-radius:var(--radius); max-width:440px; width:100%; padding:30px;}
+  .modal h2{font-size:22px; margin-bottom:6px;}
+  .modal .step-label{font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--copper); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px;}
+  .modal p.desc{font-size:13.5px; color:#6b5f4d; margin-bottom:20px;}
+  .modal .field{margin-bottom:14px;}
+  .modal .field label{font-size:12.5px; font-weight:600; display:block; margin-bottom:6px;}
+  .modal .field input{width:100%; border:1px solid var(--parchment-deep); border-radius:4px; padding:10px 12px; font-size:14px; font-family:inherit;}
+  .modal-actions{display:flex; gap:10px; margin-top:22px;}
+  .modal-btn{flex:1; border:none; border-radius:4px; padding:12px; font-weight:600; font-size:13.5px; cursor:pointer;}
+  .modal-btn.primary{background:var(--ink); color:var(--parchment);}
+  .modal-btn.primary:hover{background:var(--navy);}
+  .modal-btn.ghost{background:none; border:1px solid var(--parchment-deep); color:var(--charcoal);}
+  .confirm-icon{width:52px; height:52px; border-radius:50%; background:#E9F2E9; color:#3E7A44; display:flex; align-items:center; justify-content:center; margin-bottom:16px;}
+
+  footer{background:var(--ink); color:#8C9179; padding:30px 0; font-size:12.5px;}
+  footer .container{display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; color:#9B9689;}
+  footer .demo-tag{font-family:'IBM Plex Mono', monospace;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="brand">Maison Verlac</div>
+    <ul class="nav-links">
+      <li><a href="#produits">Produits</a></li>
+      <li><a href="#produits">Coffrets</a></li>
+      <li><a href="#produits">À propos</a></li>
+    </ul>
+    <button class="cart-btn" id="cartToggle">
+      Panier <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">Épicerie fine — Charente</div>
+    <h1>Le terroir charentais, <em>livré avec soin.</em></h1>
+    <p>Spiritueux, épicerie fine et coffrets cadeaux sélectionnés auprès de producteurs locaux. Chaque commande est préparée à la main, à Angoulême.</p>
+  </div>
+</section>
+
+<div class="filter-bar">
+  <div class="container filter-row" id="filterRow"></div>
+</div>
+
+<section class="section" id="produits">
+  <div class="container">
+    <div class="products-grid" id="productsGrid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <span>© Maison Verlac — exemple fictif</span>
+    <span class="demo-tag">DÉMO — PHOENIX SOLUTIONS DIGITALES</span>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h2>Votre panier</h2>
+    <button class="close-btn" id="closeDrawer" aria-label="Fermer le panier">&times;</button>
+  </div>
+  <div class="drawer-items" id="drawerItems"></div>
+  <div class="drawer-foot">
+    <div class="subtotal-row"><span>Sous-total</span><strong id="subtotal">0 €</strong></div>
+    <button class="checkout-btn" id="checkoutBtn" disabled>Passer commande</button>
+  </div>
+</aside>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script>
+const PRODUCTS = [
+  { id:'cognac-vs',    cat:'spiritueux', name:'Cognac VS — Maison Verlac',        desc:'Fruité et rond, idéal en apéritif.',              price:38, sw:0 },
+  { id:'pineau-blanc',  cat:'spiritueux', name:'Pineau des Charentes blanc',       desc:'Doux et fruité, à servir bien frais.',            price:16, sw:1 },
+  { id:'pineau-rose',   cat:'spiritueux', name:'Pineau des Charentes rosé',        desc:'Notes de fruits rouges, robe éclatante.',         price:17, sw:2 },
+  { id:'sel-noirmoutier', cat:'sale',     name:'Sel de Noirmoutier au piment',     desc:'Récolté à la main, relevé délicatement.',         price:6, sw:3 },
+  { id:'rillettes',     cat:'sale',      name:'Rillettes charentaises',            desc:'Recette traditionnelle, pur porc fermier.',       price:9, sw:4 },
+  { id:'biscuits-beurre', cat:'sucre',   name:'Biscuits au beurre charentais',     desc:'Croustillants, beurre AOP Charentes-Poitou.',     price:7, sw:5 },
+  { id:'confiture-melon', cat:'sucre',   name:'Confiture de melon du Haut-Poitou', desc:'Recette artisanale, cuite au chaudron.',          price:8, sw:0 },
+  { id:'coffret-decouverte', cat:'coffret', name:'Coffret Découverte',             desc:"Sélection de 5 produits phares de la maison.",   price:49, sw:1 },
+  { id:'coffret-prestige', cat:'coffret', name:'Coffret Prestige',                 desc:'Cognac hors d\'âge et épicerie fine assortie.',   price:89, sw:2 },
+];
+
+const CATEGORIES = [
+  { id:'tous', label:'Tous les produits' },
+  { id:'spiritueux', label:'Spiritueux' },
+  { id:'sale', label:'Épicerie salée' },
+  { id:'sucre', label:'Épicerie sucrée' },
+  { id:'coffret', label:'Coffrets cadeaux' },
+];
+
+const SWATCHES = [
+  'repeating-linear-gradient(115deg,#1F2A3D,#1F2A3D 8px,#2b3a52 8px,#2b3a52 16px)',
+  'repeating-linear-gradient(70deg,#B8702E,#B8702E 8px,#a05f24 8px,#a05f24 16px)',
+  'repeating-linear-gradient(95deg,#DDA868,#DDA868 8px,#c99854 8px,#c99854 16px)',
+  'repeating-linear-gradient(60deg,#12151C,#12151C 8px,#1c202a 8px,#1c202a 16px)',
+  'repeating-linear-gradient(105deg,#8a6a45,#8a6a45 8px,#7a5c3a 8px,#7a5c3a 16px)',
+  'repeating-linear-gradient(80deg,#4a5a3a,#4a5a3a 8px,#405030 8px,#405030 16px)',
+];
+
+let cart = {}; // { productId: quantity }
+let activeFilter = 'tous';
+
+function renderFilters(){
+  const row = document.getElementById('filterRow');
+  row.innerHTML = '';
+  CATEGORIES.forEach(c => {
+    const chip = document.createElement('button');
+    chip.className = 'filter-chip' + (activeFilter === c.id ? ' active' : '');
+    chip.textContent = c.label;
+    chip.addEventListener('click', () => { activeFilter = c.id; renderFilters(); renderProducts(); });
+    row.appendChild(chip);
+  });
+}
+
+function renderProducts(){
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = '';
+  const list = activeFilter === 'tous' ? PRODUCTS : PRODUCTS.filter(p => p.cat === activeFilter);
+  list.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <div class="product-photo" style="background:${SWATCHES[p.sw]}">
+        <img src="assets/images/${p.id}.jpg" alt="${p.name}" loading="lazy" onerror="this.style.display='none';">
+      </div>
+      <div class="product-body">
+        <div class="product-cat">${CATEGORIES.find(c=>c.id===p.cat).label}</div>
+        <h3>${p.name}</h3>
+        <p>${p.desc}</p>
+        <div class="product-footer">
+          <span class="product-price">${p.price} €</span>
+          <button class="add-btn" data-id="${p.id}">Ajouter</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  grid.querySelectorAll('.add-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.id;
+      cart[id] = (cart[id] || 0) + 1;
+      renderCart();
+      btn.textContent = 'Ajouté ✓';
+      btn.classList.add('added');
+      setTimeout(() => { btn.textContent = 'Ajouter'; btn.classList.remove('added'); }, 900);
+    });
+  });
+}
+
+function renderCart(){
+  const items = Object.entries(cart).filter(([,qty]) => qty > 0);
+  document.getElementById('cartCount').textContent = items.reduce((s,[,q]) => s + q, 0);
+
+  const container = document.getElementById('drawerItems');
+  if(items.length === 0){
+    container.innerHTML = '<div class="cart-empty">Votre panier est vide.<br>Ajoutez un produit pour commencer.</div>';
+  } else {
+    container.innerHTML = items.map(([id, qty]) => {
+      const p = PRODUCTS.find(x => x.id === id);
+      return `
+        <div class="cart-item">
+          <div class="cart-item-photo" style="background:${SWATCHES[p.sw]}">
+            <img src="assets/images/${p.id}.jpg" alt="${p.name}" loading="lazy" onerror="this.style.display='none';">
+          </div>
+          <div class="cart-item-info">
+            <h4>${p.name}</h4>
+            <div class="qty-row">
+              <button class="qty-btn" data-action="dec" data-id="${id}">−</button>
+              <span class="qty-val">${qty}</span>
+              <button class="qty-btn" data-action="inc" data-id="${id}">+</button>
+            </div>
+            <button class="remove-link" data-action="remove" data-id="${id}">Retirer</button>
+          </div>
+          <div class="cart-item-price">${(p.price * qty).toFixed(0)} €</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  const subtotal = items.reduce((s,[id,qty]) => s + PRODUCTS.find(p=>p.id===id).price * qty, 0);
+  document.getElementById('subtotal').textContent = subtotal.toLocaleString('fr-FR') + ' €';
+  document.getElementById('checkoutBtn').disabled = items.length === 0;
+
+  container.querySelectorAll('[data-action]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.id;
+      const action = btn.dataset.action;
+      if(action === 'inc') cart[id]++;
+      if(action === 'dec') cart[id] = Math.max(0, cart[id] - 1);
+      if(action === 'remove') cart[id] = 0;
+      renderCart();
+    });
+  });
+}
+
+/* Drawer open/close */
+const drawer = document.getElementById('drawer');
+const overlay = document.getElementById('overlay');
+function openDrawer(){ drawer.classList.add('open'); overlay.classList.add('open'); }
+function closeDrawer(){ drawer.classList.remove('open'); overlay.classList.remove('open'); }
+document.getElementById('cartToggle').addEventListener('click', openDrawer);
+document.getElementById('closeDrawer').addEventListener('click', closeDrawer);
+overlay.addEventListener('click', closeDrawer);
+
+/* Checkout modal — 3 simulated steps */
+const modalOverlay = document.getElementById('modalOverlay');
+const modalContent = document.getElementById('modalContent');
+
+function renderStep1(){
+  modalContent.innerHTML = `
+    <div class="step-label">Étape 1 / 3</div>
+    <h2>Coordonnées de livraison</h2>
+    <p class="desc">Démonstration — aucune donnée n'est envoyée ni conservée.</p>
+    <div class="field"><label>Nom complet</label><input type="text" placeholder="Jeanne Dupont"></div>
+    <div class="field"><label>Adresse</label><input type="text" placeholder="12 rue des Halles, Angoulême"></div>
+    <div class="modal-actions">
+      <button class="modal-btn ghost" id="modalCancel">Annuler</button>
+      <button class="modal-btn primary" id="modalNext1">Continuer</button>
+    </div>
+  `;
+  document.getElementById('modalCancel').addEventListener('click', closeModal);
+  document.getElementById('modalNext1').addEventListener('click', renderStep2);
+}
+function renderStep2(){
+  modalContent.innerHTML = `
+    <div class="step-label">Étape 2 / 3</div>
+    <h2>Paiement</h2>
+    <p class="desc">Simulation — aucun paiement réel n'est traité dans cette démo.</p>
+    <div class="field"><label>Numéro de carte</label><input type="text" placeholder="•••• •••• •••• ••••"></div>
+    <div class="field"><label>Date d'expiration</label><input type="text" placeholder="MM/AA"></div>
+    <div class="modal-actions">
+      <button class="modal-btn ghost" id="modalBack">Retour</button>
+      <button class="modal-btn primary" id="modalNext2">Valider la commande</button>
+    </div>
+  `;
+  document.getElementById('modalBack').addEventListener('click', renderStep1);
+  document.getElementById('modalNext2').addEventListener('click', renderStep3);
+}
+function renderStep3(){
+  const subtotal = document.getElementById('subtotal').textContent;
+  modalContent.innerHTML = `
+    <div class="confirm-icon">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 13 l4 4 L19 7"/></svg>
+    </div>
+    <h2>Commande confirmée</h2>
+    <p class="desc">Total simulé : <strong>${subtotal}</strong>. Dans une version en production, un email de confirmation serait envoyé et la commande enregistrée en base de données.</p>
+    <div class="modal-actions">
+      <button class="modal-btn primary" id="modalClose" style="flex:none; padding-left:24px; padding-right:24px;">Fermer</button>
+    </div>
+  `;
+  document.getElementById('modalClose').addEventListener('click', () => {
+    closeModal();
+    cart = {};
+    renderCart();
+    closeDrawer();
+  });
+}
+function openModal(){ renderStep1(); modalOverlay.classList.add('open'); }
+function closeModal(){ modalOverlay.classList.remove('open'); }
+document.getElementById('checkoutBtn').addEventListener('click', openModal);
+modalOverlay.addEventListener('click', (e) => { if(e.target === modalOverlay) closeModal(); });
+
+renderFilters();
+renderProducts();
+renderCart();
+</script>
+</body>
+</html>

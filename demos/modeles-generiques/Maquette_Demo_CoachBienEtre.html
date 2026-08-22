@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maquette — Démo secteur coach bien-être (Élan Coaching)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#116C6E;
+    --teal-dark:#0B4E4F;
+    --lime:#B8D93E;
+    --charcoal:#1D2321;
+    --bg:#F4F7F3;
+    --card:#FFFFFF;
+    --dark:#1D2321;
+    --grey:#66716C;
+    --line:#E0E8E1;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Manrope',sans-serif;color:var(--dark);background:var(--bg);line-height:1.65;}
+  h1,h2,h3{font-family:'Bebas Neue',sans-serif;font-weight:400;letter-spacing:0.5px;color:var(--charcoal);}
+  a{text-decoration:none;color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 32px;}
+  .imgbox{position:relative;overflow:hidden;background:linear-gradient(135deg,#2E7A72,#123B38);}
+  .imgbox img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .imgbox .ph-fallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#B9DCD4;font-size:12.5px;letter-spacing:0.5px;text-transform:uppercase;font-family:'Manrope',sans-serif;padding:20px;gap:8px;}
+  .imgbox .ph-fallback small{text-transform:none;letter-spacing:0;font-size:11px;color:#8FB5AC;font-family:monospace;background:rgba(0,0,0,0.25);padding:3px 8px;border-radius:3px;}
+
+  /* TOP BAR */
+  .topbar{background:var(--charcoal);color:#C9D4CE;font-size:12px;padding:8px 0;}
+  .topbar .wrap{display:flex;justify-content:space-between;}
+  .topbar .phone{color:var(--lime);font-weight:700;}
+
+  /* HEADER */
+  header{background:var(--bg);padding:22px 0;}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:var(--teal-dark);}
+  .logo span{color:var(--lime);-webkit-text-stroke:0;}
+  nav{display:flex;align-items:center;gap:28px;font-size:14px;font-weight:600;}
+  nav a{color:var(--dark);}
+  .btn-reserver{background:var(--charcoal);color:var(--lime)!important;padding:11px 24px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;clip-path:polygon(6% 0,100% 0,94% 100%,0% 100%);}
+
+  /* HERO */
+  .hero{position:relative;}
+  .hero .imgbox{height:540px;}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,78,79,0.90) 0%,rgba(11,78,79,0.55) 55%,rgba(11,78,79,0.1) 100%);display:flex;align-items:center;}
+  .hero-content{max-width:560px;padding:0 32px;color:#fff;}
+  .hero-badge{display:inline-block;background:var(--lime);color:var(--teal-dark);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:6px 16px;margin-bottom:20px;}
+  .hero h1{color:#fff;font-size:52px;line-height:1.1;margin-bottom:18px;}
+  .hero p{color:#D6E8E2;font-size:16px;margin-bottom:30px;max-width:440px;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn-primary{background:var(--lime);color:var(--teal-dark);padding:14px 28px;font-weight:700;font-size:13.5px;text-transform:uppercase;letter-spacing:0.4px;}
+  .btn-outline-w{border:2px solid #fff;color:#fff;padding:12px 26px;font-weight:700;font-size:13.5px;text-transform:uppercase;letter-spacing:0.4px;}
+
+  /* PRESENTATION */
+  .presentation{padding:76px 0;}
+  .presentation-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:center;max-width:1016px;margin:0 auto;}
+  .presentation-grid .imgbox{height:360px;}
+  .section-eyebrow{color:var(--teal);font-size:12.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+  .presentation h2{font-size:34px;margin-bottom:16px;}
+  .presentation p{color:var(--grey);font-size:15px;}
+
+  /* FORMULES */
+  .formules{padding:76px 0;background:var(--charcoal);color:#fff;}
+  .formules .section-eyebrow{color:var(--lime);text-align:center;}
+  .formules h2{color:#fff;text-align:center;font-size:34px;margin-bottom:50px;}
+  .form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:rgba(255,255,255,0.1);}
+  .form-card{background:var(--charcoal);padding:32px 22px;}
+  .form-card h3{font-size:20px;margin-bottom:10px;color:#fff;}
+  .form-card p{font-size:13px;color:#AEB8B1;}
+  .form-card.highlight{background:var(--lime);}
+  .form-card.highlight h3, .form-card.highlight p{color:var(--teal-dark);}
+
+  /* GALERIE */
+  .galerie{padding:76px 0;}
+  .galerie h2{text-align:center;font-size:34px;margin-bottom:50px;}
+  .gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .gal-grid .imgbox{height:190px;}
+
+  /* TEMOIGNAGES */
+  .temoignages{padding:76px 0;background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .temoignages h2{text-align:center;font-size:34px;margin-bottom:50px;}
+  .temo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .temo-card{border:1px dashed var(--line);padding:28px 24px;text-align:center;color:var(--grey);font-size:13.5px;}
+
+  /* CTA BAND */
+  .cta-band{background:var(--teal);color:#fff;padding:70px 0;text-align:center;}
+  .cta-band h2{color:#fff;font-size:36px;margin-bottom:14px;}
+  .cta-band p{color:#D6E8E2;margin-bottom:28px;font-size:15px;}
+
+  footer{background:var(--charcoal);color:#8A968F;padding:32px 0;text-align:center;font-size:12.5px;}
+  footer .credit{margin-top:8px;color:#5C6963;}
+  footer .credit a{color:var(--lime);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span>Cours individuels & collectifs — Angoulême et alentours</span>
+    <a href="tel:0500000000" class="phone">05 00 00 00 00</a>
+  </div>
+</div>
+
+<header>
+  <div class="wrap">
+    <div class="logo">ÉLAN<span>.</span>COACHING</div>
+    <nav>
+      <a href="#">Accueil</a>
+      <a href="#">Coaching</a>
+      <a href="#">Programmes</a>
+      <a href="#" class="btn-reserver">Réserver une séance</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="imgbox" style="height:540px;">
+    <div class="ph-fallback">Vue drone — séance en extérieur<small>images/coach-01-hero-seance-drone.jpg</small></div>
+    <img src="images/coach-01-hero-seance-drone.jpg" alt="Séance de coaching en extérieur vue par drone" onerror="this.remove()">
+  </div>
+  <div class="hero-overlay">
+    <div class="wrap">
+      <div class="hero-content">
+        <span class="hero-badge">Coaching sportif & bien-être</span>
+        <h1>Retrouvez l'énergie de bouger</h1>
+        <p>Coaching individuel ou en petit groupe, en plein air ou en salle, pour progresser à votre rythme.</p>
+        <div class="hero-ctas">
+          <a href="#" class="btn-primary">Voir les programmes</a>
+          <a href="#" class="btn-outline-w">Réserver une séance</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="presentation">
+  <div class="presentation-grid">
+    <div class="imgbox"><div class="ph-fallback">Portrait du coach<small>images/coach-02-portrait.jpg</small></div><img src="images/coach-02-portrait.jpg" alt="Portrait du coach" onerror="this.remove()"></div>
+    <div>
+      <div class="section-eyebrow">Votre coach</div>
+      <h2>Un accompagnement sur-mesure</h2>
+      <p>Diplômé(e) et passionné(e), [prénom] vous accompagne dans l'atteinte de vos objectifs, quel que soit votre niveau de départ : remise en forme, perte de poids, préparation physique ou simplement retrouver le plaisir de bouger.</p>
+    </div>
+  </div>
+</section>
+
+<section class="formules">
+  <div class="wrap">
+    <div class="section-eyebrow">Nos formules</div>
+    <h2>Un accompagnement adapté à vos objectifs</h2>
+    <div class="form-grid">
+      <div class="form-card">
+        <h3>Individuel</h3>
+        <p>Suivi personnalisé, présentiel ou visio.</p>
+      </div>
+      <div class="form-card">
+        <h3>Cours collectifs</h3>
+        <p>Séances dynamiques en petit groupe, en extérieur.</p>
+      </div>
+      <div class="form-card">
+        <h3>Suivi en ligne</h3>
+        <p>Programme à distance, avec suivi régulier.</p>
+      </div>
+      <div class="form-card highlight">
+        <h3>Séance découverte filmée</h3>
+        <p>Captée en vidéo et vue du ciel, avec Phoenix Solutions Digitales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="galerie">
+  <div class="wrap">
+    <h2>L'énergie d'Élan Coaching</h2>
+    <div class="gal-grid">
+      <div class="imgbox"><div class="ph-fallback">Séance individuelle<small>images/coach-03-galerie-individuelle.jpg</small></div><img src="images/coach-03-galerie-individuelle.jpg" alt="Séance de coaching individuelle" onerror="this.remove()"></div>
+      <div class="imgbox"><div class="ph-fallback">Cours collectif extérieur<small>images/coach-04-galerie-collectif.jpg</small></div><img src="images/coach-04-galerie-collectif.jpg" alt="Cours collectif en extérieur" onerror="this.remove()"></div>
+      <div class="imgbox"><div class="ph-fallback">Vue drone séance<small>images/coach-05-galerie-vue-drone.jpg</small></div><img src="images/coach-05-galerie-vue-drone.jpg" alt="Vue aérienne d'une séance" onerror="this.remove()"></div>
+      <div class="imgbox"><div class="ph-fallback">Matériel / lieu<small>images/coach-06-galerie-materiel.jpg</small></div><img src="images/coach-06-galerie-materiel.jpg" alt="Matériel et lieu d'entraînement" onerror="this.remove()"></div>
+      <div class="imgbox"><div class="ph-fallback">Portrait coach<small>images/coach-07-galerie-portrait.jpg</small></div><img src="images/coach-07-galerie-portrait.jpg" alt="Portrait du coach" onerror="this.remove()"></div>
+      <div class="imgbox"><div class="ph-fallback">Ambiance de groupe<small>images/coach-08-galerie-groupe.jpg</small></div><img src="images/coach-08-galerie-groupe.jpg" alt="Ambiance de groupe" onerror="this.remove()"></div>
+    </div>
+  </div>
+</section>
+
+<section class="temoignages">
+  <div class="wrap">
+    <h2>Ce qu'en disent mes clients</h2>
+    <div class="temo-grid">
+      <div class="temo-card">« Témoignage à venir »</div>
+      <div class="temo-card">« Témoignage à venir »</div>
+      <div class="temo-card">« Témoignage à venir »</div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <h2>Prêt(e) à vous lancer ?</h2>
+    <p>Réservez votre première séance découverte.</p>
+    <a href="#" class="btn-primary" style="background:var(--lime);color:var(--teal-dark);">Réserver une séance</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>Élan Coaching — Angoulême et alentours</div>
+    <div class="credit">Maquette de démonstration — non fonctionnelle — Site vitrine conçu par <a href="#">Phoenix Solutions Digitales</a></div>
+  </div>
+</footer>
+
+</body>
+</html>

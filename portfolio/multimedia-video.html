@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phoenix Solutions Digitales — Portfolio Production vidéo (démo)</title>
+<meta name="description" content="Exemples et mises en situation — pôle Production vidéo de Phoenix Solutions Digitales.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bordeaux:#8B1A1A;
+    --bordeaux-deep:#6B1313;
+    --gold:#C9A134;
+    --gold-soft:#E3C778;
+    --ivory:#F5F0E8;
+    --ivory-dim:#EAE2D3;
+    --ink:#2A1B14;
+    --ink-soft:#5C4A3E;
+    --line: rgba(139,26,26,.16);
+    --line-strong: rgba(139,26,26,.32);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ivory);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Playfair Display',serif; margin:0; font-weight:700; color:var(--bordeaux);}
+  a{color:inherit;}
+  img{display:block; max-width:100%;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 clamp(1.25rem,4vw,3rem);}
+  :focus-visible{outline:2px solid var(--bordeaux); outline-offset:3px;}
+
+  /* ── Emplacements photo : fichier local (assets/images/) + repli si absent ── */
+  .frame-img, .hero-photo{ position:relative; }
+  .photo-slot{
+    width:100%; height:100%; position:relative; overflow:hidden;
+    background: linear-gradient(160deg, var(--ivory-dim), #DBCDB4);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.9rem;
+    border:1px solid var(--line-strong);
+  }
+  .photo-slot.tint-gold{
+    background: linear-gradient(160deg, #F2E9D2, #E4D3A4);
+  }
+  .photo-slot img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; z-index:1; }
+  .slot-icon{ width:44%; max-width:120px; color:var(--bordeaux); opacity:.85; position:relative; z-index:0; }
+  .slot-label{
+    font-size:.68rem; letter-spacing:.02em; color:var(--ink-soft);
+    text-align:center; padding:0 1.1rem; max-width:90%; line-height:1.4;
+    position:relative; z-index:0;
+  }
+  .slot-label b{display:block; color:var(--bordeaux); font-weight:600; font-size:.72rem; margin-bottom:.15rem;}
+
+  /* ── Bouton lecture (aperçu vidéo) ── */
+  .play-btn{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:52px; height:52px; border-radius:50%; z-index:2;
+    background:rgba(42,27,20,.55); border:1.5px solid rgba(246,241,231,.7);
+    display:flex; align-items:center; justify-content:center;
+    backdrop-filter:blur(2px);
+  }
+  .play-btn svg{width:18px; height:18px; fill:var(--ivory); margin-left:2px;}
+  .duration-chip{
+    position:absolute; bottom:.6rem; right:.6rem; z-index:2;
+    font-size:.62rem; letter-spacing:.03em; color:var(--ivory);
+    background:rgba(42,27,20,.7); padding:.2rem .5rem;
+  }
+   /* ── Ribbon ── */
+  .demo-ribbon{
+    background:var(--bordeaux);
+    color:var(--ivory);
+    font-size:.72rem;
+    font-weight:500;
+    letter-spacing:.02em;
+    text-align:center;
+    padding:.55rem 1rem;
+  }
+
+  /* ── Nav ── */
+  header.nav{
+    background:var(--ivory);
+    border-bottom:1px solid var(--line-strong);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.1rem clamp(1.25rem,4vw,3rem);
+    gap:1.5rem;
+  }
+  .brand{
+    font-family:'Playfair Display',serif; font-size:1.05rem; font-weight:700;
+    letter-spacing:.01em; white-space:nowrap; color:var(--bordeaux);
+  }
+  .brand small{
+    display:block; font-family:'Inter',sans-serif; font-size:.65rem;
+    font-weight:600; letter-spacing:.13em; text-transform:uppercase;
+    color:var(--gold); margin-top:.2rem;
+  }
+  nav.links{display:flex; gap:1.75rem; flex-wrap:wrap;}
+  nav.links a{
+    font-size:.8rem; text-decoration:none; color:var(--ink-soft);
+    letter-spacing:.01em; transition:color .2s; font-weight:500;
+  }
+  nav.links a:hover{color:var(--bordeaux);}
+  @media (max-width:820px){ nav.links{display:none;} }
+
+  /* ── Hero (compact, sans espace mort) ── */
+  .hero{
+    padding:3.25rem 0 3.5rem;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.1fr .9fr; gap:3rem; align-items:center;
+  }
+  @media (max-width:900px){ .hero-grid{grid-template-columns:1fr;} }
+  .eyebrow{
+    font-size:.72rem; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:1rem; display:flex; align-items:center; gap:.6rem;
+    font-weight:700;
+  }
+  .eyebrow::before{content:''; width:26px; height:2px; background:var(--gold); display:inline-block;}
+  h1.hero-title{
+    font-size:clamp(2.1rem, 4.4vw, 3.1rem); line-height:1.08; max-width:15ch;
+    margin-bottom:1.1rem;
+  }
+  .hero-lede{max-width:42ch; color:var(--ink-soft); font-size:1rem; margin-bottom:1.75rem;}
+  .hero-meta{display:flex; gap:2.25rem; flex-wrap:wrap;}
+  .hero-meta div strong{
+    display:block; font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--bordeaux);
+  }
+  .hero-meta div span{font-size:.72rem; color:var(--ink-soft); letter-spacing:.03em;}
+
+  .hero-photos{
+    display:grid; grid-template-columns:1fr 1fr; gap:1rem;
+  }
+  .hero-photo{
+    aspect-ratio:3/4; overflow:hidden; border:1px solid var(--line-strong);
+  }
+  .hero-photo:first-child{ margin-top:2rem; }
+  .hero-photo img{width:100%; height:100%; object-fit:cover;}
+
+  /* ── Section shell ── */
+  section.pole{padding:4.5rem 0; border-bottom:1px solid var(--line);}
+  section.pole:last-of-type{border-bottom:none;}
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:2rem;
+    margin-bottom:2.5rem; flex-wrap:wrap;
+  }
+  .section-num{
+    font-family:'Playfair Display',serif; font-size:.85rem; color:var(--gold);
+    letter-spacing:.05em; margin-bottom:.6rem; display:block; font-weight:700;
+  }
+  .section-head h2{font-size:clamp(1.4rem,2.6vw,1.9rem); max-width:22ch;}
+  .section-desc{max-width:34ch; color:var(--ink-soft); font-size:.9rem;}
+
+  /* ── Filmstrip gallery ── */
+  .strip-track{
+    display:flex; gap:1.25rem; overflow-x:auto; padding:.25rem .1rem 1rem;
+    scroll-snap-type:x proximity;
+    scrollbar-width:thin; scrollbar-color:var(--gold) transparent;
+  }
+  .frame{
+    scroll-snap-align:start; flex:0 0 auto; width:min(72vw,290px);
+    background:#fff; border:1px solid var(--line-strong);
+  }
+  .frame-img{
+    position:relative; aspect-ratio:4/5; overflow:hidden;
+  }
+  .frame-img img{width:100%; height:100%; object-fit:cover;}
+  .frame-tag{
+    position:absolute; top:.6rem; left:.6rem;
+    font-size:.62rem; letter-spacing:.06em; color:var(--ivory);
+    background:rgba(42,27,20,.65);
+    padding:.2rem .45rem;
+  }
+  .frame-body{padding:1rem 1.1rem 1.2rem;}
+  .frame-body h3{font-size:1rem; margin-bottom:.4rem; line-height:1.25; color:var(--ink);}
+  .frame-body p{font-size:.8rem; color:var(--ink-soft); margin:0 0 .8rem;}
+  .price-chip{
+    display:inline-block; font-size:.72rem; color:var(--bordeaux); font-weight:600;
+    border:1px solid var(--line-strong); padding:.25rem .6rem;
+    letter-spacing:.02em; background:var(--ivory);
+  }
+
+  /* ── Grid gallery (immobilier/tourisme) ── */
+  .grid-gallery{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:1.5rem;
+  }
+  .grid-gallery.cols-3{ grid-template-columns:repeat(3,1fr); }
+  @media (max-width:900px){ .grid-gallery.cols-3{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:680px){ .grid-gallery{grid-template-columns:1fr;} }
+  .grid-card{position:relative; overflow:hidden; border:1px solid var(--line-strong);}
+  .grid-card .frame-img{aspect-ratio:16/10;}
+  .grid-card .frame-body{
+    position:absolute; left:0; right:0; bottom:0;
+    background:linear-gradient(0deg, rgba(42,27,20,.88), transparent);
+    padding:1.5rem 1.25rem 1rem;
+  }
+  .grid-card .frame-body h3, .grid-card .frame-body p{color:var(--ivory);}
+  .grid-card .frame-body p{margin-bottom:.6rem; color:var(--ivory-dim);}
+
+  /* ── Before / After ── */
+  .ba-wrap{ max-width:760px; margin:0 auto; }
+  .ba-slider{
+    position:relative; aspect-ratio:3/2; overflow:hidden;
+    border:1px solid var(--line-strong); user-select:none; touch-action:pan-y;
+  }
+  .ba-img{ position:absolute; inset:0; width:100%; height:100%; }
+  .ba-slot-before{ filter:grayscale(1) brightness(.82) contrast(.85); border-style:solid; }
+  .ba-slot-after{ border-style:solid; border-color:var(--gold); }
+  .ba-after{ clip-path: inset(0 0 0 50%); }
+  .ba-label{
+    position:absolute; top:.75rem; font-size:.65rem; letter-spacing:.08em; font-weight:600;
+    background:rgba(42,27,20,.72); color:var(--ivory); padding:.25rem .55rem; z-index:3;
+  }
+  .ba-label.before{left:.75rem;}
+  .ba-label.after{right:.75rem;}
+  .ba-handle{
+    position:absolute; top:0; bottom:0; left:50%;
+    width:2px; background:var(--gold); z-index:2; cursor:ew-resize;
+    transform:translateX(-1px);
+  }
+  .ba-handle::after{
+    content:'⟷'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:34px; height:34px; border-radius:50%; background:var(--gold); color:var(--ink);
+    display:flex; align-items:center; justify-content:center; font-size:.9rem;
+  }
+  .ba-range{
+    position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0;
+    cursor:ew-resize; z-index:4;
+  }
+  .ba-caption{
+    display:flex; justify-content:space-between; font-size:.75rem;
+    color:var(--ink-soft); margin-top:.9rem; flex-wrap:wrap; gap:.5rem;
+  }
+
+  /* ── Options list ── */
+  .options-row{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:1px; background:var(--line-strong); border:1px solid var(--line-strong); margin-top:2.5rem;
+  }
+  .option{background:#fff; padding:1.1rem 1.25rem;}
+  .option strong{display:block; font-size:.85rem; margin-bottom:.3rem; color:var(--ink);}
+  .option span{font-size:.75rem; color:var(--bordeaux); font-weight:600;}
+
+  /* ── Footer ── */
+  footer{padding:3.5rem 0 2.5rem; background:var(--ivory-dim);}
+  .footer-inner{ text-align:center; }
+  footer h2{font-size:clamp(1.4rem,3vw,1.9rem); max-width:20ch; margin:0 auto 0.75rem;}
+  footer p.sub{color:var(--ink-soft); font-size:.85rem; max-width:34ch; margin:0 auto 1.5rem;}
+  .cta-btn{
+    display:inline-block; background:var(--bordeaux); color:var(--ivory);
+    text-decoration:none; font-size:.8rem; font-weight:600; letter-spacing:.03em;
+    padding:.85rem 1.8rem;
+  }
+  .cta-btn:hover{background:var(--bordeaux-deep);}
+  .legal{font-size:.7rem; color:var(--ink-soft); margin-top:2.25rem; opacity:.75;}
+
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+</style>
+</head>
+<body>
+<a href="../index.html" style="position:fixed;top:14px;left:14px;z-index:999;background:#1C1008;color:#E8C468;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px;text-decoration:none;box-shadow:0 6px 16px rgba(28,16,8,.25);">← Retour à Phoenix Solutions Digitales</a>
+
+
+<div class="demo-ribbon">Page de démonstration — déposez vos miniatures vidéo dans assets/images/ (voir le guide fourni) pour les faire apparaître automatiquement</div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">Phoenix Solutions Digitales<small>Multimédia Numérique — Vidéo</small></div>
+    <nav class="links" aria-label="Sections du portfolio">
+      <a href="#reseaux">Réseaux sociaux</a>
+      <a href="#corporate">Corporate</a>
+      <a href="#publicitaire">Publicitaire</a>
+      <a href="#evenementiel">Événementiel</a>
+      <a href="#postprod">Post-production</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Vidéo — Réseaux sociaux · Corporate · Publicitaire · Événementiel</p>
+      <h1 class="hero-title">Vos histoires, mises en mouvement.</h1>
+      <p class="hero-lede">Du format court pour les réseaux sociaux au film institutionnel complet — tournage, montage, étalonnage et une série de corrections inclus. Habillage graphique, sous-titrage et voix-off en option.</p>
+      <div class="hero-meta">
+        <div><strong>500 – 750 € HT</strong><span>Tournage / jour</span></div>
+        <div><strong>350 – 550 € HT</strong><span>Montage / jour</span></div>
+        <div><strong>&lt; 48h</strong><span>Livraison express possible</span></div>
+      </div>
+    </div>
+    <div class="hero-photos">
+      <div class="hero-photo">
+        <div class="photo-slot">
+          <img src="assets/images/reels-short.jpg" alt="Format court réseaux sociaux" loading="lazy" onerror="this.remove()">
+          <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+          <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="34" y="16" width="32" height="68" rx="6"/>
+            <line x1="42" y1="76" x2="58" y2="76"/>
+          </svg>
+          <span class="slot-label"><b>Miniature à ajouter</b>reels-short.jpg</span>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <div class="photo-slot tint-gold">
+          <img src="assets/images/film-corporate.jpg" alt="Film de présentation entreprise" loading="lazy" onerror="this.remove()">
+          <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+          <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="16" y="26" width="68" height="42" rx="2"/>
+            <circle cx="50" cy="47" r="10"/>
+          </svg>
+          <span class="slot-label"><b>Miniature à ajouter</b>film-corporate.jpg</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pole" id="reseaux">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-num">01 — Vidéos réseaux sociaux &amp; web</span>
+        <h2>Des formats courts pensés pour l'engagement</h2>
+      </div>
+      <p class="section-desc">Réels, teasers et vidéos produit : des formats calibrés pour chaque plateforme, livrés prêts à publier.</p>
+    </div>
+
+    <div class="strip-track">
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 01A</span>
+          <div class="photo-slot">
+            <img src="assets/images/reels-short.jpg" alt="Réels / Short / TikTok" loading="lazy" onerror="this.remove()">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+            <span class="duration-chip">15 – 60 s</span>
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="34" y="16" width="32" height="68" rx="6"/>
+              <line x1="42" y1="76" x2="58" y2="76"/>
+            </svg>
+            <span class="slot-label"><b>Miniature à ajouter</b>reels-short.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Réels / Short / TikTok</h3>
+          <p>Format vertical, 15 à 60 secondes.</p>
+          <span class="price-chip">350 – 700 €</span>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 01B</span>
+          <div class="photo-slot tint-gold">
+            <img src="assets/images/video-courte-rs.jpg" alt="Vidéo courte réseaux sociaux" loading="lazy" onerror="this.remove()">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+            <span class="duration-chip">1 – 2 min</span>
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="18" y="26" width="64" height="42" rx="3"/>
+              <circle cx="50" cy="47" r="11"/>
+            </svg>
+            <span class="slot-label"><b>Miniature à ajouter</b>video-courte-rs.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Vidéo courte réseaux sociaux</h3>
+          <p>Format carré ou paysage, 1 à 2 minutes.</p>
+          <span class="price-chip">500 – 950 €</span>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 01C</span>
+          <div class="photo-slot">
+            <img src="assets/images/teaser.jpg" alt="Teaser / bande-annonce" loading="lazy" onerror="this.remove()">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+            <span class="duration-chip">30 – 90 s</span>
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="16" y="34" width="68" height="40" rx="2"/>
+              <path d="M16 34l10-14h10l-8 14z"/>
+              <path d="M42 34l10-14h10l-8 14z"/>
+              <path d="M68 34l8-14h8l-8 14z"/>
+            </svg>
+            <span class="slot-label"><b>Miniature à ajouter</b>teaser.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Teaser / bande-annonce</h3>
+          <p>Rythmé, pensé pour donner envie.</p>
+          <span class="price-chip">600 – 1 200 €</span>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 01D</span>
+          <div class="photo-slot tint-gold">
+            <img src="assets/images/video-produit.jpg" alt="Vidéo produit / packshot" loading="lazy" onerror="this.remove()">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+            <span class="duration-chip">30 – 90 s</span>
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M42 30h16l4 10v34a4 4 0 0 1-4 4H42a4 4 0 0 1-4-4V40z"/>
+              <path d="M44 30v-8a6 6 0 0 1 12 0v8"/>
+              <line x1="10" y1="86" x2="90" y2="86"/>
+            </svg>
+            <span class="slot-label"><b>Miniature à ajouter</b>video-produit.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Vidéo produit / packshot</h3>
+          <p>Mise en scène produit, fond neutre ou ambiance.</p>
+          <span class="price-chip">400 – 900 €</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="pole" id="corporate">
+
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-num">02 — Films d'entreprise &amp; corporate</span>
+        <h2>Donner la parole à votre entreprise</h2>
+      </div>
+      <p class="section-desc">Interviews, films de présentation, contenus de formation : des productions qui installent la crédibilité de votre structure.</p>
+    </div>
+
+    <div class="strip-track">
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 02A</span>
+          <div class="photo-slot">
+            <img src="assets/images/interview-temoignage.jpg" alt="Interview / témoignage client" loading="lazy" onerror="this.remove()">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+            <span class="duration-chip">1 – 3 min</span>
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="42" y="20" width="16" height="32" rx="8"/>
+              <path d="M30 46a20 20 0 0 0 40 0"/>
+              <line x1="50" y1="66" x2="50" y2="78"/>
+              <line x1="38" y1="78" x2="62" y2="78"/>
+            </svg>
+            <span class="slot-label"><b>Miniature à ajouter</b>interview-temoignage.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Interview / témoignage client</h3>
+          <p>Format libre, préparation des questions incluse.</p>
+          <span class="price-chip">800 – 2 000 €</span>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 02B</span>
+          <div class="photo-slot tint-gold">
+            <img src="assets/images/film-corporate.jpg" alt="Film de présentation entreprise" loading="lazy" onerror="this.remove()">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+            <span class="duration-chip">2 – 4 min</span>
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="16" y="26" width="68" height="42" rx="2"/>
+              <circle cx="50" cy="47" r="10"/>
+            </svg>
+            <span class="slot-label"><b>Miniature à ajouter</b>film-corporate.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Film de présentation entreprise</h3>
+          <p>Vision, équipes, savoir-faire.</p>
+          <span class="price-chip">1 500 – 4 000 €</span>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 02C</span>
+          <div class="photo-slot">
+            <img src="assets/images/film-institutionnel.jpg" alt="Film institutionnel complet" loading="lazy" onerror="this.remove()">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+            <span class="duration-chip">3 – 6 min</span>
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="22" y="18" width="56" height="64" rx="2"/>
+              <circle cx="34" cy="30" r="4"/>
+              <circle cx="66" cy="30" r="4"/>
+              <line x1="22" y1="42" x2="78" y2="42"/>
+              <line x1="22" y1="58" x2="78" y2="58"/>
+              <line x1="22" y1="74" x2="78" y2="74"/>
+            </svg>
+            <span class="slot-label"><b>Miniature à ajouter</b>film-institutionnel.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Film institutionnel complet</h3>
+          <p>Production longue, plusieurs lieux et intervenants.</p>
+          <span class="price-chip">2 500 – 8 000 €</span>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 02D</span>
+          <div class="photo-slot tint-gold">
+            <img src="assets/images/video-formation.jpg" alt="Vidéo de formation / tuto" loading="lazy" onerror="this.remove()">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+            <span class="duration-chip">5 – 15 min</span>
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="18" y="20" width="64" height="46" rx="2"/>
+              <path d="M40 34l16 10-16 10z"/>
+              <line x1="34" y1="78" x2="66" y2="78"/>
+              <line x1="50" y1="66" x2="50" y2="78"/>
+            </svg>
+            <span class="slot-label"><b>Miniature à ajouter</b>video-formation.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Vidéo de formation / tuto</h3>
+          <p>Pédagogique, avec chapitrage.</p>
+          <span class="price-chip">1 000 – 3 000 €</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="pole" id="publicitaire">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-num">03 — Films publicitaires</span>
+        <h2>Des productions qui marquent</h2>
+      </div>
+      <p class="section-desc">Direction artistique, casting, tournage multi-plans : des formats pensés pour convertir, du réseau social à la campagne premium.</p>
+    </div>
+
+    <div class="strip-track">
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 03A</span>
+          <div class="photo-slot">
+            <img src="assets/images/spot-pub-rs.jpg" alt="Spot pub réseaux sociaux" loading="lazy" onerror="this.remove()">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+            <span class="duration-chip">15 – 30 s</span>
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 44l24-14v40l-24-14z"/>
+              <path d="M42 30h20a16 16 0 0 1 0 28H42"/>
+              <line x1="14" y1="44" x2="18" y2="44"/>
+            </svg>
+            <span class="slot-label"><b>Miniature à ajouter</b>spot-pub-rs.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Spot pub réseaux sociaux</h3>
+          <p>Impact court, calibré pour les feeds.</p>
+          <span class="price-chip">1 200 – 3 500 €</span>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 03B</span>
+          <div class="photo-slot tint-gold">
+            <img src="assets/images/film-pub-standard.jpg" alt="Film publicitaire standard" loading="lazy" onerror="this.remove()">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+            <span class="duration-chip">30 – 60 s</span>
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="18" y="24" width="64" height="44" rx="3"/>
+              <path d="M40 38l16 10-16 10z"/>
+              <line x1="34" y1="78" x2="66" y2="78"/>
+            </svg>
+            <span class="slot-label"><b>Miniature à ajouter</b>film-pub-standard.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Film publicitaire standard</h3>
+          <p>Scénario, tournage, montage complet.</p>
+          <span class="price-chip">2 000 – 6 000 €</span>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 03C</span>
+          <div class="photo-slot">
+            <img src="assets/images/film-pub-premium.jpg" alt="Film publicitaire premium" loading="lazy" onerror="this.remove()">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+            <span class="duration-chip">30 – 90 s</span>
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="16" y="22" width="68" height="46" rx="3"/>
+              <path d="M50 30l3.5 7.2 8 1.2-5.8 5.6 1.4 8-7.1-3.7-7.1 3.7 1.4-8-5.8-5.6 8-1.2z"/>
+              <line x1="32" y1="78" x2="68" y2="78"/>
+            </svg>
+            <span class="slot-label"><b>Miniature à ajouter</b>film-pub-premium.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Film publicitaire premium</h3>
+          <p>Production haut de gamme, équipe élargie.</p>
+          <span class="price-chip">5 000 – 15 000 €</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="pole" id="evenementiel">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-num">04 — Captation événementielle</span>
+        <h2>Vos événements, racontés en images</h2>
+      </div>
+      <p class="section-desc">Multi-caméras, discrétion et réactivité : un film résumé livré rapidement après l'événement.</p>
+    </div>
+
+    <div class="grid-gallery cols-3">
+
+      <article class="grid-card">
+        <div class="frame-img">
+          <div class="photo-slot">
+            <img src="assets/images/captation-demi-journee.jpg" alt="Captation événement demi-journée" loading="lazy" onerror="this.remove()">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="14" y="34" width="46" height="32" rx="3"/>
+              <path d="M60 42l20-10v36l-20-10z"/>
+              <path d="M20 26a17 17 0 0 1 34 0" stroke-dasharray="4 5"/>
+            </svg>
+            <span class="slot-label"><b>Miniature à ajouter</b>captation-demi-journee.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Captation demi-journée</h3>
+          <p>Film résumé 2 à 5 minutes.</p>
+          <span class="price-chip">500 – 900 €</span>
+        </div>
+      </article>
+
+      <article class="grid-card">
+        <div class="frame-img">
+          <div class="photo-slot tint-gold">
+            <img src="assets/images/captation-journee.jpg" alt="Captation événement journée" loading="lazy" onerror="this.remove()">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="14" y="34" width="46" height="32" rx="3"/>
+              <path d="M60 42l20-10v36l-20-10z"/>
+              <circle cx="20" cy="20" r="8"/>
+              <line x1="20" y1="8" x2="20" y2="4"/>
+              <line x1="8" y1="20" x2="4" y2="20"/>
+            </svg>
+            <span class="slot-label"><b>Miniature à ajouter</b>captation-journee.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Captation journée complète</h3>
+          <p>Film résumé 3 à 8 minutes.</p>
+          <span class="price-chip">800 – 1 500 €</span>
+        </div>
+      </article>
+
+      <article class="grid-card">
+        <div class="frame-img">
+          <div class="photo-slot">
+            <img src="assets/images/captation-multicam.jpg" alt="Captation conférence multi-caméras" loading="lazy" onerror="this.remove()">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="10" y="40" width="34" height="24" rx="2"/>
+              <rect x="56" y="40" width="34" height="24" rx="2"/>
+              <path d="M44 52h12"/>
+              <path d="M27 40V28a4 4 0 0 1 4-4h38a4 4 0 0 1 4 4v12" stroke-dasharray="3 4"/>
+            </svg>
+            <span class="slot-label"><b>Miniature à ajouter</b>captation-multicam.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Captation conférence / multi-caméras</h3>
+          <p>Film complet + résumé.</p>
+          <span class="price-chip">1 200 – 3 000 €</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="pole" id="postprod">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-num">05 — Post-production &amp; options</span>
+        <h2>L'étalonnage fait la différence</h2>
+      </div>
+      <p class="section-desc">Étalonnage colorimétrique de base inclus sur toutes les prestations ; habillage, sous-titrage et voix-off disponibles en option.</p>
+    </div>
+
+    <div class="ba-wrap">
+      <div class="ba-slider" id="baSlider">
+        <span class="ba-label before">BRUT CAMÉRA</span>
+        <span class="ba-label after">ÉTALONNÉ</span>
+        <div class="ba-before ba-img">
+          <div class="photo-slot ba-slot-before">
+            <img src="assets/images/etalonnage-avant.jpg" alt="Plan brut avant étalonnage" loading="lazy" onerror="this.remove()">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="18" y="24" width="64" height="48" rx="2"/>
+              <circle cx="34" cy="40" r="6"/>
+              <path d="M18 64l16-14 14 10 14-16 20 20"/>
+            </svg>
+            <span class="slot-label"><b>Miniature à ajouter</b>etalonnage-avant.jpg</span>
+          </div>
+        </div>
+        <div class="ba-after ba-img" id="baAfter">
+          <div class="photo-slot ba-slot-after">
+            <img src="assets/images/etalonnage-apres.jpg" alt="Plan étalonné après post-production" loading="lazy" onerror="this.remove()">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="18" y="24" width="64" height="48" rx="2"/>
+              <circle cx="34" cy="40" r="6"/>
+              <path d="M18 64l16-14 14 10 14-16 20 20"/>
+              <path d="M78 18l3 3M84 24l3 0M78 30l3-3" stroke="var(--gold)"/>
+            </svg>
+            <span class="slot-label"><b>Miniature à ajouter</b>etalonnage-apres.jpg</span>
+          </div>
+        </div>
+        <div class="ba-handle" id="baHandle"></div>
+        <input type="range" class="ba-range" id="baRange" min="0" max="100" value="50" aria-label="Comparer brut / étalonné">
+      </div>
+      <div class="ba-caption">
+        <span>Glissez pour comparer</span>
+        <span>Étalonnage de base inclus · options ci-dessous</span>
+      </div>
+    </div>
+
+    <div class="options-row">
+      <div class="option"><strong>Étalonnage colorimétrique</strong><span>150 – 400 €</span></div>
+      <div class="option"><strong>Motion design / habillage graphique</strong><span>300 – 1 200 €</span></div>
+      <div class="option"><strong>Sous-titrage</strong><span>80 – 200 €</span></div>
+      <div class="option"><strong>Voix-off (enregistrement)</strong><span>150 – 400 €</span></div>
+      <div class="option"><strong>Déclinaisons formats RS supplémentaires</strong><span>100 – 250 €/format</span></div>
+      <div class="option"><strong>Livraison express (&lt; 48h)</strong><span>+ 25 %</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <h2>Envie d'un tournage sur-mesure ?</h2>
+    <p class="sub">Chaque projet fait l'objet d'un devis personnalisé, gratuit et sans engagement.</p>
+    <a class="cta-btn" href="mailto:[À CONFIRMER — pas encore défini]">Demander un devis</a>
+    <p class="legal">Phoenix Solutions Digitales — Angoulême &amp; Charente (16) · Tarifs HT indicatifs, article 293 B du CGI.</p>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var range = document.getElementById('baRange');
+    var after = document.getElementById('baAfter');
+    var handle = document.getElementById('baHandle');
+    function update(v){
+      after.style.clipPath = 'inset(0 0 0 ' + v + '%)';
+      handle.style.left = v + '%';
+    }
+    range.addEventListener('input', function(){ update(this.value); });
+    update(50);
+  })();
+</script>
+
+</body>
+</html>

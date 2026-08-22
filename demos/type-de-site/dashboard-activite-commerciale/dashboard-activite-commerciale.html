@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Comptoir Angoumoisin — Tableau de bord</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#F4F5F7; --surface:#FFFFFF; --ink:#151822; --muted:#6b7280; --border:#E4E6EB;
+    --teal:#1E7F72; --teal-light:#4FB3A3; --amber:#D98E3F; --danger:#C1503F;
+    --radius:8px;
+  }
+  [data-theme="dark"]{
+    --bg:#12151D; --surface:#1B1F2A; --ink:#EDEFF4; --muted:#9AA1B2; --border:#2A2F3D;
+    --teal:#4FB3A3; --teal-light:#6FCBBD; --amber:#E3A45F; --danger:#E17A68;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:'Inter', sans-serif; transition:background .2s ease, color .2s ease;}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  h1,h2,h3{font-family:'Space Grotesk', sans-serif; margin:0;}
+  a{color:inherit;}
+
+  .layout{display:grid; grid-template-columns:240px 1fr; min-height:100vh;}
+  @media(max-width:860px){ .layout{grid-template-columns:1fr;} .sidebar{display:none;} }
+
+  /* SIDEBAR */
+  .sidebar{background:var(--surface); border-right:1px solid var(--border); padding:22px 18px; display:flex; flex-direction:column;}
+  .side-brand{font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:16.5px; margin-bottom:28px; display:flex; align-items:center; gap:9px;}
+  .side-brand svg{width:20px; height:20px; color:var(--teal);}
+  .side-nav{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:3px;}
+  .side-nav a{
+    display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:6px; text-decoration:none;
+    font-size:13.5px; color:var(--muted); font-weight:500; transition:background .15s ease, color .15s ease;
+  }
+  .side-nav a svg{width:16px; height:16px;}
+  .side-nav a.active{background:var(--teal); color:#fff;}
+  .side-nav a:not(.active):hover{background:var(--bg); color:var(--ink);}
+  .side-foot{margin-top:auto; font-size:11.5px; color:var(--muted); font-family:'IBM Plex Mono', monospace; padding-top:20px; border-top:1px solid var(--border);}
+
+  /* TOPBAR */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between; padding:18px 28px;
+    border-bottom:1px solid var(--border); background:var(--surface);
+  }
+  .topbar h1{font-size:20px;}
+  .topbar .sub{font-size:12.5px; color:var(--muted); margin-top:3px; font-family:'IBM Plex Mono', monospace;}
+  .theme-toggle{
+    display:flex; align-items:center; gap:8px; background:var(--bg); border:1px solid var(--border);
+    border-radius:20px; padding:5px; cursor:pointer;
+  }
+  .theme-toggle button{
+    border:none; background:none; width:30px; height:26px; border-radius:16px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; color:var(--muted); transition:all .15s ease;
+  }
+  .theme-toggle button.active{background:var(--teal); color:#fff;}
+  .theme-toggle svg{width:14px; height:14px;}
+
+  .content{padding:28px; max-width:1200px;}
+
+  /* KPI CARDS */
+  .kpi-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(210px,1fr)); gap:16px; margin-bottom:24px;}
+  .kpi-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px 20px;}
+  .kpi-label{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; font-weight:600;}
+  .kpi-value{font-family:'Space Grotesk', sans-serif; font-size:28px; font-weight:700; margin:8px 0 6px;}
+  .kpi-delta{font-size:12.5px; font-family:'IBM Plex Mono', monospace; display:flex; align-items:center; gap:4px;}
+  .kpi-delta.up{color:var(--teal);}
+  .kpi-delta.down{color:var(--danger);}
+
+  /* GRID: chart + ring */
+  .row{display:grid; grid-template-columns:2fr 1fr; gap:16px; margin-bottom:16px;}
+  @media(max-width:900px){ .row{grid-template-columns:1fr;} }
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px;}
+  .card-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:16px;}
+  .card-head h3{font-size:15.5px;}
+  .card-head .card-sub{font-size:11.5px; color:var(--muted); font-family:'IBM Plex Mono', monospace;}
+  .chart-wrap{position:relative; height:240px;}
+
+  /* Objective ring */
+  .ring-wrap{display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;}
+  .ring-value{font-family:'Space Grotesk', sans-serif; font-size:26px; font-weight:700; margin-top:-108px;}
+  .ring-caption{font-size:12px; color:var(--muted); margin-top:110px; text-align:center; max-width:22ch;}
+
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;}
+  @media(max-width:900px){ .row2{grid-template-columns:1fr;} }
+
+  /* TABLE */
+  table{width:100%; border-collapse:collapse; font-size:13.5px;}
+  th{text-align:left; font-size:11.5px; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); padding:8px 10px; border-bottom:1px solid var(--border);}
+  td{padding:11px 10px; border-bottom:1px solid var(--border);}
+  tr:last-child td{border-bottom:none;}
+  .badge{display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600;}
+  .badge.livre{background:#E3F1EE; color:var(--teal);}
+  .badge.cours{background:#FBF0E1; color:var(--amber);}
+  .badge.attente{background:#F3E4E1; color:var(--danger);}
+  [data-theme="dark"] .badge.livre{background:rgba(79,179,163,0.16);}
+  [data-theme="dark"] .badge.cours{background:rgba(227,164,95,0.16);}
+  [data-theme="dark"] .badge.attente{background:rgba(225,122,104,0.16);}
+  .amount{font-family:'IBM Plex Mono', monospace;}
+
+  footer{padding:22px 28px; font-size:11.5px; color:var(--muted); font-family:'IBM Plex Mono', monospace;}
+
+  /* VIEWS */
+  .view{display:none;}
+  .view.active{display:block;}
+
+  /* FILTER CHIPS */
+  .filter-row{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+  .filter-chip{
+    background:var(--surface); border:1px solid var(--border); color:var(--muted); border-radius:20px;
+    padding:7px 15px; font-size:12.5px; cursor:pointer; transition:all .15s ease;
+  }
+  .filter-chip:hover{border-color:var(--teal);}
+  .filter-chip.active{background:var(--teal); color:#fff; border-color:var(--teal); font-weight:600;}
+
+  /* PRODUCTS */
+  .stock-badge{display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600;}
+  .stock-dot{width:7px; height:7px; border-radius:50%;}
+  .stock-dot.ok{background:var(--teal);} .stock-badge.ok{color:var(--teal);}
+  .stock-dot.low{background:var(--amber);} .stock-badge.low{color:var(--amber);}
+  .stock-dot.out{background:var(--danger);} .stock-badge.out{color:var(--danger);}
+
+  /* CLIENTS */
+  .client-name{font-weight:600;}
+  .client-email{font-size:11.5px; color:var(--muted); font-family:'IBM Plex Mono', monospace;}
+
+  /* SETTINGS */
+  .settings-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media(max-width:900px){ .settings-grid{grid-template-columns:1fr;} }
+  .settings-field{margin-bottom:14px;}
+  .settings-field label{font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; display:block; margin-bottom:6px;}
+  .settings-field input{
+    width:100%; border:1px solid var(--border); border-radius:6px; padding:9px 11px; font-size:13.5px;
+    font-family:inherit; background:var(--bg); color:var(--ink);
+  }
+  .settings-field input:disabled{opacity:0.7; cursor:not-allowed;}
+  .team-row{display:flex; align-items:center; justify-content:space-between; padding:11px 0; border-bottom:1px solid var(--border);}
+  .team-row:last-child{border-bottom:none;}
+  .team-avatar{
+    width:32px; height:32px; border-radius:50%; background:var(--teal); color:#fff; display:flex;
+    align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:12.5px; flex-shrink:0;
+  }
+  .team-info{display:flex; align-items:center; gap:11px;}
+  .team-role{font-size:11.5px; color:var(--muted);}
+  .role-badge{font-size:11px; background:var(--bg); border:1px solid var(--border); padding:3px 10px; border-radius:20px; color:var(--muted);}
+
+  .toggle-row{display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--border);}
+  .toggle-row:last-child{border-bottom:none;}
+  .toggle-row .toggle-label{font-size:13.5px;}
+  .toggle-row .toggle-desc{font-size:11.5px; color:var(--muted); margin-top:2px;}
+  .switch{position:relative; width:38px; height:22px; flex-shrink:0;}
+  .switch input{opacity:0; width:0; height:0;}
+  .switch-track{position:absolute; inset:0; background:var(--border); border-radius:20px; cursor:pointer; transition:background .15s ease;}
+  .switch-track::before{content:""; position:absolute; width:16px; height:16px; left:3px; top:3px; background:#fff; border-radius:50%; transition:transform .15s ease;}
+  .switch input:checked + .switch-track{background:var(--teal);}
+  .switch input:checked + .switch-track::before{transform:translateX(16px);}
+
+  .save-btn{
+    background:var(--teal); color:#fff; border:none; border-radius:6px; padding:10px 20px; font-weight:600;
+    font-size:13px; cursor:pointer; margin-top:8px;
+  }
+  .save-btn:hover{background:var(--teal-light);}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="side-brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+      Le Comptoir
+    </div>
+    <ul class="side-nav">
+      <li><a class="active" href="#" data-view="overview" data-title="Vue d'ensemble" data-sub="Mise à jour — données de démonstration"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9 h18 M9 21 V9"/></svg>Vue d'ensemble</a></li>
+      <li><a href="#" data-view="commandes" data-title="Commandes" data-sub="312 commandes ce mois-ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7 h16 l-1.5 11 a2 2 0 0 1-2 1.7 H7.5 a2 2 0 0 1-2-1.7 Z"/><path d="M8 7 V5 a4 4 0 0 1 8 0 v2"/></svg>Commandes</a></li>
+      <li><a href="#" data-view="produits" data-title="Produits" data-sub="24 références actives"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7 V5 a2 2 0 0 1 2-2 h4 a2 2 0 0 1 2 2 v2"/></svg>Produits</a></li>
+      <li><a href="#" data-view="clients" data-title="Clients" data-sub="186 clients enregistrés"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M5 20 c0-4 3-6.5 7-6.5 s7 2.5 7 6.5"/></svg>Clients</a></li>
+      <li><a href="#" data-view="parametres" data-title="Paramètres" data-sub="Informations du commerce et de l'équipe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2 v3 M12 19 v3 M22 12 h-3 M5 12 H2 M19.1 4.9 l-2.1 2.1 M7 15 l-2.1 2.1 M19.1 19.1 l-2.1-2.1 M7 9 L4.9 6.9"/></svg>Paramètres</a></li>
+    </ul>
+    <div class="side-foot">DÉMO — PHOENIX SOLUTIONS DIGITALES</div>
+  </aside>
+
+  <div>
+    <div class="topbar">
+      <div>
+        <h1>Vue d'ensemble</h1>
+        <div class="sub">Mise à jour — données de démonstration</div>
+      </div>
+      <div class="theme-toggle" id="themeToggle">
+        <button id="btnLight" aria-label="Mode clair">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.2"/><path d="M12 2 v2.4 M12 19.6 V22 M4.9 4.9 l1.7 1.7 M17.4 17.4 l1.7 1.7 M2 12 h2.4 M19.6 12 H22 M4.9 19.1 l1.7-1.7 M17.4 6.6 l1.7-1.7"/></svg>
+        </button>
+        <button id="btnDark" class="active" aria-label="Mode sombre">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 14.5 A8.5 8.5 0 1 1 9.5 4 a7 7 0 0 0 10.5 10.5 Z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="view active" id="view-overview">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Chiffre d'affaires — mois</div>
+          <div class="kpi-value">14 280 €</div>
+          <div class="kpi-delta up">▲ +12,4 % vs mois dernier</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Commandes</div>
+          <div class="kpi-value">312</div>
+          <div class="kpi-delta up">▲ +6,1 %</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Panier moyen</div>
+          <div class="kpi-value">45,80 €</div>
+          <div class="kpi-delta down">▼ −2,3 %</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Visiteurs du site</div>
+          <div class="kpi-value">2 940</div>
+          <div class="kpi-delta up">▲ +18,7 %</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="card">
+          <div class="card-head"><h3>Évolution du chiffre d'affaires</h3><span class="card-sub">6 derniers mois</span></div>
+          <div class="chart-wrap"><canvas id="revenueChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Objectif mensuel</h3><span class="card-sub">14 280 € / 18 000 €</span></div>
+          <div class="ring-wrap">
+            <div class="chart-wrap" style="height:180px; width:180px;"><canvas id="ringChart"></canvas></div>
+            <div class="ring-value">79 %</div>
+            <div class="ring-caption">Objectif atteint à 79 % — encore 3 720 € pour le mois</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="card">
+          <div class="card-head"><h3>Ventes par catégorie</h3><span class="card-sub">Ce mois-ci</span></div>
+          <div class="chart-wrap"><canvas id="categoryChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Répartition des canaux</h3><span class="card-sub">Boutique / En ligne / Click & Collect</span></div>
+          <div class="chart-wrap"><canvas id="channelChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Dernières commandes</h3><span class="card-sub">10 plus récentes</span></div>
+        <table>
+          <thead><tr><th>Commande</th><th>Client</th><th>Montant</th><th>Statut</th></tr></thead>
+          <tbody id="ordersBody"></tbody>
+        </table>
+      </div>
+      </div>
+      <!-- /view-overview -->
+
+      <div class="view" id="view-commandes">
+        <div class="filter-row" id="orderFilters"></div>
+        <div class="card">
+          <div class="card-head"><h3>Toutes les commandes</h3><span class="card-sub" id="orderCount">— résultats</span></div>
+          <table>
+            <thead><tr><th>Commande</th><th>Client</th><th>Date</th><th>Montant</th><th>Statut</th></tr></thead>
+            <tbody id="allOrdersBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="view" id="view-produits">
+        <div class="card">
+          <div class="card-head"><h3>Catalogue produits</h3><span class="card-sub">24 références</span></div>
+          <table>
+            <thead><tr><th>Produit</th><th>Catégorie</th><th>Prix</th><th>Stock</th></tr></thead>
+            <tbody id="productsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="view" id="view-clients">
+        <div class="card">
+          <div class="card-head"><h3>Meilleurs clients</h3><span class="card-sub">Classés par montant total dépensé</span></div>
+          <table>
+            <thead><tr><th>Client</th><th>Commandes</th><th>Total dépensé</th><th>Dernière commande</th></tr></thead>
+            <tbody id="clientsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="view" id="view-parametres">
+        <div class="settings-grid">
+          <div class="card">
+            <div class="card-head"><h3>Informations du commerce</h3></div>
+            <div class="settings-field"><label>Nom commercial</label><input type="text" value="Le Comptoir Angoumoisin"></div>
+            <div class="settings-field"><label>Adresse</label><input type="text" value="12 rue des Halles, 16000 Angoulême"></div>
+            <div class="settings-field"><label>Email de contact</label><input type="email" value="contact@comptoir-angoumoisin.fr"></div>
+            <div class="settings-field"><label>Objectif mensuel (CA)</label><input type="text" value="18 000 €"></div>
+            <button class="save-btn" id="saveSettings">Enregistrer</button>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3>Équipe</h3><span class="card-sub">4 membres</span></div>
+            <div class="team-row">
+              <div class="team-info"><div class="team-avatar">SM</div><div><div>Sophie Marchand</div><div class="team-role">Gérante</div></div></div>
+              <span class="role-badge">Administrateur</span>
+            </div>
+            <div class="team-row">
+              <div class="team-info"><div class="team-avatar">TB</div><div><div>Thomas Béraud</div><div class="team-role">Responsable boutique</div></div></div>
+              <span class="role-badge">Éditeur</span>
+            </div>
+            <div class="team-row">
+              <div class="team-info"><div class="team-avatar">MC</div><div><div>Manon Chollet</div><div class="team-role">Vente en ligne</div></div></div>
+              <span class="role-badge">Éditeur</span>
+            </div>
+            <div class="team-row">
+              <div class="team-info"><div class="team-avatar">LG</div><div><div>Lucas Guinot</div><div class="team-role">Stagiaire</div></div></div>
+              <span class="role-badge">Lecture seule</span>
+            </div>
+          </div>
+
+          <div class="card" style="grid-column:1/-1;">
+            <div class="card-head"><h3>Notifications</h3></div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Alerte stock faible</div><div class="toggle-desc">Recevoir un email quand un produit passe sous le seuil critique</div></div>
+              <label class="switch"><input type="checkbox" checked><span class="switch-track"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Nouvelle commande</div><div class="toggle-desc">Notification immédiate à chaque nouvelle commande en ligne</div></div>
+              <label class="switch"><input type="checkbox" checked><span class="switch-track"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-label">Résumé hebdomadaire</div><div class="toggle-desc">Un email récapitulatif chaque lundi matin</div></div>
+              <label class="switch"><input type="checkbox"><span class="switch-track"></span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <footer>Tableau de bord de démonstration — données fictives, générées pour illustration.</footer>
+  </div>
+</div>
+
+<script>
+/* ===== THEME TOGGLE ===== */
+const root = document.documentElement;
+const btnLight = document.getElementById('btnLight');
+const btnDark = document.getElementById('btnDark');
+let revenueChart, ringChart, categoryChart, channelChart;
+function setTheme(theme){
+  root.setAttribute('data-theme', theme);
+  btnLight.classList.toggle('active', theme === 'light');
+  btnDark.classList.toggle('active', theme === 'dark');
+  updateChartTheme();
+}
+btnLight.addEventListener('click', () => setTheme('light'));
+btnDark.addEventListener('click', () => setTheme('dark'));
+setTheme('dark');
+
+/* ===== NAVIGATION ENTRE VUES ===== */
+const navLinks = document.querySelectorAll('.side-nav a');
+const pageTitle = document.querySelector('.topbar h1');
+const pageSub = document.querySelector('.topbar .sub');
+
+navLinks.forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = link.dataset.view;
+
+    navLinks.forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + target).classList.add('active');
+
+    pageTitle.textContent = link.dataset.title;
+    pageSub.textContent = link.dataset.sub;
+
+    if(target === 'overview'){
+      [revenueChart, ringChart, categoryChart, channelChart].forEach(c => c && c.resize());
+    }
+  });
+});
+
+/* ===== DATA ===== */
+const months = ['Janv','Fév','Mars','Avr','Mai','Juin'];
+const revenue = [9200, 10400, 11800, 12600, 13100, 14280];
+const categories = ['Épicerie salée','Épicerie sucrée','Spiritueux','Coffrets','Autres'];
+const categoryValues = [3200, 2600, 5400, 2400, 680];
+const channels = ['Boutique', 'En ligne', 'Click & Collect'];
+const channelValues = [52, 33, 15];
+
+const orders = [
+  { id:'#3241', client:'S. Marchand', amount:'86,00 €', status:'livre', label:'Livrée' },
+  { id:'#3240', client:'T. Béraud', amount:'42,50 €', status:'cours', label:'En préparation' },
+  { id:'#3239', client:'M. Chollet', amount:'128,00 €', status:'livre', label:'Livrée' },
+  { id:'#3238', client:'L. Guinot', amount:'19,90 €', status:'attente', label:'En attente' },
+  { id:'#3237', client:'A. Fontaine', amount:'67,30 €', status:'livre', label:'Livrée' },
+  { id:'#3236', client:'C. Delorme', amount:'54,00 €', status:'cours', label:'En préparation' },
+];
+document.getElementById('ordersBody').innerHTML = orders.map(o => `
+  <tr>
+    <td>${o.id}</td>
+    <td>${o.client}</td>
+    <td class="amount">${o.amount}</td>
+    <td><span class="badge ${o.status}">${o.label}</span></td>
+  </tr>
+`).join('');
+
+/* ===== VUE COMMANDES ===== */
+const allOrders = [
+  { id:'#3241', client:'S. Marchand', date:'18/07', amount:'86,00 €', status:'livre', label:'Livrée' },
+  { id:'#3240', client:'T. Béraud', date:'18/07', amount:'42,50 €', status:'cours', label:'En préparation' },
+  { id:'#3239', client:'M. Chollet', date:'17/07', amount:'128,00 €', status:'livre', label:'Livrée' },
+  { id:'#3238', client:'L. Guinot', date:'17/07', amount:'19,90 €', status:'attente', label:'En attente' },
+  { id:'#3237', client:'A. Fontaine', date:'16/07', amount:'67,30 €', status:'livre', label:'Livrée' },
+  { id:'#3236', client:'C. Delorme', date:'16/07', amount:'54,00 €', status:'cours', label:'En préparation' },
+  { id:'#3235', client:'R. Petit', date:'15/07', amount:'112,40 €', status:'livre', label:'Livrée' },
+  { id:'#3234', client:'J. Moreau', date:'15/07', amount:'38,00 €', status:'livre', label:'Livrée' },
+  { id:'#3233', client:'E. Girard', date:'14/07', amount:'71,50 €', status:'attente', label:'En attente' },
+  { id:'#3232', client:'P. Lambert', date:'14/07', amount:'95,20 €', status:'cours', label:'En préparation' },
+  { id:'#3231', client:'N. Roussel', date:'13/07', amount:'23,00 €', status:'livre', label:'Livrée' },
+  { id:'#3230', client:'F. Bertrand', date:'13/07', amount:'144,90 €', status:'livre', label:'Livrée' },
+];
+const ORDER_FILTERS = [
+  { id:'tous', label:'Toutes' }, { id:'livre', label:'Livrées' },
+  { id:'cours', label:'En préparation' }, { id:'attente', label:'En attente' },
+];
+let activeOrderFilter = 'tous';
+
+function renderOrderFilters(){
+  const row = document.getElementById('orderFilters');
+  row.innerHTML = '';
+  ORDER_FILTERS.forEach(f => {
+    const chip = document.createElement('button');
+    chip.className = 'filter-chip' + (activeOrderFilter === f.id ? ' active' : '');
+    chip.textContent = f.label;
+    chip.addEventListener('click', () => { activeOrderFilter = f.id; renderOrderFilters(); renderAllOrders(); });
+    row.appendChild(chip);
+  });
+}
+function renderAllOrders(){
+  const list = activeOrderFilter === 'tous' ? allOrders : allOrders.filter(o => o.status === activeOrderFilter);
+  document.getElementById('orderCount').textContent = `${list.length} résultat${list.length > 1 ? 's' : ''}`;
+  document.getElementById('allOrdersBody').innerHTML = list.map(o => `
+    <tr>
+      <td>${o.id}</td><td>${o.client}</td><td>${o.date}</td>
+      <td class="amount">${o.amount}</td>
+      <td><span class="badge ${o.status}">${o.label}</span></td>
+    </tr>
+  `).join('');
+}
+renderOrderFilters();
+renderAllOrders();
+
+/* ===== VUE PRODUITS ===== */
+const products = [
+  { name:'Rillettes charentaises', cat:'Épicerie salée', price:'8,50 €', stock:'ok', label:'En stock' },
+  { name:'Sel de Noirmoutier', cat:'Épicerie salée', price:'6,00 €', stock:'ok', label:'En stock' },
+  { name:'Tapenade maison', cat:'Épicerie salée', price:'5,20 €', stock:'low', label:'Stock faible' },
+  { name:'Biscuits au beurre', cat:'Épicerie sucrée', price:'7,00 €', stock:'ok', label:'En stock' },
+  { name:'Confiture de melon', cat:'Épicerie sucrée', price:'8,00 €', stock:'out', label:'Rupture' },
+  { name:'Nougat artisanal', cat:'Épicerie sucrée', price:'9,50 €', stock:'ok', label:'En stock' },
+  { name:'Cognac VS', cat:'Spiritueux', price:'38,00 €', stock:'ok', label:'En stock' },
+  { name:'Pineau blanc', cat:'Spiritueux', price:'16,00 €', stock:'low', label:'Stock faible' },
+  { name:'Pineau rosé', cat:'Spiritueux', price:'17,00 €', stock:'ok', label:'En stock' },
+  { name:'Coffret Découverte', cat:'Coffrets', price:'49,00 €', stock:'ok', label:'En stock' },
+  { name:'Coffret Prestige', cat:'Coffrets', price:'89,00 €', stock:'low', label:'Stock faible' },
+  { name:'Carte cadeau', cat:'Autres', price:'—', stock:'ok', label:'Illimité' },
+];
+document.getElementById('productsBody').innerHTML = products.map(p => `
+  <tr>
+    <td>${p.name}</td><td>${p.cat}</td><td class="amount">${p.price}</td>
+    <td><span class="stock-badge ${p.stock}"><span class="stock-dot ${p.stock}"></span>${p.label}</span></td>
+  </tr>
+`).join('');
+
+/* ===== VUE CLIENTS ===== */
+const topClients = [
+  { name:'Sophie Marchand', email:'s.marchand@exemple.fr', orders:14, total:'612,40 €', last:'18/07/2026' },
+  { name:'Frédéric Bertrand', email:'f.bertrand@exemple.fr', orders:11, total:'548,10 €', last:'13/07/2026' },
+  { name:'Manon Chollet', email:'m.chollet@exemple.fr', orders:9, total:'421,00 €', last:'17/07/2026' },
+  { name:'Antoine Fontaine', email:'a.fontaine@exemple.fr', orders:8, total:'365,80 €', last:'16/07/2026' },
+  { name:'Pauline Lambert', email:'p.lambert@exemple.fr', orders:7, total:'298,50 €', last:'14/07/2026' },
+  { name:'Nicolas Roussel', email:'n.roussel@exemple.fr', orders:6, total:'241,00 €', last:'13/07/2026' },
+  { name:'Élise Girard', email:'e.girard@exemple.fr', orders:5, total:'187,30 €', last:'14/07/2026' },
+  { name:'Thomas Béraud', email:'t.beraud@exemple.fr', orders:4, total:'156,90 €', last:'18/07/2026' },
+];
+document.getElementById('clientsBody').innerHTML = topClients.map(c => `
+  <tr>
+    <td><div class="client-name">${c.name}</div><div class="client-email">${c.email}</div></td>
+    <td>${c.orders}</td><td class="amount">${c.total}</td><td>${c.last}</td>
+  </tr>
+`).join('');
+
+/* ===== VUE PARAMÈTRES ===== */
+document.getElementById('saveSettings').addEventListener('click', (e) => {
+  const btn = e.currentTarget;
+  const original = btn.textContent;
+  btn.textContent = 'Enregistré ✓';
+  setTimeout(() => { btn.textContent = original; }, 1500);
+});
+
+/* ===== CHARTS ===== */
+function css(v){ return getComputedStyle(root).getPropertyValue(v).trim(); }
+
+function buildCharts(){
+  const teal = css('--teal'), tealLight = css('--teal-light'), amber = css('--amber'), danger = css('--danger'), muted = css('--muted'), border = css('--border'), ink = css('--ink');
+
+  revenueChart = new Chart(document.getElementById('revenueChart'), {
+    type:'line',
+    data:{ labels:months, datasets:[{
+      data:revenue, borderColor:teal, backgroundColor:tealLight+'33', fill:true, tension:0.35,
+      pointBackgroundColor:teal, pointRadius:4, borderWidth:2.5
+    }]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false} },
+      scales:{
+        x:{ grid:{display:false}, ticks:{color:muted, font:{family:'IBM Plex Mono'}} },
+        y:{ grid:{color:border}, ticks:{color:muted, font:{family:'IBM Plex Mono'}} }
+      }
+    }
+  });
+
+  ringChart = new Chart(document.getElementById('ringChart'), {
+    type:'doughnut',
+    data:{ datasets:[{ data:[79,21], backgroundColor:[teal, border], borderWidth:0 }]},
+    options:{ responsive:true, maintainAspectRatio:false, cutout:'78%', plugins:{legend:{display:false}, tooltip:{enabled:false}} }
+  });
+
+  categoryChart = new Chart(document.getElementById('categoryChart'), {
+    type:'bar',
+    data:{ labels:categories, datasets:[{ data:categoryValues, backgroundColor:teal, borderRadius:5, maxBarThickness:36 }]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false} },
+      scales:{
+        x:{ grid:{display:false}, ticks:{color:muted, font:{size:11, family:'Inter'}} },
+        y:{ grid:{color:border}, ticks:{color:muted, font:{family:'IBM Plex Mono'}} }
+      }
+    }
+  });
+
+  channelChart = new Chart(document.getElementById('channelChart'), {
+    type:'doughnut',
+    data:{ labels:channels, datasets:[{ data:channelValues, backgroundColor:[teal, amber, danger], borderWidth:0 }]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{position:'bottom', labels:{color:ink, font:{size:12, family:'Inter'}, boxWidth:11, padding:14}} }
+    }
+  });
+}
+
+function updateChartTheme(){
+  if(!revenueChart) return;
+  const teal = css('--teal'), tealLight = css('--teal-light'), muted = css('--muted'), border = css('--border'), ink = css('--ink');
+
+  revenueChart.data.datasets[0].borderColor = teal;
+  revenueChart.data.datasets[0].backgroundColor = tealLight+'33';
+  revenueChart.data.datasets[0].pointBackgroundColor = teal;
+  revenueChart.options.scales.x.ticks.color = muted;
+  revenueChart.options.scales.y.ticks.color = muted;
+  revenueChart.options.scales.y.grid.color = border;
+  revenueChart.update();
+
+  ringChart.data.datasets[0].backgroundColor = [teal, border];
+  ringChart.update();
+
+  categoryChart.data.datasets[0].backgroundColor = teal;
+  categoryChart.options.scales.x.ticks.color = muted;
+  categoryChart.options.scales.y.ticks.color = muted;
+  categoryChart.options.scales.y.grid.color = border;
+  categoryChart.update();
+
+  channelChart.data.datasets[0].backgroundColor = [teal, css('--amber'), css('--danger')];
+  channelChart.options.plugins.legend.labels.color = ink;
+  channelChart.update();
+}
+
+buildCharts();
+</script>
+</body>
+</html>

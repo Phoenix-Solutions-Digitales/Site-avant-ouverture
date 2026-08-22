@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio Aurel — Photographe &amp; Vidéaste</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0B0C; --surface:#161617; --line:#28282A; --white:#F5F4F1; --muted:#9C9C97; --lime:#D6F23C; --radius:6px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--bg); color:var(--white); font-family:'Inter', sans-serif; font-weight:300; line-height:1.6;}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  .display{font-family:'Bebas Neue', sans-serif; letter-spacing:0.01em;}
+  .container{max-width:1160px; margin:0 auto; padding:0 28px;}
+  a{color:inherit;} button{font-family:inherit;}
+
+  /* NAV */
+  nav{position:fixed; top:0; left:0; right:0; z-index:40; padding:22px 0; mix-blend-mode:difference;}
+  nav .container{display:flex; justify-content:space-between; align-items:center;}
+  .brand{font-family:'Bebas Neue', sans-serif; font-size:20px; letter-spacing:0.06em;}
+  .nav-links{display:flex; gap:30px; list-style:none; margin:0; padding:0; font-size:12.5px; text-transform:uppercase; letter-spacing:0.08em;}
+  .nav-links a{text-decoration:none; opacity:0.8; transition:opacity .2s ease;}
+  .nav-links a:hover{opacity:1;}
+  @media(max-width:760px){ .nav-links{display:none;} }
+
+  /* HERO */
+  .hero{
+    min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    position:relative; overflow:hidden;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(214,242,60,0.08), transparent 55%),
+      radial-gradient(ellipse at 75% 80%, rgba(255,255,255,0.05), transparent 50%),
+      var(--bg);
+  }
+  .hero-eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:var(--muted); margin-bottom:20px;}
+  .hero-name{font-family:'Bebas Neue', sans-serif; font-size:clamp(64px,14vw,180px); line-height:0.88; letter-spacing:0.01em;}
+  .hero-sub{font-family:'IBM Plex Mono', monospace; font-size:13px; letter-spacing:0.1em; color:var(--muted); margin-top:18px; text-transform:uppercase;}
+  .scroll-cue{position:absolute; bottom:32px; font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:0.14em; color:var(--muted); display:flex; flex-direction:column; align-items:center; gap:8px;}
+  .scroll-cue::after{content:""; width:1px; height:30px; background:linear-gradient(var(--muted), transparent);}
+
+  /* SECTION shell */
+  .section{padding:90px 0;}
+  .section-head{display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:40px; flex-wrap:wrap; gap:14px;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--lime);}
+  .section-head h2{font-family:'Bebas Neue', sans-serif; font-size:clamp(30px,4vw,48px); margin-top:10px; letter-spacing:0.01em;}
+  .section-head p{font-size:13.5px; color:var(--muted); max-width:38ch;}
+
+  /* SHOWREEL */
+  .showreel-frame{
+    aspect-ratio:21/9; border-radius:var(--radius); position:relative; overflow:hidden; cursor:pointer;
+    background:linear-gradient(120deg, #1b1c1e, #0B0B0C 40%, #222014 70%, #0B0B0C);
+  }
+  .showreel-frame::before{
+    content:""; position:absolute; inset:0;
+    background:repeating-linear-gradient(115deg, rgba(214,242,60,0.03) 0px, rgba(214,242,60,0.03) 2px, transparent 2px, transparent 60px);
+  }
+  .play-btn{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:84px; height:84px; border-radius:50%;
+    background:var(--lime); display:flex; align-items:center; justify-content:center; transition:transform .2s ease; border:none; cursor:pointer;
+  }
+  .play-btn:hover{transform:translate(-50%,-50%) scale(1.08);}
+  .play-btn svg{width:26px; height:26px; color:#0B0B0C; margin-left:3px;}
+  .showreel-caption{position:absolute; bottom:16px; left:18px; font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--muted); background:rgba(0,0,0,0.4); padding:5px 10px; border-radius:4px;}
+
+  .filmstrip{display:flex; gap:8px; overflow-x:auto; margin-top:16px; padding-bottom:4px;}
+  .filmstrip-item{flex:0 0 auto; width:96px; aspect-ratio:16/10; border-radius:4px; opacity:0.65; transition:opacity .2s ease;}
+  .filmstrip-item:hover{opacity:1;}
+
+  /* FILTER CHIPS */
+  .filter-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px;}
+  .filter-chip{
+    background:transparent; border:1px solid var(--line); color:var(--muted); border-radius:20px; padding:8px 16px;
+    font-size:12.5px; cursor:pointer; transition:all .15s ease;
+  }
+  .filter-chip:hover{border-color:var(--lime); color:var(--white);}
+  .filter-chip.active{background:var(--lime); color:#0B0B0C; border-color:var(--lime); font-weight:600;}
+
+  /* MASONRY GRID */
+  .masonry{display:grid; grid-template-columns:repeat(4, 1fr); grid-auto-rows:120px; gap:10px;}
+  @media(max-width:760px){ .masonry{grid-template-columns:repeat(2,1fr);} }
+  .project-item{
+    border-radius:5px; position:relative; overflow:hidden; cursor:pointer;
+    display:flex; align-items:flex-end; padding:14px; transition:transform .2s ease;
+  }
+  .project-item:hover{transform:scale(0.98);}
+  .project-item img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;}
+  .project-item::after{content:""; position:absolute; inset:0; z-index:1; background:linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.65)); }
+  .project-info{position:relative; z-index:2;}
+  .project-cat{font-family:'IBM Plex Mono', monospace; font-size:9.5px; color:var(--lime); text-transform:uppercase; letter-spacing:0.06em;}
+  .project-title{font-size:13.5px; font-weight:600; margin-top:2px;}
+
+  /* ABOUT */
+  .about-grid{display:grid; grid-template-columns:0.9fr 1.3fr; gap:44px; align-items:center;}
+  @media(max-width:760px){ .about-grid{grid-template-columns:1fr;} }
+  .about-photo{aspect-ratio:4/5; border-radius:var(--radius); overflow:hidden; background:linear-gradient(160deg,#222,#0B0B0C 70%);}
+  .about-photo img{width:100%; height:100%; object-fit:cover; display:block;}
+  .about-text p{font-size:15px; color:#CFCFC9; margin-bottom:16px; max-width:52ch;}
+  .about-stats{display:flex; gap:34px; margin-top:24px; flex-wrap:wrap;}
+  .about-stat-num{font-family:'Bebas Neue', sans-serif; font-size:34px; color:var(--lime);}
+  .about-stat-label{font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--muted); text-transform:uppercase;}
+
+  /* CLIENTS */
+  .clients-row{display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; opacity:0.55;}
+  .client-logo{height:26px; width:110px; background:repeating-linear-gradient(90deg,#3a3a3a,#3a3a3a 4px,#2a2a2a 4px,#2a2a2a 8px); border-radius:3px;}
+
+  /* CONTACT */
+  .contact-section{border-top:1px solid var(--line);}
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:50px;}
+  @media(max-width:760px){ .contact-grid{grid-template-columns:1fr;} }
+  .contact-links{display:flex; flex-direction:column; gap:14px; margin-top:22px;}
+  .contact-links a{font-size:20px; font-family:'Bebas Neue', sans-serif; letter-spacing:0.01em; text-decoration:none; display:inline-block; border-bottom:1px solid transparent; transition:border-color .2s ease;}
+  .contact-links a:hover{border-color:var(--lime); color:var(--lime);}
+  .field{margin-bottom:14px;}
+  .field label{font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:7px;}
+  .field input, .field textarea{
+    width:100%; background:var(--surface); border:1px solid var(--line); border-radius:5px; padding:11px 12px;
+    font-size:14px; font-family:'Inter', sans-serif; font-weight:300; color:var(--white);
+  }
+  .field input:focus, .field textarea:focus{outline:1px solid var(--lime); outline-offset:1px;}
+  .submit-btn{
+    background:var(--lime); color:#0B0B0C; border:none; border-radius:5px; padding:13px 24px; font-weight:700; font-size:13px;
+    cursor:pointer; text-transform:uppercase; letter-spacing:0.04em; transition:background .15s ease;
+  }
+  .submit-btn:hover{background:#c2e332;}
+
+  footer{border-top:1px solid var(--line); padding:26px 0; text-align:center; font-size:11px; color:var(--muted); font-family:'IBM Plex Mono', monospace;}
+
+  /* LIGHTBOX */
+  .lightbox{position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:60; display:none; align-items:center; justify-content:center; padding:30px;}
+  .lightbox.open{display:flex;}
+  .lightbox-content{max-width:760px; width:100%;}
+  .lightbox-visual{aspect-ratio:16/10; border-radius:6px; margin-bottom:18px; overflow:hidden; background:#161617;}
+  .lightbox-visual img{width:100%; height:100%; object-fit:cover; display:block;}
+  .lightbox-close{position:absolute; top:26px; right:32px; background:none; border:1px solid var(--line); color:#fff; width:38px; height:38px; border-radius:50%; cursor:pointer; font-size:18px;}
+  .lightbox-title{font-family:'Bebas Neue', sans-serif; font-size:26px;}
+  .lightbox-cat{font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--lime); text-transform:uppercase; margin-bottom:6px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="brand">STUDIO AUREL</div>
+    <ul class="nav-links">
+      <li><a href="#travaux">Travaux</a></li>
+      <li><a href="#showreel">Showreel</a></li>
+      <li><a href="#apropos">À propos</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Charente, France</div>
+  <div class="hero-name">STUDIO<br>AUREL</div>
+  <div class="hero-sub">Photographie · Film · Prises de vue aériennes</div>
+  <div class="scroll-cue">DÉFILER</div>
+</section>
+
+<section class="section" id="showreel">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">En mouvement</div>
+        <h2>Showreel 2026</h2>
+      </div>
+      <p>Une sélection de tournages récents — mariages, corporate, et prises de vue par drone.</p>
+    </div>
+    <div class="showreel-frame" onclick="openLightbox('reel')">
+      <button class="play-btn" aria-label="Lire le showreel">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5 L19 12 L8 19 Z"/></svg>
+      </button>
+      <div class="showreel-caption">Showreel — 90 secondes — à intégrer</div>
+    </div>
+    <div class="filmstrip" id="filmstrip"></div>
+  </div>
+</section>
+
+<section class="section" id="travaux" style="border-top:1px solid var(--line);">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Sélection</div>
+        <h2>Derniers travaux</h2>
+      </div>
+      <p>Un aperçu de projets variés, filtrables par catégorie.</p>
+    </div>
+    <div class="filter-row" id="filterRow"></div>
+    <div class="masonry" id="masonryGrid"></div>
+  </div>
+</section>
+
+<section class="section" id="apropos" style="border-top:1px solid var(--line);">
+  <div class="container about-grid">
+    <div class="about-photo"><img src="assets/images/portrait-studio.jpg" alt="Portrait du photographe" loading="lazy"></div>
+    <div class="about-text">
+      <div class="eyebrow">À propos</div>
+      <h2 class="display" style="font-size:32px; margin:12px 0 18px;">Raconter en image</h2>
+      <p>Photographe et vidéaste basé en Charente, je capture mariages, événements d'entreprise et paysages depuis plus de huit ans — au sol comme dans les airs, en tant que télépilote de drone certifié.</p>
+      <p>Chaque projet est pensé comme une histoire à raconter, pas seulement une série d'images à livrer.</p>
+      <div class="about-stats">
+        <div><div class="about-stat-num">8+</div><div class="about-stat-label">Années d'expérience</div></div>
+        <div><div class="about-stat-num">150+</div><div class="about-stat-label">Projets livrés</div></div>
+        <div><div class="about-stat-num">100%</div><div class="about-stat-label">Client satisfait</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="border-top:1px solid var(--line); padding-top:50px; padding-bottom:50px;">
+  <div class="container">
+    <div class="eyebrow" style="margin-bottom:20px;">Ils m'ont fait confiance</div>
+    <div class="clients-row">
+      <div class="client-logo"></div><div class="client-logo"></div><div class="client-logo"></div>
+      <div class="client-logo"></div><div class="client-logo"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section contact-section" id="contact">
+  <div class="container contact-grid">
+    <div>
+      <div class="eyebrow">Contact</div>
+      <h2 class="display" style="font-size:32px; margin:12px 0 6px;">Un projet en tête ?</h2>
+      <p style="color:var(--muted); font-size:14px; max-width:36ch;">Disponible en Charente et dans un rayon de 100 km, déplacements possibles sur toute la France.</p>
+      <div class="contact-links">
+        <a href="#">contact@studio-aurel-exemple.fr</a>
+        <a href="#">05 XX XX XX XX</a>
+        <a href="#">@studioaurel</a>
+      </div>
+    </div>
+    <form onsubmit="event.preventDefault(); alert('Démonstration — aucun message n\'est réellement envoyé.');">
+      <div class="field"><label>Nom</label><input type="text" required></div>
+      <div class="field"><label>Email</label><input type="email" required></div>
+      <div class="field"><label>Votre projet</label><textarea rows="3" placeholder="Mariage, corporate, drone..."></textarea></div>
+      <button class="submit-btn" type="submit">Envoyer</button>
+    </form>
+  </div>
+</section>
+
+<footer>© Studio Aurel — exemple fictif — DÉMO PHOENIX SOLUTIONS DIGITALES</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <div class="lightbox-content">
+    <div class="lightbox-visual" id="lightboxVisual"><img id="lightboxImg" src="" alt=""></div>
+    <div class="lightbox-cat" id="lightboxCat"></div>
+    <div class="lightbox-title" id="lightboxTitle"></div>
+  </div>
+</div>
+
+<script>
+const GRADIENTS = [
+  'linear-gradient(135deg,#2b2f22,#0B0B0C)',
+  'linear-gradient(135deg,#1f2733,#0B0B0C)',
+  'linear-gradient(135deg,#332622,#0B0B0C)',
+  'linear-gradient(135deg,#26332c,#0B0B0C)',
+  'linear-gradient(135deg,#2f2233,#0B0B0C)',
+  'linear-gradient(135deg,#333022,#0B0B0C)',
+];
+
+const PROJECTS = [
+  { id:1, cat:'mariage', title:'Mariage — C. & A., Château de Lignières', span:'2/2', img:'assets/images/projet-1.jpg' },
+  { id:2, cat:'drone', title:'Survol — Domaine viticole, Cognac', span:'1/2', img:'assets/images/projet-2.jpg' },
+  { id:3, cat:'corporate', title:'Film institutionnel — PME industrielle', span:'1/1', img:'assets/images/projet-3.jpg' },
+  { id:4, cat:'portrait', title:'Portraits — Série studio', span:'1/1', img:'assets/images/projet-4.jpg' },
+  { id:5, cat:'drone', title:'Survol — Château, Angoulême', span:'2/1', img:'assets/images/projet-5.jpg' },
+  { id:6, cat:'mariage', title:'Mariage — L. & T., domaine de campagne', span:'1/1', img:'assets/images/projet-6.jpg' },
+  { id:7, cat:'corporate', title:'Reportage — Séminaire entreprise', span:'1/1', img:'assets/images/projet-7.jpg' },
+  { id:8, cat:'portrait', title:'Portraits — Lumière naturelle', span:'2/1', img:'assets/images/projet-8.jpg' },
+];
+
+const CATEGORIES = [
+  { id:'tous', label:'Tous' }, { id:'mariage', label:'Mariages' }, { id:'drone', label:'Drone' },
+  { id:'corporate', label:'Corporate' }, { id:'portrait', label:'Portraits' },
+];
+
+let activeFilter = 'tous';
+
+function renderFilmstrip(){
+  const strip = document.getElementById('filmstrip');
+  strip.innerHTML = '';
+  for(let i=0;i<10;i++){
+    const item = document.createElement('div');
+    item.className = 'filmstrip-item';
+    item.style.background = GRADIENTS[i % GRADIENTS.length];
+    strip.appendChild(item);
+  }
+}
+
+function renderFilters(){
+  const row = document.getElementById('filterRow');
+  row.innerHTML = '';
+  CATEGORIES.forEach(c => {
+    const chip = document.createElement('button');
+    chip.className = 'filter-chip' + (activeFilter === c.id ? ' active' : '');
+    chip.textContent = c.label;
+    chip.addEventListener('click', () => { activeFilter = c.id; renderFilters(); renderGrid(); });
+    row.appendChild(chip);
+  });
+}
+
+function renderGrid(){
+  const grid = document.getElementById('masonryGrid');
+  grid.innerHTML = '';
+  const list = activeFilter === 'tous' ? PROJECTS : PROJECTS.filter(p => p.cat === activeFilter);
+  list.forEach((p, i) => {
+    const [colSpan, rowSpan] = p.span.split('/').map(Number);
+    const item = document.createElement('div');
+    item.className = 'project-item';
+    item.style.gridColumn = `span ${colSpan}`;
+    item.style.gridRow = `span ${rowSpan + 1}`;
+    item.style.background = GRADIENTS[i % GRADIENTS.length];
+    item.innerHTML = `
+      <img src="${p.img}" alt="${p.title}" loading="lazy" onerror="this.style.display='none';">
+      <div class="project-info">
+        <div class="project-cat">${CATEGORIES.find(c=>c.id===p.cat).label}</div>
+        <div class="project-title">${p.title}</div>
+      </div>
+    `;
+    item.addEventListener('click', () => openLightbox(p.id));
+    grid.appendChild(item);
+  });
+}
+
+function openLightbox(id){
+  const lightbox = document.getElementById('lightbox');
+  const visual = document.getElementById('lightboxVisual');
+  const img = document.getElementById('lightboxImg');
+  const cat = document.getElementById('lightboxCat');
+  const title = document.getElementById('lightboxTitle');
+
+  if(id === 'reel'){
+    img.style.display = 'none';
+    visual.style.background = 'linear-gradient(120deg,#1b1c1e,#0B0B0C 40%,#222014 70%)';
+    cat.textContent = 'Showreel';
+    title.textContent = 'Showreel 2026 — à intégrer';
+  } else {
+    const p = PROJECTS.find(x => x.id === id);
+    img.src = p.img;
+    img.alt = p.title;
+    img.onerror = () => { visual.style.background = GRADIENTS[id % GRADIENTS.length]; img.style.display = 'none'; };
+    img.onload = () => { img.style.display = 'block'; visual.style.background = 'transparent'; };
+    cat.textContent = CATEGORIES.find(c=>c.id===p.cat).label;
+    title.textContent = p.title;
+  }
+  lightbox.classList.add('open');
+}
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('open'); }
+document.getElementById('lightbox').addEventListener('click', (e) => { if(e.target.id === 'lightbox') closeLightbox(); });
+
+renderFilmstrip();
+renderFilters();
+renderGrid();
+</script>
+</body>
+</html>

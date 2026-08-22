@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configurateur de projet web — Phoenix Solutions Digitales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bordeaux-deep:#5C1A2E;
+    --bordeaux-darker:#341019;
+    --gold:#C9A227;
+    --gold-light:#E8CD8A;
+    --cream:#FAF6EE;
+    --charcoal:#241A1D;
+    --line:#E4D9C8;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--charcoal);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.5;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    background:linear-gradient(160deg, var(--bordeaux-deep) 0%, var(--bordeaux-darker) 100%);
+    color:var(--cream);
+    padding:64px 24px 88px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-inner{
+    max-width:960px;
+    margin:0 auto;
+    position:relative;
+    z-index:2;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gold-light);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px; height:1px;
+    background:var(--gold);
+    display:inline-block;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(32px, 5vw, 52px);
+    line-height:1.08;
+    margin:18px 0 14px;
+    max-width:14ch;
+  }
+  h1 em{
+    font-style:italic;
+    font-weight:500;
+    color:var(--gold-light);
+  }
+  .hero p{
+    max-width:52ch;
+    font-size:17px;
+    color:#EFE3E7;
+  }
+  .phoenix-mark{
+    position:absolute;
+    right:-40px; top:-60px;
+    width:340px; height:340px;
+    opacity:0.14;
+    z-index:1;
+  }
+
+  /* ===== LAYOUT ===== */
+  .wrap{
+    max-width:1080px;
+    margin:-48px auto 0;
+    padding:0 24px 80px;
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:28px;
+    align-items:start;
+  }
+  @media (max-width:860px){
+    .wrap{grid-template-columns:1fr;}
+  }
+
+  .panel{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:28px;
+  }
+  .steps{display:flex; flex-direction:column; gap:26px;}
+  .step{
+    border-bottom:1px solid var(--line);
+    padding-bottom:24px;
+  }
+  .step:last-child{border-bottom:none; padding-bottom:0;}
+  .step-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--bordeaux-deep);
+    opacity:0.65;
+    margin-bottom:6px;
+  }
+  .step h2{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:20px;
+    margin:0 0 14px;
+  }
+
+  .option-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(200px,1fr));
+    gap:10px;
+  }
+  .option{
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:14px 16px;
+    cursor:pointer;
+    background:var(--cream);
+    transition:border-color .15s ease, background .15s ease, transform .1s ease;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .option:hover{border-color:var(--gold);}
+  .option:active{transform:scale(0.99);}
+  .option.selected{
+    border-color:var(--bordeaux-deep);
+    background:#FBF2F2;
+    box-shadow:inset 0 0 0 1px var(--bordeaux-deep);
+  }
+  .option-title{font-weight:600; font-size:14.5px;}
+  .option-sub{font-size:12.5px; color:#6b5a5f;}
+  .option-price{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--bordeaux-deep);
+    margin-top:2px;
+  }
+
+  input[type="checkbox"]{accent-color:var(--bordeaux-deep); width:16px; height:16px;}
+  .check-row{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:10px 4px;
+    border-bottom:1px dashed var(--line);
+    cursor:pointer;
+  }
+  .check-row:last-child{border-bottom:none;}
+  .check-row label{cursor:pointer; font-size:14.5px;}
+  .check-sub{font-size:12.5px; color:#6b5a5f; margin-top:2px;}
+  .check-price{
+    margin-left:auto;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--bordeaux-deep);
+    white-space:nowrap;
+  }
+
+  input[type="radio"]{accent-color:var(--bordeaux-deep);}
+  .radio-row{display:flex; align-items:center; gap:8px; padding:8px 0; cursor:pointer; font-size:14.5px;}
+
+  /* ===== STICKY SUMMARY ===== */
+  .summary{
+    position:sticky;
+    top:24px;
+    background:var(--bordeaux-deep);
+    color:var(--cream);
+    border-radius:var(--radius);
+    padding:26px;
+    overflow:hidden;
+  }
+  .summary h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:15px;
+    letter-spacing:0.02em;
+    margin:0 0 4px;
+    color:var(--gold-light);
+    text-transform:uppercase;
+    font-size:12px;
+    letter-spacing:0.12em;
+  }
+  .total{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:40px;
+    font-weight:600;
+    margin:6px 0 2px;
+  }
+  .total-sub{font-size:12.5px; color:#E3C9CE; margin-bottom:18px;}
+
+  .bars{
+    display:flex;
+    align-items:flex-end;
+    gap:4px;
+    height:64px;
+    margin:6px 0 20px;
+  }
+  .bar{
+    flex:1;
+    background:linear-gradient(180deg, var(--gold-light), var(--gold));
+    border-radius:3px 3px 0 0;
+    height:6%;
+    transition:height .5s cubic-bezier(.2,.8,.2,1);
+  }
+
+  .breakdown{
+    font-size:13px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    border-top:1px solid rgba(255,255,255,0.18);
+    padding-top:16px;
+    margin-bottom:20px;
+  }
+  .breakdown-row{display:flex; justify-content:space-between; gap:12px; color:#F0DEE2;}
+  .breakdown-row span:last-child{font-family:'IBM Plex Mono', monospace; color:var(--gold-light);}
+  .breakdown-empty{color:#C9A9AF; font-style:italic;}
+
+  .cta{
+    display:block;
+    width:100%;
+    text-align:center;
+    background:var(--gold);
+    color:var(--bordeaux-darker);
+    font-weight:600;
+    font-size:14.5px;
+    border:none;
+    border-radius:7px;
+    padding:13px 16px;
+    cursor:pointer;
+    text-decoration:none;
+    transition:background .15s ease;
+  }
+  .cta:hover{background:var(--gold-light);}
+  .fine-print{
+    font-size:11px;
+    color:#C9A9AF;
+    margin-top:12px;
+    text-align:center;
+    line-height:1.4;
+  }
+
+  footer{
+    text-align:center;
+    padding:36px 24px 48px;
+    font-size:12.5px;
+    color:#8a7378;
+    font-family:'IBM Plex Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <svg class="phoenix-mark" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M100 20 C 60 40, 40 90, 60 140 C 70 100, 85 70, 100 55 C 115 70, 130 100, 140 140 C 160 90, 140 40, 100 20 Z" fill="#E8CD8A"/>
+    <path d="M100 55 C 95 100, 95 150, 100 180 C 105 150, 105 100, 100 55 Z" fill="#E8CD8A"/>
+  </svg>
+  <div class="hero-inner">
+    <div class="eyebrow">Phoenix Solutions Digitales</div>
+    <h1>Estimez votre projet web <em>en 90 secondes</em></h1>
+    <p>Répondez à quelques questions sur votre projet : le montant s'ajuste en direct, comme sur un vrai devis. Ceci est une démonstration — les tarifs affichés sont indicatifs et seront confirmés lors d'un échange.</p>
+  </div>
+</section>
+
+<main class="wrap">
+  <div class="panel steps">
+
+    <div class="step">
+      <div class="step-label">Point de départ</div>
+      <h2>Quel type de projet avez-vous en tête ?</h2>
+      <div class="option-grid" id="typeOptions"></div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">Ampleur</div>
+      <h2>Combien de pages / sections souhaitez-vous ?</h2>
+      <div class="option-grid" id="pagesOptions"></div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">Fonctionnalités</div>
+      <h2>Souhaitez-vous ajouter des options ?</h2>
+      <div id="featuresList"></div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">Suivi</div>
+      <h2>Souhaitez-vous une formule de maintenance ?</h2>
+      <div id="maintenanceList"></div>
+    </div>
+
+    <div class="step">
+      <div class="step-label">Délai</div>
+      <h2>Quel délai de livraison souhaitez-vous ?</h2>
+      <div id="delayList"></div>
+    </div>
+
+  </div>
+
+  <aside class="summary">
+    <h3>Estimation</h3>
+    <div class="total" id="totalPrice">0 €</div>
+    <div class="total-sub" id="totalSub">HT — hors options non sélectionnées</div>
+
+    <div class="bars" id="bars"></div>
+
+    <div class="breakdown" id="breakdown">
+      <div class="breakdown-empty">Sélectionnez un type de projet pour commencer.</div>
+    </div>
+
+    <a class="cta" id="ctaBtn" href="#">Demander un devis précis</a>
+    <div class="fine-print">Estimation non contractuelle générée automatiquement.<br>Un échange permet d'affiner le périmètre exact.</div>
+  </aside>
+</main>
+
+<footer>PHOENIX SOLUTIONS DIGITALES — DÉMONSTRATION TECHNIQUE — ANGOULÊME</footer>
+
+<script>
+/* ============================================================
+   CONFIGURATION — à adapter avec ta grille tarifaire réelle
+   ============================================================ */
+const TYPES = [
+  { id:'vitrine',      title:'Vitrine Essentiel',   sub:'Site one-page, présentation pro',      price:1200 },
+  { id:'vitrine-plus',  title:'Vitrine Premium',      sub:'Plusieurs pages, identité soignée',    price:2200 },
+  { id:'multipages',   title:'Site Multi-pages',     sub:'Structure complète, CMS léger',        price:3500 },
+  { id:'ecommerce',    title:'E-commerce',           sub:'Boutique en ligne, paiement',          price:5000 },
+  { id:'sur-mesure',   title:'Application sur-mesure', sub:'Développement spécifique',           price:7500 },
+];
+
+const PAGES = [
+  { id:'p1', title:'1 à 3 pages',   sub:'Format compact',        price:0 },
+  { id:'p2', title:'4 à 8 pages',   sub:'Structure standard',    price:400 },
+  { id:'p3', title:'9 à 15 pages',  sub:'Site étoffé',           price:900 },
+  { id:'p4', title:'15+ pages',     sub:'Architecture avancée',  price:1600 },
+];
+
+const FEATURES = [
+  { id:'contact',   title:'Formulaire de contact avancé', sub:'Anti-spam, notifications email',        price:150 },
+  { id:'rdv',       title:'Prise de rendez-vous en ligne', sub:'Agenda synchronisé',                    price:400 },
+  { id:'multilingue', title:'Version bilingue FR / EN',    sub:'Sélecteur de langue, contenu dupliqué', price:500 },
+  { id:'cms',       title:'Back-office CMS',               sub:'Autonomie sur les contenus',            price:600 },
+  { id:'paiement',  title:'Intégration paiement en ligne', sub:'Stripe / PayPal',                       price:700 },
+  { id:'seo',       title:'Référencement SEO avancé',      sub:'Audit + optimisation technique',        price:450 },
+  { id:'drone',     title:'Intégration vidéo drone',       sub:'Habillage vitrine avec vues aériennes', price:550 },
+];
+
+const MAINTENANCE = [
+  { id:'aucune',   title:'Aucune — je gère seul',                price:0 },
+  { id:'essentiel', title:'Essentielle — 39 €/mois',              price:39, recurring:true },
+  { id:'premium',  title:'Premium — 89 €/mois',                   price:89, recurring:true },
+];
+
+const DELAYS = [
+  { id:'standard', title:'Standard', sub:'Délai habituel selon planning', price:0 },
+  { id:'express',  title:'Express',  sub:'Livraison accélérée (+15%)',    multiplier:1.15 },
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let state = {
+  type: null,
+  pages: null,
+  features: new Set(),
+  maintenance: 'aucune',
+  delay: 'standard',
+};
+
+function renderOptionGrid(container, items, selectedId, onSelect){
+  container.innerHTML = '';
+  items.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'option' + (selectedId === item.id ? ' selected' : '');
+    div.innerHTML = `
+      <span class="option-title">${item.title}</span>
+      <span class="option-sub">${item.sub}</span>
+      <span class="option-price">${item.price > 0 ? '+' + item.price.toLocaleString('fr-FR') + ' €' : 'Inclus'}</span>
+    `;
+    div.addEventListener('click', () => onSelect(item.id));
+    container.appendChild(div);
+  });
+}
+
+function renderChecklist(container, items, selectedSet, onToggle){
+  container.innerHTML = '';
+  items.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'check-row';
+    const checked = selectedSet.has(item.id);
+    row.innerHTML = `
+      <input type="checkbox" id="chk-${item.id}" ${checked ? 'checked' : ''}>
+      <div style="flex:1">
+        <label for="chk-${item.id}">${item.title}</label>
+        <div class="check-sub">${item.sub}</div>
+      </div>
+      <div class="check-price">+${item.price.toLocaleString('fr-FR')} €</div>
+    `;
+    row.addEventListener('click', (e) => {
+      e.preventDefault();
+      onToggle(item.id);
+    });
+    container.appendChild(row);
+  });
+}
+
+function renderRadioList(container, items, selectedId, onSelect){
+  container.innerHTML = '';
+  items.forEach(item => {
+    const row = document.createElement('label');
+    row.className = 'radio-row';
+    row.innerHTML = `
+      <input type="radio" name="${container.id}" ${selectedId === item.id ? 'checked' : ''}>
+      <span>${item.title}${item.sub ? ' — ' + item.sub : ''}</span>
+    `;
+    row.addEventListener('click', () => onSelect(item.id));
+    container.appendChild(row);
+  });
+}
+
+function calculateTotal(){
+  if(!state.type) return { total:0, breakdown:[], recurring:0 };
+
+  const typeObj = TYPES.find(t => t.id === state.type);
+  let breakdown = [{ label: typeObj.title, value: typeObj.price }];
+  let subtotal = typeObj.price;
+
+  if(state.pages){
+    const pagesObj = PAGES.find(p => p.id === state.pages);
+    if(pagesObj.price > 0){
+      breakdown.push({ label: pagesObj.title, value: pagesObj.price });
+      subtotal += pagesObj.price;
+    }
+  }
+
+  state.features.forEach(fid => {
+    const f = FEATURES.find(x => x.id === fid);
+    breakdown.push({ label: f.title, value: f.price });
+    subtotal += f.price;
+  });
+
+  const delayObj = DELAYS.find(d => d.id === state.delay);
+  if(delayObj.multiplier){
+    const surcharge = Math.round(subtotal * (delayObj.multiplier - 1));
+    breakdown.push({ label: 'Délai express (+15%)', value: surcharge });
+    subtotal += surcharge;
+  }
+
+  const maintObj = MAINTENANCE.find(m => m.id === state.maintenance);
+  const recurring = maintObj.recurring ? maintObj.price : 0;
+
+  return { total: subtotal, breakdown, recurring };
+}
+
+function renderSummary(){
+  const { total, breakdown, recurring } = calculateTotal();
+
+  document.getElementById('totalPrice').textContent = total.toLocaleString('fr-FR') + ' €';
+  document.getElementById('totalSub').textContent = recurring > 0
+    ? `HT, développement — + ${recurring} €/mois de maintenance`
+    : 'HT — estimation de développement';
+
+  const breakdownEl = document.getElementById('breakdown');
+  if(breakdown.length === 0){
+    breakdownEl.innerHTML = '<div class="breakdown-empty">Sélectionnez un type de projet pour commencer.</div>';
+  } else {
+    breakdownEl.innerHTML = breakdown.map(b =>
+      `<div class="breakdown-row"><span>${b.label}</span><span>+${b.value.toLocaleString('fr-FR')} €</span></div>`
+    ).join('');
+  }
+
+  // Bars: visual signature, scales with number of selections made (max 8 bars)
+  const barsEl = document.getElementById('bars');
+  const selectionsCount = (state.type?1:0) + (state.pages?1:0) + state.features.size + (state.maintenance!=='aucune'?1:0) + (state.delay==='express'?1:0);
+  const maxSelections = 3 + FEATURES.length + 2; // type+pages+delay baseline + features + maintenance
+  barsEl.innerHTML = '';
+  for(let i=0;i<8;i++){
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    const fillLevel = Math.min(100, Math.max(6, ((selectionsCount / maxSelections) * 100) - (i*3) + (i%2===0?8:0)));
+    bar.style.height = (i <= Math.floor((selectionsCount/maxSelections)*8)) ? fillLevel + '%' : '6%';
+    barsEl.appendChild(bar);
+  }
+
+  const cta = document.getElementById('ctaBtn');
+  const subject = encodeURIComponent('Demande de devis — ' + (state.type ? TYPES.find(t=>t.id===state.type).title : 'Projet web'));
+  const body = encodeURIComponent(
+    'Bonjour,\n\nJe souhaite un devis précis pour mon projet, estimé à ' + total.toLocaleString('fr-FR') + ' € via le configurateur.\n\nDétail :\n' +
+    breakdown.map(b => '- ' + b.label + ' : +' + b.value + ' €').join('\n') +
+    '\n\nMerci de me recontacter.\n'
+  );
+  cta.href = `mailto:[À CONFIRMER — pas encore défini]?subject=${subject}&body=${body}`;
+}
+
+function update(){
+  renderOptionGrid(document.getElementById('typeOptions'), TYPES, state.type, (id) => { state.type = id; update(); });
+  renderOptionGrid(document.getElementById('pagesOptions'), PAGES, state.pages, (id) => { state.pages = id; update(); });
+  renderChecklist(document.getElementById('featuresList'), FEATURES, state.features, (id) => {
+    state.features.has(id) ? state.features.delete(id) : state.features.add(id);
+    update();
+  });
+  renderRadioList(document.getElementById('maintenanceList'), MAINTENANCE, state.maintenance, (id) => { state.maintenance = id; update(); });
+  renderRadioList(document.getElementById('delayList'), DELAYS, state.delay, (id) => { state.delay = id; update(); });
+  renderSummary();
+}
+
+update();
+</script>
+</body>
+</html>

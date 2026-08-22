@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avant / Après — Refonte de site — Plomberie Meunier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B1E24; --slate:#3A4250; --emerald:#0F766E; --emerald-light:#4FBDAF;
+    --bg:#F4F5F3; --surface:#FFFFFF; --border:#E3E5E1; --radius:8px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:'Inter', sans-serif; line-height:1.6;}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  h1,h2,h3{font-family:'Fraunces', serif; margin:0;}
+  .container{max-width:1080px; margin:0 auto; padding:0 24px;}
+  a{color:inherit;}
+
+  header.page-head{padding:56px 0 20px; text-align:center;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--emerald); display:inline-flex; align-items:center; gap:10px;}
+  .eyebrow::before, .eyebrow::after{content:""; width:22px; height:1px; background:var(--emerald);}
+  .page-head h1{font-size:clamp(28px,4vw,40px); margin:16px 0 12px;}
+  .page-head p{color:#585f52; max-width:56ch; margin:0 auto; font-size:15.5px;}
+  .page-head .hint{margin-top:14px; font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--emerald);}
+
+  /* COMPARISON FRAME */
+  .compare-wrap{max-width:1080px; margin:30px auto 60px; padding:0 24px;}
+  .browser-frame{
+    background:var(--surface); border-radius:var(--radius); overflow:hidden; border:1px solid var(--border);
+    box-shadow:0 20px 50px rgba(20,25,20,0.14);
+  }
+  .browser-bar{
+    display:flex; align-items:center; gap:8px; padding:10px 14px; background:#EDEEEA; border-bottom:1px solid var(--border);
+    position:sticky; top:0; z-index:15;
+  }
+  .dot{width:10px; height:10px; border-radius:50%; background:#D7D9D3;}
+  .browser-url{
+    flex:1; margin-left:8px; background:#fff; border:1px solid var(--border); border-radius:5px; padding:5px 12px;
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:#8a8f83;
+  }
+
+  /* Tall stage: both mockups render at full natural height, stacked sections, page scrolls normally */
+  .compare-stage{ position:relative; display:grid; overflow:hidden; }
+  .layer{ grid-area:1/1; width:100%; min-width:0; }
+  .clip-layer{ clip-path:inset(0 0 0 0); z-index:2; }
+
+  .tag{
+    grid-area:1/1; align-self:start; position:sticky; top:52px; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.08em;
+    padding:5px 12px; border-radius:20px; z-index:12; text-transform:uppercase; font-weight:600; margin:0 16px; width:max-content; height:max-content;
+  }
+  .tag-before{background:#3A2620; color:#F0C9BC; justify-self:start;}
+  .tag-after{background:var(--emerald); color:#EAFBF6; justify-self:end;}
+
+  .divider{
+    grid-area:1/1; position:relative; width:3px; background:#fff; z-index:10; box-shadow:0 0 0 1px rgba(0,0,0,0.08);
+    pointer-events:none; height:100%; justify-self:start;
+  }
+  .handle{
+    grid-area:1/1; align-self:start; position:sticky; top:calc(50vh - 20px); width:40px; height:40px; border-radius:50%; background:#fff; z-index:11;
+    justify-self:start; box-shadow:0 3px 10px rgba(0,0,0,0.3);
+    display:flex; align-items:center; justify-content:center; pointer-events:none;
+  }
+  .handle svg{width:18px; height:18px; color:var(--ink);}
+
+  .compare-range{
+    grid-area:1/1; width:100%; height:100%; margin:0; opacity:0; cursor:ew-resize; z-index:13;
+    -webkit-appearance:none; appearance:none; background:transparent;
+  }
+
+  .compare-caption{text-align:center; font-family:'IBM Plex Mono', monospace; font-size:12px; color:#8a8f83; margin:14px 0 0;}
+
+  /* ============ OLD SITE ============ */
+  .old-site{ width:100%; min-height:100%; display:flex; flex-direction:column; background:#F2F1E4; font-family:"Times New Roman", Times, serif; color:#222; }
+  .old-banner{
+    background:linear-gradient(90deg, #1B3A7A, #3D6BC7); color:#fff; padding:12px 20px;
+    display:flex; align-items:center; justify-content:space-between; box-shadow:0 3px 6px rgba(0,0,0,0.3); flex-wrap:wrap; gap:8px;
+  }
+  .old-logo{font-size:19px; font-weight:bold; text-shadow:1px 1px 2px rgba(0,0,0,0.4);}
+  .old-nav{display:flex; gap:12px; font-size:11.5px;}
+  .old-nav a{color:#FFEB99; text-decoration:underline;}
+  .old-marquee{
+    background:#FFD400; color:#7A2E00; font-size:11px; font-weight:bold; padding:4px 0; overflow:hidden; white-space:nowrap;
+  }
+  .old-marquee span{display:inline-block; padding-left:100%; animation:oldscroll 14s linear infinite;}
+  @keyframes oldscroll{ 0%{transform:translateX(0);} 100%{transform:translateX(-100%);} }
+
+  .old-hero{padding:16px 20px; display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap;}
+  .old-hero-text{flex:1; min-width:200px;}
+  .old-hero-text h2{font-size:18px; color:#1B3A7A; margin:0 0 8px; text-decoration:underline;}
+  .old-hero-text p{font-size:12px; color:#333; margin:0 0 8px;}
+  .old-badge{
+    display:inline-block; background:#FFD400; color:#7A2E00; font-weight:bold; font-size:10.5px; padding:4px 8px;
+    border:2px solid #C22; transform:rotate(-3deg); margin-bottom:8px;
+  }
+  .old-photo-box{
+    width:120px; height:90px; flex-shrink:0; overflow:hidden; position:relative;
+    background:repeating-linear-gradient(45deg,#9aa08a,#9aa08a 6px,#828a72 6px,#828a72 12px);
+    border:3px solid #fff; box-shadow:2px 2px 6px rgba(0,0,0,0.4);
+  }
+  .old-photo-box img{width:100%; height:100%; object-fit:cover; display:block;}
+  .old-links{font-size:11px; color:#1B3A7A;}
+  .old-links a{text-decoration:underline; margin-right:10px;}
+
+  .old-section{padding:14px 20px; border-top:2px dashed #B7B49E;}
+  .old-section h3{font-size:15px; color:#7A2E00; text-decoration:underline; margin-bottom:10px;}
+  .old-services-table{width:100%; border-collapse:collapse; font-size:11.5px;}
+  .old-services-table td{border:1px solid #B7B49E; padding:6px 8px; background:#fff;}
+  .old-services-table td:first-child{width:22px; text-align:center; color:#C22; font-weight:bold;}
+
+  .old-gallery{display:flex; gap:10px; flex-wrap:wrap;}
+  .old-gallery-item{
+    width:70px; height:56px; overflow:hidden; position:relative;
+    border:3px solid #fff; box-shadow:2px 2px 5px rgba(0,0,0,0.4);
+    background:repeating-linear-gradient(60deg,#7a8a6a,#7a8a6a 5px,#68765a 5px,#68765a 10px);
+  }
+  .old-gallery-item img{width:100%; height:100%; object-fit:cover; display:block;}
+  .old-gallery-item:nth-child(2){ transform:rotate(-4deg); background:repeating-linear-gradient(90deg,#8a7a5a,#8a7a5a 5px,#7a6c4e 5px,#7a6c4e 10px); }
+  .old-gallery-item:nth-child(3){ transform:rotate(3deg); background:repeating-linear-gradient(120deg,#5a7a8a,#5a7a8a 5px,#4e6c7a 5px,#4e6c7a 10px); }
+  .old-gallery-item:nth-child(4){ transform:rotate(-2deg); }
+
+  .old-guestbook{background:#fff; border:2px inset #B7B49E; padding:10px; font-size:11.5px;}
+  .old-guestbook-entry{border-bottom:1px dotted #B7B49E; padding:6px 0;}
+  .old-guestbook-entry b{color:#1B3A7A;}
+  .old-guestbook-entry .stars{color:#C22;}
+
+  .old-cta-banner{background:#C22; color:#FFD400; text-align:center; padding:14px; font-size:16px; font-weight:bold; border-top:3px double #7A2E00; border-bottom:3px double #7A2E00;}
+  .old-footer{margin-top:auto; background:#DCDACB; padding:12px 20px; font-size:10px; color:#555; border-top:2px solid #B7B49E;}
+  .old-footer .counter{background:#000; color:#0F0; font-family:"Courier New", monospace; display:inline-block; padding:2px 6px; margin-bottom:6px;}
+
+  /* ============ NEW SITE ============ */
+  .new-site{ width:100%; min-height:100%; display:flex; flex-direction:column; background:#fff; font-family:'Inter', sans-serif; color:var(--ink); }
+  .new-nav{ display:flex; align-items:center; justify-content:space-between; padding:16px 26px; border-bottom:1px solid var(--border); }
+  .new-brand{font-family:'Fraunces', serif; font-weight:600; font-size:16px;}
+  .new-nav-links{display:flex; gap:20px; font-size:12px; color:#6b7060;}
+  .new-cta{background:var(--ink); color:#fff; padding:7px 14px; border-radius:5px; font-size:11.5px; font-weight:600;}
+
+  .new-hero{padding:32px 26px; display:flex; gap:24px; align-items:center; flex-wrap:wrap;}
+  .new-hero-text{flex:1; min-width:220px;}
+  .new-eyebrow{font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--emerald); margin-bottom:10px;}
+  .new-hero-text h2{font-size:23px; line-height:1.2; margin:0 0 10px; max-width:13ch;}
+  .new-hero-text p{font-size:12.5px; color:#5c6154; max-width:34ch; margin:0 0 14px;}
+  .new-btn{display:inline-block; background:var(--emerald); color:#fff; padding:9px 18px; border-radius:5px; font-size:12px; font-weight:600;}
+  .new-photo-box{width:180px; height:130px; flex-shrink:0; border-radius:8px; overflow:hidden; position:relative; background:repeating-linear-gradient(115deg,#0F766E,#0F766E 8px,#0d6b64 8px,#0d6b64 16px);}
+  .new-photo-box img{width:100%; height:100%; object-fit:cover; display:block;}
+
+  .new-section{padding:34px 26px; border-top:1px solid var(--border);}
+  .new-section-head{margin-bottom:18px;}
+  .new-section-head .label{font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--emerald);}
+  .new-section-head h3{font-size:18px; margin-top:6px;}
+
+  .new-services-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .new-service-card{border:1px solid var(--border); border-radius:7px; padding:14px 16px;}
+  .new-service-card .icon{width:22px; height:22px; color:var(--emerald); margin-bottom:8px;}
+  .new-service-card h4{font-size:13px; margin-bottom:5px; font-weight:600;}
+  .new-service-card p{font-size:11.5px; color:#6b7060; margin:0;}
+
+  .new-gallery{display:grid; grid-template-columns:repeat(4,1fr); gap:10px;}
+  .new-gallery-item{aspect-ratio:1; border-radius:7px; overflow:hidden; position:relative; background:repeating-linear-gradient(105deg,#dfe3dc,#dfe3dc 8px,#d2d7c9 8px,#d2d7c9 16px);}
+  .new-gallery-item img{width:100%; height:100%; object-fit:cover; display:block;}
+
+  .new-testimonials{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  .new-testimonial{border:1px solid var(--border); border-radius:7px; padding:16px;}
+  .new-testimonial .stars{color:#D9A441; font-size:12px; margin-bottom:8px;}
+  .new-testimonial p{font-size:12.5px; font-style:italic; color:#3a3f34; margin:0 0 8px;}
+  .new-testimonial .name{font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:#8a8f83;}
+
+  .new-cta-banner{background:var(--ink); color:#fff; padding:30px 26px; text-align:center;}
+  .new-cta-banner h3{color:#fff; font-size:19px; margin-bottom:12px;}
+  .new-cta-banner .new-btn{background:var(--emerald-light); color:var(--ink);}
+
+  .new-footer{margin-top:auto; background:#F7F8F5; padding:22px 26px; font-size:11.5px; color:#6b7060; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  .new-footer .col b{display:block; color:var(--ink); font-size:12px; margin-bottom:6px;}
+
+  /* NOTES */
+  .notes-section{padding:10px 0 70px;}
+  .notes-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:18px;}
+  .note-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px;}
+  .note-icon{width:30px; height:30px; color:var(--emerald); margin-bottom:12px;}
+  .note-card h3{font-size:15.5px; margin-bottom:8px; font-family:'Inter', sans-serif; font-weight:600;}
+  .note-card p{font-size:13px; color:#5c6154; margin:0;}
+
+  footer.page-footer{text-align:center; padding:10px 24px 44px; font-size:11.5px; color:#8a8f83; font-family:'IBM Plex Mono', monospace;}
+</style>
+</head>
+<body>
+
+<header class="page-head container">
+  <div class="eyebrow">Étude de cas — Refonte</div>
+  <h1>Le même site. Deux expériences.</h1>
+  <p>Faites glisser le curseur pour comparer, section par section, l'avant et l'après d'une refonte complète — exemple type d'un site d'artisan resté figé depuis 15 ans.</p>
+  <div class="hint">↕ Faites défiler la page — le curseur reste accessible tout du long</div>
+</header>
+
+<div class="compare-wrap">
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="browser-url">plomberie-meunier-angouleme.fr</span>
+    </div>
+
+    <div class="compare-stage" id="compareStage">
+
+      <!-- AFTER (bottom layer, full) -->
+      <div class="layer">
+        <div class="new-site">
+          <nav class="new-nav">
+            <div class="new-brand">Plomberie Meunier</div>
+            <div class="new-nav-links"><span>Services</span><span>Réalisations</span><span>Avis</span><span>Contact</span></div>
+            <div class="new-cta">Devis gratuit</div>
+          </nav>
+
+          <div class="new-hero">
+            <div class="new-hero-text">
+              <div class="new-eyebrow">Plombier à Angoulême</div>
+              <h2>Une intervention rapide, un travail soigné.</h2>
+              <p>Dépannage, installation et rénovation sanitaire. Intervention sous 24h dans toute la Charente.</p>
+              <span class="new-btn">Demander un devis</span>
+            </div>
+            <div class="new-photo-box"><img src="assets/images/plombier-apres.jpg" alt="Plombier au travail, version moderne" onerror="this.remove();"></div>
+          </div>
+
+          <div class="new-section">
+            <div class="new-section-head"><div class="label">Nos prestations</div><h3>Ce que nous faisons</h3></div>
+            <div class="new-services-grid">
+              <div class="new-service-card">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2 C 8 6, 8 11, 12 20 C 16 11, 16 6, 12 2 Z"/></svg>
+                <h4>Dépannage urgent</h4>
+                <p>Fuite, panne, engorgement — intervention le jour même.</p>
+              </div>
+              <div class="new-service-card">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10 h16"/></svg>
+                <h4>Installation sanitaire</h4>
+                <p>Salle de bain, cuisine, chauffe-eau — pose complète.</p>
+              </div>
+              <div class="new-service-card">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12 h16 M4 6 h16 M4 18 h10"/></svg>
+                <h4>Rénovation</h4>
+                <p>Remise aux normes et modernisation de vos installations.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="new-section">
+            <div class="new-section-head"><div class="label">Réalisations</div><h3>Quelques chantiers récents</h3></div>
+            <div class="new-gallery">
+              <div class="new-gallery-item"><img src="assets/images/realisation1-apres.jpg" alt="Realisation 1 — apres" onerror="this.remove();"></div>
+              <div class="new-gallery-item"><img src="assets/images/realisation2-apres.jpg" alt="Realisation 2 — apres" onerror="this.remove();"></div>
+              <div class="new-gallery-item"><img src="assets/images/realisation3-apres.jpg" alt="Realisation 3 — apres" onerror="this.remove();"></div>
+              <div class="new-gallery-item"><img src="assets/images/realisation4-apres.jpg" alt="Realisation 4 — apres" onerror="this.remove();"></div>
+            </div>
+          </div>
+
+          <div class="new-section">
+            <div class="new-section-head"><div class="label">Avis clients</div><h3>Ce qu'en pensent nos clients</h3></div>
+            <div class="new-testimonials">
+              <div class="new-testimonial">
+                <div class="stars">★★★★★</div>
+                <p>"Intervention le jour même pour une fuite, travail propre et rapide."</p>
+                <div class="name">— Exemple de témoignage, Angoulême</div>
+              </div>
+              <div class="new-testimonial">
+                <div class="stars">★★★★★</div>
+                <p>"Rénovation complète de la salle de bain, très bon conseil sur le matériel."</p>
+                <div class="name">— Exemple de témoignage, Soyaux</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="new-cta-banner">
+            <h3>Une urgence ? Un projet ?</h3>
+            <span class="new-btn">Contactez-nous</span>
+          </div>
+
+          <div class="new-footer">
+            <div class="col"><b>Plomberie Meunier</b>Angoulême, Charente</div>
+            <div class="col"><b>Horaires</b>Lun–Sam, 8h–19h — urgences 7j/7</div>
+            <div class="col"><b>Contact</b>05 XX XX XX XX</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BEFORE (clipped top layer) -->
+      <div class="layer clip-layer" id="clipLayer">
+        <div class="old-site">
+          <div class="old-banner">
+            <div class="old-logo">✦ PLOMBERIE MEUNIER ✦</div>
+            <div class="old-nav"><a>Accueil</a><a>Services</a><a>Photos</a><a>Livre d'or</a><a>Contact</a><a>Liens</a></div>
+          </div>
+          <div class="old-marquee"><span>★ DEVIS GRATUIT SOUS 48H ★ INTERVENTION RAPIDE ★ DEPUIS 1987 ★ MEILLEUR AFFICHAGE EN 800×600 ★</span></div>
+
+          <div class="old-hero">
+            <div class="old-hero-text">
+              <div class="old-badge">★ DEVIS GRATUIT ★</div>
+              <h2>Bienvenue sur notre site !!!</h2>
+              <p>Plombier depuis 1987, nous intervenons sur Angoulême et environs pour tous vos travaux de plomberie, chauffage, et sanitaires. N'hésitez pas à nous contacter !</p>
+              <div class="old-links"><a>Nos services</a><a>Nos réalisations</a><a>Devis en ligne</a><a>Livre d'or</a></div>
+            </div>
+            <div class="old-photo-box"><img src="assets/images/plombier-avant.jpg" alt="Plombier au travail, ancienne photo" onerror="this.remove();"></div>
+          </div>
+
+          <div class="old-section">
+            <h3>&raquo; Nos Services &laquo;</h3>
+            <table class="old-services-table">
+              <tr><td>❖</td><td>Dépannage plomberie toutes marques</td></tr>
+              <tr><td>❖</td><td>Installation sanitaire complète</td></tr>
+              <tr><td>❖</td><td>Chauffage et chaudières</td></tr>
+              <tr><td>❖</td><td>Débouchage canalisations</td></tr>
+              <tr><td>❖</td><td>Devis gratuit sous 48h !</td></tr>
+            </table>
+          </div>
+
+          <div class="old-section">
+            <h3>&raquo; Nos Réalisations (cliquez pour agrandir) &laquo;</h3>
+            <div class="old-gallery">
+              <div class="old-gallery-item"><img src="assets/images/realisation1-avant.jpg" alt="Realisation 1 — avant" onerror="this.remove();"></div>
+              <div class="old-gallery-item"><img src="assets/images/realisation2-avant.jpg" alt="Realisation 2 — avant" onerror="this.remove();"></div>
+              <div class="old-gallery-item"><img src="assets/images/realisation3-avant.jpg" alt="Realisation 3 — avant" onerror="this.remove();"></div>
+              <div class="old-gallery-item"><img src="assets/images/realisation4-avant.jpg" alt="Realisation 4 — avant" onerror="this.remove();"></div>
+            </div>
+          </div>
+
+          <div class="old-section">
+            <h3>&raquo; Livre d'or &laquo;</h3>
+            <div class="old-guestbook">
+              <div class="old-guestbook-entry"><b>Jean-Michel, 14/03/2009 :</b> <span class="stars">*****</span><br>Très content du travail, artisan sérieux !</div>
+              <div class="old-guestbook-entry"><b>Sylvie R., 02/11/2008 :</b> <span class="stars">****</span><br>Rapide et efficace, je recommande.</div>
+              <div class="old-guestbook-entry"><b>Webmaster, 20/06/2007 :</b> Site en construction, revenez bientôt pour plus de photos !</div>
+            </div>
+          </div>
+
+          <div class="old-cta-banner">☎ CONTACTEZ-NOUS DES MAINTENANT ☎</div>
+
+          <div class="old-footer">
+            <div class="counter">VISITEUR N° 004217</div><br>
+            © Plomberie Meunier 1987-2011 — Tous droits réservés<br>
+            Site optimisé pour Internet Explorer 800×600 — Plan du site | Mentions légales | Liens amis
+          </div>
+        </div>
+      </div>
+
+      <div class="divider" id="divider"></div>
+      <div class="handle" id="handle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 8 L4 12 L8 16 M16 8 L20 12 L16 16"/></svg>
+      </div>
+      <span class="tag tag-before">Avant</span>
+      <span class="tag tag-after">Après</span>
+      <input type="range" class="compare-range" id="compareRange" min="0" max="100" value="50" aria-label="Comparer avant et après">
+    </div>
+  </div>
+  <div class="compare-caption">← Faites glisser pour comparer →</div>
+</div>
+
+<section class="notes-section container">
+  <div class="notes-grid">
+    <div class="note-card">
+      <svg class="note-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21 h8 M12 17 v4"/></svg>
+      <h3>Adapté à tous les écrans</h3>
+      <p>L'ancien site était figé en 800×600. Le nouveau s'adapte automatiquement au mobile, à la tablette et au grand écran.</p>
+    </div>
+    <div class="note-card">
+      <svg class="note-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20 L10 8 L14 14 L20 4"/></svg>
+      <h3>Un message clair, un seul objectif</h3>
+      <p>Fini les blocs de texte, le livre d'or et les liens dans tous les sens : une accroche, un appel à l'action, une prise de contact facilitée.</p>
+    </div>
+    <div class="note-card">
+      <svg class="note-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7 v5 l3 3"/></svg>
+      <h3>Un temps de chargement réduit</h3>
+      <p>Un code allégé et optimisé, sans éléments inutiles, pour un site rapide même sur une connexion mobile.</p>
+    </div>
+    <div class="note-card">
+      <svg class="note-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4 h16 v16 h-16 z"/><path d="M4 9 h16"/></svg>
+      <h3>Une image de marque cohérente</h3>
+      <p>Typographie, couleurs et mise en page unifiées, pour une image professionnelle qui inspire confiance dès le premier regard.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="page-footer">DÉMO — PHOENIX SOLUTIONS DIGITALES — comparaison à but illustratif, entreprise fictive</footer>
+
+<script>
+  const range = document.getElementById('compareRange');
+  const clipLayer = document.getElementById('clipLayer');
+  const divider = document.getElementById('divider');
+  const handle = document.getElementById('handle');
+
+  function update(){
+    const val = range.value;
+    clipLayer.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
+    divider.style.left = val + '%';
+    handle.style.left = val + '%';
+  }
+  range.addEventListener('input', update);
+  window.addEventListener('resize', update);
+  update();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phoenix Solutions Digitales — Portfolio Photographie (démo)</title>
+<meta name="description" content="Exemples et mises en situation — pôle Photographie de Phoenix Solutions Digitales.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bordeaux:#8B1A1A;
+    --bordeaux-deep:#6B1313;
+    --gold:#C9A134;
+    --gold-soft:#E3C778;
+    --ivory:#F5F0E8;
+    --ivory-dim:#EAE2D3;
+    --ink:#2A1B14;
+    --ink-soft:#5C4A3E;
+    --line: rgba(139,26,26,.16);
+    --line-strong: rgba(139,26,26,.32);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ivory);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Playfair Display',serif; margin:0; font-weight:700; color:var(--bordeaux);}
+  a{color:inherit;}
+  img{display:block; max-width:100%;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 clamp(1.25rem,4vw,3rem);}
+  :focus-visible{outline:2px solid var(--bordeaux); outline-offset:3px;}
+
+  /* ── Emplacements photo : fichier local (assets/images/) + repli si absent ── */
+  .frame-img, .hero-photo{ position:relative; }
+  .photo-slot{
+    width:100%; height:100%; position:relative; overflow:hidden;
+    background: linear-gradient(160deg, var(--ivory-dim), #DBCDB4);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.9rem;
+    border:1px solid var(--line-strong);
+  }
+  .photo-slot.tint-gold{
+    background: linear-gradient(160deg, #F2E9D2, #E4D3A4);
+  }
+  .photo-slot img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; z-index:1; }
+  .slot-icon{ width:44%; max-width:120px; color:var(--bordeaux); opacity:.85; position:relative; z-index:0; }
+  .slot-label{
+    font-size:.68rem; letter-spacing:.02em; color:var(--ink-soft);
+    text-align:center; padding:0 1.1rem; max-width:90%; line-height:1.4;
+    position:relative; z-index:0;
+  }
+  .slot-label b{display:block; color:var(--bordeaux); font-weight:600; font-size:.72rem; margin-bottom:.15rem;}
+
+  /* ── Ribbon ── */
+  .demo-ribbon{
+    background:var(--bordeaux);
+    color:var(--ivory);
+    font-size:.72rem;
+    font-weight:500;
+    letter-spacing:.02em;
+    text-align:center;
+    padding:.55rem 1rem;
+  }
+
+  /* ── Nav ── */
+  header.nav{
+    background:var(--ivory);
+    border-bottom:1px solid var(--line-strong);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.1rem clamp(1.25rem,4vw,3rem);
+    gap:1.5rem;
+  }
+  .brand{
+    font-family:'Playfair Display',serif; font-size:1.05rem; font-weight:700;
+    letter-spacing:.01em; white-space:nowrap; color:var(--bordeaux);
+  }
+  .brand small{
+    display:block; font-family:'Inter',sans-serif; font-size:.65rem;
+    font-weight:600; letter-spacing:.13em; text-transform:uppercase;
+    color:var(--gold); margin-top:.2rem;
+  }
+  nav.links{display:flex; gap:1.75rem; flex-wrap:wrap;}
+  nav.links a{
+    font-size:.8rem; text-decoration:none; color:var(--ink-soft);
+    letter-spacing:.01em; transition:color .2s; font-weight:500;
+  }
+  nav.links a:hover{color:var(--bordeaux);}
+  @media (max-width:820px){ nav.links{display:none;} }
+
+  /* ── Hero (compact, sans espace mort) ── */
+  .hero{
+    padding:3.25rem 0 3.5rem;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.1fr .9fr; gap:3rem; align-items:center;
+  }
+  @media (max-width:900px){ .hero-grid{grid-template-columns:1fr;} }
+  .eyebrow{
+    font-size:.72rem; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:1rem; display:flex; align-items:center; gap:.6rem;
+    font-weight:700;
+  }
+  .eyebrow::before{content:''; width:26px; height:2px; background:var(--gold); display:inline-block;}
+  h1.hero-title{
+    font-size:clamp(2.1rem, 4.4vw, 3.1rem); line-height:1.08; max-width:15ch;
+    margin-bottom:1.1rem;
+  }
+  .hero-lede{max-width:42ch; color:var(--ink-soft); font-size:1rem; margin-bottom:1.75rem;}
+  .hero-meta{display:flex; gap:2.25rem; flex-wrap:wrap;}
+  .hero-meta div strong{
+    display:block; font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--bordeaux);
+  }
+  .hero-meta div span{font-size:.72rem; color:var(--ink-soft); letter-spacing:.03em;}
+
+  .hero-photos{
+    display:grid; grid-template-columns:1fr 1fr; gap:1rem;
+  }
+  .hero-photo{
+    aspect-ratio:3/4; overflow:hidden; border:1px solid var(--line-strong);
+  }
+  .hero-photo:first-child{ margin-top:2rem; }
+  .hero-photo img{width:100%; height:100%; object-fit:cover;}
+
+  /* ── Section shell ── */
+  section.pole{padding:4.5rem 0; border-bottom:1px solid var(--line);}
+  section.pole:last-of-type{border-bottom:none;}
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:2rem;
+    margin-bottom:2.5rem; flex-wrap:wrap;
+  }
+  .section-num{
+    font-family:'Playfair Display',serif; font-size:.85rem; color:var(--gold);
+    letter-spacing:.05em; margin-bottom:.6rem; display:block; font-weight:700;
+  }
+  .section-head h2{font-size:clamp(1.4rem,2.6vw,1.9rem); max-width:22ch;}
+  .section-desc{max-width:34ch; color:var(--ink-soft); font-size:.9rem;}
+
+  /* ── Filmstrip gallery ── */
+  .strip-track{
+    display:flex; gap:1.25rem; overflow-x:auto; padding:.25rem .1rem 1rem;
+    scroll-snap-type:x proximity;
+    scrollbar-width:thin; scrollbar-color:var(--gold) transparent;
+  }
+  .frame{
+    scroll-snap-align:start; flex:0 0 auto; width:min(72vw,290px);
+    background:#fff; border:1px solid var(--line-strong);
+  }
+  .frame-img{
+    position:relative; aspect-ratio:4/5; overflow:hidden;
+  }
+  .frame-img img{width:100%; height:100%; object-fit:cover;}
+  .frame-tag{
+    position:absolute; top:.6rem; left:.6rem;
+    font-size:.62rem; letter-spacing:.06em; color:var(--ivory);
+    background:rgba(42,27,20,.65);
+    padding:.2rem .45rem;
+  }
+  .frame-body{padding:1rem 1.1rem 1.2rem;}
+  .frame-body h3{font-size:1rem; margin-bottom:.4rem; line-height:1.25; color:var(--ink);}
+  .frame-body p{font-size:.8rem; color:var(--ink-soft); margin:0 0 .8rem;}
+  .price-chip{
+    display:inline-block; font-size:.72rem; color:var(--bordeaux); font-weight:600;
+    border:1px solid var(--line-strong); padding:.25rem .6rem;
+    letter-spacing:.02em; background:var(--ivory);
+  }
+
+  /* ── Grid gallery (immobilier/tourisme) ── */
+  .grid-gallery{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:1.5rem;
+  }
+  @media (max-width:680px){ .grid-gallery{grid-template-columns:1fr;} }
+  .grid-card{position:relative; overflow:hidden; border:1px solid var(--line-strong);}
+  .grid-card .frame-img{aspect-ratio:16/10;}
+  .grid-card .frame-body{
+    position:absolute; left:0; right:0; bottom:0;
+    background:linear-gradient(0deg, rgba(42,27,20,.88), transparent);
+    padding:1.5rem 1.25rem 1rem;
+  }
+  .grid-card .frame-body h3, .grid-card .frame-body p{color:var(--ivory);}
+  .grid-card .frame-body p{margin-bottom:.6rem; color:var(--ivory-dim);}
+
+  /* ── Before / After ── */
+  .ba-wrap{ max-width:760px; margin:0 auto; }
+  .ba-slider{
+    position:relative; aspect-ratio:3/2; overflow:hidden;
+    border:1px solid var(--line-strong); user-select:none; touch-action:pan-y;
+  }
+  .ba-img{ position:absolute; inset:0; width:100%; height:100%; }
+  .ba-slot-before{ filter:grayscale(1) brightness(.82) contrast(.85); border-style:solid; }
+  .ba-slot-after{ border-style:solid; border-color:var(--gold); }
+  .ba-after{ clip-path: inset(0 0 0 50%); }
+  .ba-label{
+    position:absolute; top:.75rem; font-size:.65rem; letter-spacing:.08em; font-weight:600;
+    background:rgba(42,27,20,.72); color:var(--ivory); padding:.25rem .55rem; z-index:3;
+  }
+  .ba-label.before{left:.75rem;}
+  .ba-label.after{right:.75rem;}
+  .ba-handle{
+    position:absolute; top:0; bottom:0; left:50%;
+    width:2px; background:var(--gold); z-index:2; cursor:ew-resize;
+    transform:translateX(-1px);
+  }
+  .ba-handle::after{
+    content:'⟷'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:34px; height:34px; border-radius:50%; background:var(--gold); color:var(--ink);
+    display:flex; align-items:center; justify-content:center; font-size:.9rem;
+  }
+  .ba-range{
+    position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0;
+    cursor:ew-resize; z-index:4;
+  }
+  .ba-caption{
+    display:flex; justify-content:space-between; font-size:.75rem;
+    color:var(--ink-soft); margin-top:.9rem; flex-wrap:wrap; gap:.5rem;
+  }
+
+  /* ── Options list ── */
+  .options-row{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:1px; background:var(--line-strong); border:1px solid var(--line-strong); margin-top:2.5rem;
+  }
+  .option{background:#fff; padding:1.1rem 1.25rem;}
+  .option strong{display:block; font-size:.85rem; margin-bottom:.3rem; color:var(--ink);}
+  .option span{font-size:.75rem; color:var(--bordeaux); font-weight:600;}
+
+  /* ── Footer ── */
+  footer{padding:3.5rem 0 2.5rem; background:var(--ivory-dim);}
+  .footer-inner{ text-align:center; }
+  footer h2{font-size:clamp(1.4rem,3vw,1.9rem); max-width:20ch; margin:0 auto 0.75rem;}
+  footer p.sub{color:var(--ink-soft); font-size:.85rem; max-width:34ch; margin:0 auto 1.5rem;}
+  .cta-btn{
+    display:inline-block; background:var(--bordeaux); color:var(--ivory);
+    text-decoration:none; font-size:.8rem; font-weight:600; letter-spacing:.03em;
+    padding:.85rem 1.8rem;
+  }
+  .cta-btn:hover{background:var(--bordeaux-deep);}
+  .legal{font-size:.7rem; color:var(--ink-soft); margin-top:2.25rem; opacity:.75;}
+
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+</style>
+</head>
+<body>
+<a href="../index.html" style="position:fixed;top:14px;left:14px;z-index:999;background:#1C1008;color:#E8C468;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px;text-decoration:none;box-shadow:0 6px 16px rgba(28,16,8,.25);">← Retour à Phoenix Solutions Digitales</a>
+
+
+<div class="demo-ribbon">Page de démonstration — déposez vos photos dans assets/images/ (voir le guide fourni) pour les faire apparaître automatiquement</div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">Phoenix Solutions Digitales<small>Multimédia Numérique — Photographie</small></div>
+    <nav class="links" aria-label="Sections du portfolio">
+      <a href="#corporate">Corporate</a>
+      <a href="#evenementiel">Événementiel</a>
+      <a href="#immobilier">Immobilier &amp; Tourisme</a>
+      <a href="#postprod">Post-production</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Photographie — Portraits · Reportage · Événementiel · Immobilier</p>
+      <h1 class="hero-title">Chaque prise de vue révèle votre image de marque.</h1>
+      <p class="hero-lede">Du portrait corporate au reportage industriel, de l'événementiel au bien immobilier premium — retouches colorimétriques incluses, livraison en galerie sécurisée.</p>
+      <div class="hero-meta">
+        <div><strong>75 – 95 € HT</strong><span>Taux horaire</span></div>
+        <div><strong>550 – 800 € HT</strong><span>Tarif journalier</span></div>
+        <div><strong>&lt; 48h</strong><span>Livraison express possible</span></div>
+      </div>
+    </div>
+    <div class="hero-photos">
+      <div class="hero-photo">
+        <div class="photo-slot">
+          <img src="assets/images/corporate-portrait.jpg" alt="Portrait corporate" loading="lazy" onerror="this.remove()">
+          <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="50" cy="36" r="16"/>
+            <path d="M20 90c0-19 13.4-32 30-32s30 13 30 32"/>
+            <circle class="accent" cx="72" cy="24" r="3.5" fill="currentColor" stroke="none" style="color:var(--gold)"/>
+          </svg>
+          <span class="slot-label"><b>Photo à ajouter</b>corporate-portrait.jpg</span>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <div class="photo-slot tint-gold">
+          <img src="assets/images/corporate-industrie.jpg" alt="Reportage terrain" loading="lazy" onerror="this.remove()">
+          <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 84V58l14-9v9l14-9v9l14-9v9l14-9v35z"/>
+            <line x1="14" y1="84" x2="70" y2="84"/>
+            <line x1="24" y1="66" x2="24" y2="78"/>
+            <line x1="38" y1="66" x2="38" y2="78"/>
+            <line x1="52" y1="66" x2="52" y2="78"/>
+            <circle cx="82" cy="26" r="8" style="color:var(--gold)"/>
+          </svg>
+          <span class="slot-label"><b>Photo à ajouter</b>corporate-industrie.jpg</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pole" id="corporate">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-num">01 — Photographie d'entreprise &amp; corporate</span>
+        <h2>Portraits corporate et reportage terrain</h2>
+      </div>
+      <p class="section-desc">De la photo de trombinoscope au reportage industriel complet, chaque image sert votre communication interne et externe.</p>
+    </div>
+
+    <div class="strip-track">
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 01A</span>
+          <div class="photo-slot">
+            <img src="assets/images/corporate-portrait.jpg" alt="Portrait corporate" loading="lazy" onerror="this.remove()">
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="50" cy="36" r="16"/>
+              <path d="M20 90c0-19 13.4-32 30-32s30 13 30 32"/>
+            </svg>
+            <span class="slot-label"><b>Photo à ajouter</b>corporate-portrait.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Portrait corporate / headshot</h3>
+          <p>5 à 15 photos HD, retouches incluses.</p>
+          <span class="price-chip">250 – 650 €</span>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 01B</span>
+          <div class="photo-slot tint-gold">
+            <img src="assets/images/corporate-industrie.jpg" alt="Reportage industrie" loading="lazy" onerror="this.remove()">
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 84V58l14-9v9l14-9v9l14-9v9l14-9v35z"/>
+              <line x1="14" y1="84" x2="70" y2="84"/>
+              <line x1="24" y1="66" x2="24" y2="78"/>
+              <line x1="38" y1="66" x2="38" y2="78"/>
+              <line x1="52" y1="66" x2="52" y2="78"/>
+            </svg>
+            <span class="slot-label"><b>Photo à ajouter</b>corporate-industrie.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Reportage entreprise / industrie</h3>
+          <p>20 à 40 photos HD, ambiance terrain.</p>
+          <span class="price-chip">380 – 950 €</span>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 01C</span>
+          <div class="photo-slot">
+            <img src="assets/images/corporate-locaux.jpg" alt="Locaux et architecture" loading="lazy" onerror="this.remove()">
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="22" y="22" width="56" height="62"/>
+              <line x1="22" y1="38" x2="78" y2="38"/>
+              <line x1="22" y1="54" x2="78" y2="54"/>
+              <line x1="22" y1="70" x2="78" y2="70"/>
+              <line x1="42" y1="22" x2="42" y2="84"/>
+              <line x1="60" y1="22" x2="60" y2="84"/>
+            </svg>
+            <span class="slot-label"><b>Photo à ajouter</b>corporate-locaux.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Photos de locaux / architecture</h3>
+          <p>15 à 30 photos HD, mise en valeur des espaces.</p>
+          <span class="price-chip">300 – 800 €</span>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 01D</span>
+          <div class="photo-slot tint-gold">
+            <img src="assets/images/corporate-produits.jpg" alt="Shooting produits" loading="lazy" onerror="this.remove()">
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M42 30h16l4 10v34a4 4 0 0 1-4 4H42a4 4 0 0 1-4-4V40z"/>
+              <path d="M44 30v-8a6 6 0 0 1 12 0v8"/>
+              <rect x="16" y="66" width="18" height="12"/>
+              <line x1="10" y1="86" x2="90" y2="86"/>
+            </svg>
+            <span class="slot-label"><b>Photo à ajouter</b>corporate-produits.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Shooting produits</h3>
+          <p>20 à 50 produits, fond blanc ou ambiance.</p>
+          <span class="price-chip">280 – 750 €</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="pole" id="evenementiel">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-num">02 — Photographie événementielle</span>
+        <h2>Séminaires, soirées, salons professionnels</h2>
+      </div>
+      <p class="section-desc">Une couverture discrète et réactive, pensée pour capter les moments qui comptent sans interrompre l'événement.</p>
+    </div>
+
+    <div class="strip-track">
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 02A</span>
+          <div class="photo-slot">
+            <img src="assets/images/event-seminaire.jpg" alt="Séminaire professionnel" loading="lazy" onerror="this.remove()">
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="18" y="18" width="64" height="38" rx="2"/>
+              <line x1="30" y1="30" x2="70" y2="30"/>
+              <line x1="30" y1="40" x2="58" y2="40"/>
+              <path d="M50 56v14"/>
+              <path d="M32 88c4-12 12-18 18-18s14 6 18 18"/>
+            </svg>
+            <span class="slot-label"><b>Photo à ajouter</b>event-seminaire.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Événement professionnel / séminaire</h3>
+          <p>50 à 100 photos HD.</p>
+          <span class="price-chip">350 – 900 €</span>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 02B</span>
+          <div class="photo-slot tint-gold">
+            <img src="assets/images/event-festif.jpg" alt="Événement festif" loading="lazy" onerror="this.remove()">
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M30 20l6 22a8 8 0 0 0 16 0l6-22z"/>
+              <line x1="44" y1="42" x2="44" y2="70"/>
+              <line x1="34" y1="70" x2="54" y2="70"/>
+              <circle cx="74" cy="30" r="2.5" fill="currentColor" stroke="none"/>
+              <circle cx="82" cy="46" r="2" fill="currentColor" stroke="none"/>
+              <circle cx="70" cy="52" r="1.8" fill="currentColor" stroke="none"/>
+              <circle cx="20" cy="30" r="2" fill="currentColor" stroke="none"/>
+            </svg>
+            <span class="slot-label"><b>Photo à ajouter</b>event-festif.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Événement festif / soirée</h3>
+          <p>40 à 80 photos HD.</p>
+          <span class="price-chip">300 – 800 €</span>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="frame-img">
+          <span class="frame-tag">N° 02C</span>
+          <div class="photo-slot">
+            <img src="assets/images/event-salon.jpg" alt="Salon professionnel" loading="lazy" onerror="this.remove()">
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M24 40l6-16h40l6 16"/>
+              <rect x="20" y="40" width="60" height="42"/>
+              <line x1="20" y1="56" x2="80" y2="56"/>
+              <rect x="42" y="62" width="16" height="20"/>
+            </svg>
+            <span class="slot-label"><b>Photo à ajouter</b>event-salon.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Salon / expo / conférence</h3>
+          <p>50 à 100 photos HD.</p>
+          <span class="price-chip">350 – 850 €</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="pole" id="immobilier">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-num">03 — Immobilier &amp; tourisme</span>
+        <h2>Biens, hébergements et territoires mis en valeur</h2>
+      </div>
+      <p class="section-desc">Des intérieurs lumineux aux paysages de Charente, une image nette et engageante pour donner envie de visiter.</p>
+    </div>
+
+    <div class="grid-gallery">
+
+      <article class="grid-card">
+        <div class="frame-img">
+          <div class="photo-slot">
+            <img src="assets/images/immo-standard.jpg" alt="Bien résidentiel" loading="lazy" onerror="this.remove()">
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 50L50 24l30 26"/>
+              <rect x="28" y="50" width="44" height="30"/>
+              <rect x="44" y="60" width="12" height="20"/>
+            </svg>
+            <span class="slot-label"><b>Photo à ajouter</b>immo-standard.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Bien immobilier standard (&lt; 100 m²)</h3>
+          <p>10 à 20 photos HD — prestation courte.</p>
+          <span class="price-chip">150 – 250 €</span>
+        </div>
+      </article>
+
+      <article class="grid-card">
+        <div class="frame-img">
+          <div class="photo-slot tint-gold">
+            <img src="assets/images/immo-premium.jpg" alt="Bien premium" loading="lazy" onerror="this.remove()">
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 56L40 30l14 12 14-12 20 26"/>
+              <rect x="20" y="56" width="60" height="26"/>
+              <line x1="20" y1="82" x2="80" y2="82"/>
+              <path d="M8 82c4-6 10-6 14 0"/>
+              <line x1="38" y1="64" x2="38" y2="74"/>
+              <line x1="62" y1="64" x2="62" y2="74"/>
+            </svg>
+            <span class="slot-label"><b>Photo à ajouter</b>immo-premium.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Bien immobilier premium (&gt; 100 m²)</h3>
+          <p>20 à 35 photos HD.</p>
+          <span class="price-chip">250 – 650 €</span>
+        </div>
+      </article>
+
+      <article class="grid-card">
+        <div class="frame-img">
+          <div class="photo-slot">
+            <img src="assets/images/immo-hotel.jpg" alt="Hôtel ou gîte" loading="lazy" onerror="this.remove()">
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="24" y="30" width="46" height="30" rx="2"/>
+              <path d="M24 42h46"/>
+              <path d="M30 42v-6a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v6"/>
+              <circle cx="66" cy="24" r="6"/>
+              <path d="M63 24h6"/>
+              <line x1="16" y1="60" x2="80" y2="60"/>
+            </svg>
+            <span class="slot-label"><b>Photo à ajouter</b>immo-hotel.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Hôtel / gîte / restaurant</h3>
+          <p>20 à 40 photos HD.</p>
+          <span class="price-chip">300 – 800 €</span>
+        </div>
+      </article>
+
+      <article class="grid-card">
+        <div class="frame-img">
+          <div class="photo-slot tint-gold">
+            <img src="assets/images/immo-territoire.jpg" alt="Reportage territoire" loading="lazy" onerror="this.remove()">
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="76" cy="24" r="8"/>
+              <path d="M10 78c10-16 20-8 28-18s18-10 26-2 16 6 26 10"/>
+              <path d="M10 88c10-14 20-6 28-16s18-10 26-2 16 6 26 10"/>
+            </svg>
+            <span class="slot-label"><b>Photo à ajouter</b>immo-territoire.jpg</span>
+          </div>
+        </div>
+        <div class="frame-body">
+          <h3>Reportage touristique / territoire</h3>
+          <p>30 à 60 photos HD.</p>
+          <span class="price-chip">380 – 950 €</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="pole" id="postprod">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-num">04 — Post-production &amp; options</span>
+        <h2>La retouche fait la différence</h2>
+      </div>
+      <p class="section-desc">Correction colorimétrique incluse sur toutes les prestations ; détourage et composite avancés sur devis.</p>
+    </div>
+
+    <div class="ba-wrap">
+      <div class="ba-slider" id="baSlider">
+        <span class="ba-label before">AVANT</span>
+        <span class="ba-label after">APRÈS RETOUCHE</span>
+        <div class="ba-before ba-img">
+          <div class="photo-slot ba-slot-before">
+            <img src="assets/images/retouche-avant.jpg" alt="Photo avant retouche" loading="lazy" onerror="this.remove()">
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="18" y="24" width="64" height="48" rx="2"/>
+              <circle cx="34" cy="40" r="6"/>
+              <path d="M18 64l16-14 14 10 14-16 20 20"/>
+            </svg>
+            <span class="slot-label"><b>Photo à ajouter</b>retouche-avant.jpg</span>
+          </div>
+        </div>
+        <div class="ba-after ba-img" id="baAfter">
+          <div class="photo-slot ba-slot-after">
+            <img src="assets/images/retouche-apres.jpg" alt="Photo après retouche" loading="lazy" onerror="this.remove()">
+            <svg class="slot-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="18" y="24" width="64" height="48" rx="2"/>
+              <circle cx="34" cy="40" r="6"/>
+              <path d="M18 64l16-14 14 10 14-16 20 20"/>
+              <path d="M78 18l3 3M84 24l3 0M78 30l3-3" stroke="var(--gold)"/>
+            </svg>
+            <span class="slot-label"><b>Photo à ajouter</b>retouche-apres.jpg</span>
+          </div>
+        </div>
+        <div class="ba-handle" id="baHandle"></div>
+        <input type="range" class="ba-range" id="baRange" min="0" max="100" value="50" aria-label="Comparer avant / après retouche">
+      </div>
+      <div class="ba-caption">
+        <span>Glissez pour comparer</span>
+        <span>Retouche standard incluse · retouche avancée sur devis (50 – 80 €/photo)</span>
+      </div>
+    </div>
+
+    <div class="options-row">
+      <div class="option"><strong>Retouche standard</strong><span>Incluse</span></div>
+      <div class="option"><strong>Retouche avancée (détourage, composite)</strong><span>50 – 80 €/photo</span></div>
+      <div class="option"><strong>Livraison rapide (&lt; 48h)</strong><span>+ 20 %</span></div>
+      <div class="option"><strong>Déplacement &gt; 30 km</strong><span>0,35 €/km</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <h2>Envie d'un shooting sur-mesure ?</h2>
+    <p class="sub">Chaque projet fait l'objet d'un devis personnalisé, gratuit et sans engagement.</p>
+    <a class="cta-btn" href="mailto:[À CONFIRMER — pas encore défini]">Demander un devis</a>
+    <p class="legal">Phoenix Solutions Digitales — Angoulême &amp; Charente (16) · Tarifs HT indicatifs, article 293 B du CGI.</p>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var range = document.getElementById('baRange');
+    var after = document.getElementById('baAfter');
+    var handle = document.getElementById('baHandle');
+    function update(v){
+      after.style.clipPath = 'inset(0 0 0 ' + v + '%)';
+      handle.style.left = v + '%';
+    }
+    range.addEventListener('input', function(){ update(this.value); });
+    update(50);
+  })();
+</script>
+
+</body>
+</html>

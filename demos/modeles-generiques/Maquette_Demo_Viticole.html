@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maquette — Démo secteur viticole (Domaine de Belleroche)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#2F4030;
+    --green-dark:#212E22;
+    --gold:#B8813C;
+    --gold-light:#D2A968;
+    --cream:#F7F3EA;
+    --card:#FFFFFF;
+    --dark:#2A2018;
+    --grey:#756B5C;
+    --line:#E4DCC7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Lora',serif;color:var(--dark);background:var(--cream);line-height:1.7;}
+  h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--green-dark);}
+  a{text-decoration:none;color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 32px;}
+  .imgbox{position:relative;overflow:hidden;background:linear-gradient(135deg,#4A5C42,#2A3524);}
+  .imgbox img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .imgbox .ph-fallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#C9D0BE;font-size:12.5px;letter-spacing:0.6px;text-transform:uppercase;font-family:'Lora',serif;padding:20px;gap:8px;}
+  .imgbox .ph-fallback small{text-transform:none;letter-spacing:0;font-size:11px;color:#9BA593;font-family:monospace;background:rgba(0,0,0,0.25);padding:3px 8px;border-radius:3px;}
+  .rule{width:70px;height:1px;background:var(--gold);margin:18px auto;}
+
+  /* TOP BAR */
+  .topbar{background:var(--green-dark);color:#CFCABD;font-size:12px;padding:8px 0;letter-spacing:0.3px;}
+  .topbar .wrap{display:flex;justify-content:space-between;}
+  .topbar .phone{color:var(--gold-light);font-weight:500;}
+
+  /* HEADER */
+  header{background:var(--cream);padding:26px 0;border-bottom:1px solid var(--line);}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:24px;letter-spacing:1px;color:var(--green-dark);text-transform:uppercase;}
+  nav{display:flex;align-items:center;gap:30px;font-size:13.5px;font-weight:500;letter-spacing:0.2px;}
+  nav a{color:var(--dark);}
+  .btn-visite{border:1px solid var(--green-dark);color:var(--green-dark)!important;padding:10px 22px;font-size:12.5px;letter-spacing:0.5px;text-transform:uppercase;}
+
+  /* HERO */
+  .hero{position:relative;}
+  .hero .imgbox{height:560px;}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(33,46,34,0.82) 0%,rgba(33,46,34,0.25) 60%,rgba(33,46,34,0.05) 100%);display:flex;align-items:flex-end;padding-bottom:64px;}
+  .hero-content{max-width:640px;margin:0 auto;text-align:center;color:#fff;padding:0 32px;}
+  .hero-badge{display:inline-block;border:1px solid var(--gold-light);color:var(--gold-light);font-size:11.5px;letter-spacing:1px;text-transform:uppercase;padding:7px 18px;margin-bottom:22px;}
+  .hero h1{color:#fff;font-size:38px;line-height:1.3;margin-bottom:18px;font-weight:600;}
+  .hero p{color:#DCD9CE;font-size:16px;margin-bottom:30px;}
+  .hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+  .btn-primary{background:var(--gold);color:#fff;padding:13px 30px;font-size:13px;letter-spacing:0.5px;text-transform:uppercase;}
+  .btn-outline-w{border:1px solid #fff;color:#fff;padding:12px 28px;font-size:13px;letter-spacing:0.5px;text-transform:uppercase;}
+
+  /* HISTOIRE */
+  .histoire{padding:84px 0;text-align:center;}
+  .section-eyebrow{color:var(--gold);font-size:12.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+  .histoire h2{font-size:30px;margin-bottom:20px;}
+  .histoire p{max-width:640px;margin:0 auto;color:var(--grey);font-size:15.5px;}
+  .stats{display:flex;max-width:760px;margin:56px auto 0;}
+  .stat{flex:1;text-align:center;}
+  .stat .num{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;color:var(--green);}
+  .stat .lbl{font-size:11.5px;color:var(--grey);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px;}
+
+  /* SAVOIR-FAIRE */
+  .savoir-faire{padding:84px 0;background:var(--green-dark);color:#EFE9DA;}
+  .savoir-faire .section-eyebrow{color:var(--gold-light);}
+  .savoir-faire h2{color:#fff;text-align:center;font-size:30px;margin-bottom:50px;}
+  .sf-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:rgba(255,255,255,0.08);}
+  .sf-card{background:var(--green-dark);padding:34px 24px;}
+  .sf-card h3{color:#fff;font-size:18px;margin-bottom:10px;font-weight:600;}
+  .sf-card p{font-size:13.5px;color:#C9C4B4;}
+  .sf-card.highlight{background:var(--gold);}
+  .sf-card.highlight h3, .sf-card.highlight p{color:var(--green-dark);}
+
+  /* CUVEES */
+  .cuvees{padding:84px 0;text-align:center;}
+  .cuvees h2{font-size:30px;margin-bottom:50px;}
+  .cuvee-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .cuvee-card{background:var(--card);border:1px solid var(--line);padding-bottom:22px;}
+  .cuvee-card .imgbox{height:220px;}
+  .cuvee-card .cuvee-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;margin-top:18px;color:var(--green-dark);}
+
+  /* VISITES */
+  .visites{padding:84px 0;}
+  .visites-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch;max-width:1016px;margin:0 auto;}
+  .visites-grid .imgbox{height:100%;min-height:340px;}
+  .visites-text{background:var(--card);padding:50px 46px;display:flex;flex-direction:column;justify-content:center;}
+  .visites-text h2{font-size:28px;margin-bottom:16px;}
+  .visites-text p{color:var(--grey);font-size:15px;margin-bottom:26px;}
+
+  /* CTA BAND */
+  .cta-band{background:var(--green);color:#fff;padding:70px 0;text-align:center;}
+  .cta-band h2{color:#fff;font-size:28px;margin-bottom:14px;}
+  .cta-band p{color:#D9E0D3;margin-bottom:30px;font-size:15px;}
+
+  footer{background:var(--green-dark);color:#B7B2A2;padding:36px 0;text-align:center;font-size:12px;}
+  footer .legal{margin-top:10px;font-style:italic;color:#8F8A7B;}
+  footer .credit{margin-top:6px;color:#6E6A5D;}
+  footer .credit a{color:var(--gold-light);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span>Vente directe & visites sur rendez-vous — Segonzac, Charente</span>
+    <a href="tel:0500000000" class="phone">05 00 00 00 00</a>
+  </div>
+</div>
+
+<header>
+  <div class="wrap">
+    <div class="logo">Domaine de Belleroche</div>
+    <nav>
+      <a href="#">Accueil</a>
+      <a href="#">Le Domaine</a>
+      <a href="#">Nos Cuvées</a>
+      <a href="#">Visites</a>
+      <a href="#" class="btn-visite">Réserver une visite</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="imgbox" style="height:560px;">
+    <div class="ph-fallback">Photo drone — vignoble au coucher du soleil<small>images/viti-01-hero-vignoble.jpg</small></div>
+    <img src="images/viti-01-hero-vignoble.jpg" alt="Vignoble au coucher du soleil vu par drone" onerror="this.remove()">
+  </div>
+  <div class="hero-overlay">
+    <div class="hero-content">
+      <span class="hero-badge">Vignoble familial depuis 1932</span>
+      <h1>Un terroir, une famille,<br>un savoir-faire transmis depuis quatre générations</h1>
+      <p>Au cœur des Charentes, entre passion du terroir et exigence artisanale.</p>
+      <div class="hero-ctas">
+        <a href="#" class="btn-primary">Découvrir nos cuvées</a>
+        <a href="#" class="btn-outline-w">Réserver une visite</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="histoire">
+  <div class="wrap">
+    <div class="section-eyebrow">Notre histoire</div>
+    <h2>Quatre générations au service du terroir</h2>
+    <div class="rule"></div>
+    <p>Depuis 1932, la famille cultive ses vignes sur les coteaux de Segonzac, au cœur de la Grande Champagne. Un savoir-faire transmis de génération en génération, entre respect de la tradition et attention portée à chaque étape, de la vigne jusqu'au verre.</p>
+    <div class="stats">
+      <div class="stat"><div class="num">XX ha</div><div class="lbl">Vignoble en exploitation</div></div>
+      <div class="stat"><div class="num">4</div><div class="lbl">Générations de vignerons</div></div>
+      <div class="stat"><div class="num">XX ans</div><div class="lbl">Élevage moyen en fût</div></div>
+      <div class="stat"><div class="num">100%</div><div class="lbl">Récolté à la propriété</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="savoir-faire">
+  <div class="wrap">
+    <div class="section-eyebrow" style="text-align:center;">Notre savoir-faire</div>
+    <h2>De la vigne au verre, chaque étape compte</h2>
+    <div class="sf-grid">
+      <div class="sf-card">
+        <h3>Viticulture raisonnée</h3>
+        <p>Une conduite du vignoble respectueuse de l'environnement.</p>
+      </div>
+      <div class="sf-card">
+        <h3>Distillation traditionnelle</h3>
+        <p>Une distillation à l'ancienne, au rythme des alambics.</p>
+      </div>
+      <div class="sf-card">
+        <h3>Vieillissement en fût</h3>
+        <p>Un élevage patient en chai de chêne français.</p>
+      </div>
+      <div class="sf-card highlight">
+        <h3>Le domaine vu du ciel</h3>
+        <p>Prises de vues aériennes du vignoble, avec Phoenix Solutions Digitales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cuvees">
+  <div class="wrap">
+    <div class="section-eyebrow">Notre gamme</div>
+    <h2>Des cuvées à l'image de notre terroir</h2>
+    <div class="cuvee-grid">
+      <div class="cuvee-card">
+        <div class="imgbox"><div class="ph-fallback">Photo bouteille<small>images/viti-02-cuvee-vs.jpg</small></div><img src="images/viti-02-cuvee-vs.jpg" alt="Bouteille cuvée VS" onerror="this.remove()"></div>
+        <div class="cuvee-name">VS</div>
+      </div>
+      <div class="cuvee-card">
+        <div class="imgbox"><div class="ph-fallback">Photo bouteille<small>images/viti-03-cuvee-vsop.jpg</small></div><img src="images/viti-03-cuvee-vsop.jpg" alt="Bouteille cuvée VSOP" onerror="this.remove()"></div>
+        <div class="cuvee-name">VSOP</div>
+      </div>
+      <div class="cuvee-card">
+        <div class="imgbox"><div class="ph-fallback">Photo bouteille<small>images/viti-04-cuvee-xo.jpg</small></div><img src="images/viti-04-cuvee-xo.jpg" alt="Bouteille cuvée XO" onerror="this.remove()"></div>
+        <div class="cuvee-name">XO</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="visites">
+  <div class="visites-grid">
+    <div class="imgbox"><div class="ph-fallback">Photo chai / dégustation<small>images/viti-05-chai-degustation.jpg</small></div><img src="images/viti-05-chai-degustation.jpg" alt="Chai et dégustation" onerror="this.remove()"></div>
+    <div class="visites-text">
+      <div class="section-eyebrow">Nous rendre visite</div>
+      <h2>Venez découvrir le domaine</h2>
+      <p>Visite du vignoble, du chai et dégustation commentée, sur réservation. Une expérience à vivre en famille ou entre amis, au cœur du vignoble charentais.</p>
+      <a href="#" class="btn-primary" style="align-self:flex-start;">Réserver une visite</a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <h2>Une question, une commande, une visite à organiser ?</h2>
+    <p>Vente directe au domaine et expédition en France et à l'international.</p>
+    <a href="#" class="btn-primary" style="background:var(--gold);">Nous contacter</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>Domaine de Belleroche — Segonzac, Charente</div>
+    <div class="legal">L'abus d'alcool est dangereux pour la santé, à consommer avec modération.</div>
+    <div class="credit">Maquette de démonstration — non fonctionnelle — Site vitrine conçu par <a href="#">Phoenix Solutions Digitales</a></div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forum Convergence — Entreprises &amp; Numérique en Charente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ivory:#FBF8F3; --ivory-deep:#F1EADC; --taupe:#B9A27C; --taupe-dark:#8C7752;
+    --navy:#2B3542; --sage:#8A9884; --ink:#2B2822; --muted:#847E6E; --radius:6px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--ivory); color:var(--ink); font-family:'Jost', sans-serif; font-weight:300; line-height:1.7;}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  .container{max-width:900px; margin:0 auto; padding:0 26px;}
+  a{color:inherit;} button{font-family:inherit;}
+  .script{font-family:'Alex Brush', cursive;}
+  .serif{font-family:'EB Garamond', serif;}
+
+  /* HERO */
+  .hero{
+    min-height:92vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    background:linear-gradient(175deg, var(--ivory), var(--ivory-deep));
+    padding:60px 24px; position:relative;
+  }
+  .hero::before{
+    content:""; position:absolute; top:38px; left:50%; transform:translateX(-50%); width:60px; height:1px; background:var(--taupe);
+  }
+  .hero-eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:var(--taupe-dark); margin-bottom:26px;}
+  .hero-names{font-family:'Alex Brush', cursive; font-size:clamp(52px,10vw,110px); color:var(--navy); line-height:1;}
+  .hero-amp{font-family:'EB Garamond', serif; font-style:italic; font-size:clamp(26px,4vw,40px); color:var(--taupe-dark); margin:6px 0;}
+  .hero-date{font-family:'IBM Plex Mono', monospace; font-size:14px; letter-spacing:0.12em; color:var(--navy); margin-top:18px;}
+  .hero-venue{font-family:'EB Garamond', serif; font-style:italic; font-size:17px; color:var(--muted); margin-top:8px;}
+  .scroll-cue{position:absolute; bottom:30px; font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:0.14em; color:var(--taupe-dark);}
+
+  /* COUNTDOWN */
+  .countdown-section{background:var(--navy); color:var(--ivory); padding:44px 0;}
+  .countdown-section .eyebrow{text-align:center; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--taupe);}
+  .countdown{display:flex; justify-content:center; gap:16px; margin-top:22px; flex-wrap:wrap;}
+  .cd-box{text-align:center; min-width:68px;}
+  .cd-num{font-family:'EB Garamond', serif; font-size:34px; font-weight:500;}
+  .cd-label{font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:#B8C0C9; margin-top:4px;}
+
+  /* SECTION shell */
+  .section{padding:74px 0;}
+  .section-head{text-align:center; margin-bottom:44px;}
+  .section-eyebrow{font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--taupe-dark);}
+  .section-head h2{font-family:'EB Garamond', serif; font-style:italic; font-weight:500; font-size:clamp(26px,3.4vw,34px); margin-top:12px; color:var(--navy);}
+
+  /* NOTRE HISTOIRE */
+  .story-row{display:grid; grid-template-columns:repeat(3,1fr); gap:30px;}
+  @media(max-width:700px){ .story-row{grid-template-columns:1fr;} }
+  .story-item{text-align:center;}
+  .story-year{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--taupe-dark); margin-bottom:10px;}
+  .story-item h3{font-family:'EB Garamond', serif; font-style:italic; font-size:19px; color:var(--navy); margin-bottom:8px; font-weight:500;}
+  .story-item p{font-size:13.5px; color:var(--muted); margin:0;}
+
+  /* PROGRAMME */
+  .programme-section{background:var(--ivory-deep);}
+  .prog-list{max-width:520px; margin:0 auto; display:flex; flex-direction:column;}
+  .prog-item{display:flex; gap:20px; padding:18px 0; border-bottom:1px solid #E2D9C4;}
+  .prog-item:last-child{border-bottom:none;}
+  .prog-time{font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--taupe-dark); width:56px; flex-shrink:0; padding-top:2px;}
+  .prog-item h3{font-family:'EB Garamond', serif; font-style:italic; font-size:17px; color:var(--navy); font-weight:500; margin-bottom:4px;}
+  .prog-item p{font-size:13px; color:var(--muted); margin:0;}
+
+  /* LIEU */
+  .venue-grid{display:grid; grid-template-columns:1fr 1fr; gap:34px; align-items:center;}
+  @media(max-width:760px){ .venue-grid{grid-template-columns:1fr;} }
+  .venue-visual{aspect-ratio:4/3; border-radius:var(--radius); overflow:hidden; background:repeating-linear-gradient(115deg,#DED2B4,#DED2B4 10px,#D2C4A0 10px,#D2C4A0 20px);}
+  .venue-visual img{width:100%; height:100%; object-fit:cover; display:block;}
+  .venue-info h3{font-family:'EB Garamond', serif; font-style:italic; font-size:24px; color:var(--navy); margin-bottom:12px; font-weight:500;}
+  .venue-info p{font-size:14px; color:var(--muted); margin-bottom:18px;}
+  .venue-address{font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--navy); background:#fff; border:1px solid #E2D9C4; padding:12px 14px; border-radius:5px;}
+
+  /* GALLERY */
+  .gallery-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+  @media(max-width:700px){ .gallery-grid{grid-template-columns:repeat(2,1fr);} }
+  .gallery-item{aspect-ratio:1; border-radius:5px; overflow:hidden;}
+  .gallery-item img{width:100%; height:100%; object-fit:cover; display:block;}
+  .gallery-item:nth-child(odd){background:repeating-linear-gradient(105deg,#E2D9C4,#E2D9C4 8px,#D6C9A8 8px,#D6C9A8 16px);}
+  .gallery-item:nth-child(even){background:repeating-linear-gradient(70deg,#C9B896,#C9B896 8px,#BBA87F 8px,#BBA87F 16px);}
+
+  /* RSVP */
+  .rsvp-section{background:var(--navy); color:var(--ivory);}
+  .rsvp-section .section-eyebrow{color:var(--taupe);}
+  .rsvp-section .section-head h2{color:var(--ivory);}
+  .rsvp-card{max-width:520px; margin:0 auto; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); border-radius:var(--radius); padding:32px;}
+  .field{margin-bottom:16px;}
+  .field label{font-size:11.5px; letter-spacing:0.06em; text-transform:uppercase; display:block; margin-bottom:7px; color:#C9CFD6;}
+  .field input, .field select, .field textarea{
+    width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.2); border-radius:5px; padding:11px 12px;
+    font-size:14px; font-family:'Jost', sans-serif; font-weight:300; color:var(--ivory);
+  }
+  .field select option{color:#111;}
+  .field input:focus, .field select:focus, .field textarea:focus{outline:1px solid var(--taupe); outline-offset:1px;}
+  .attend-toggle{display:flex; gap:10px;}
+  .attend-btn{
+    flex:1; padding:12px; border-radius:5px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.06);
+    color:var(--ivory); cursor:pointer; font-size:13.5px; transition:all .15s ease;
+  }
+  .attend-btn.selected{background:var(--taupe); border-color:var(--taupe); color:var(--navy); font-weight:600;}
+  .rsvp-submit{
+    width:100%; background:var(--taupe); color:var(--navy); border:none; border-radius:5px; padding:14px; font-weight:600;
+    font-size:14px; cursor:pointer; margin-top:6px; transition:background .15s ease;
+  }
+  .rsvp-submit:hover{background:#CBB68C;}
+  .rsvp-confirm{text-align:center;}
+  .rsvp-confirm .icon{width:50px; height:50px; border-radius:50%; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; margin:0 auto 16px; color:var(--taupe);}
+  .rsvp-confirm h3{font-family:'EB Garamond', serif; font-style:italic; font-size:20px; margin-bottom:8px; font-weight:500;}
+  .rsvp-confirm p{font-size:13.5px; color:#C9CFD6;}
+
+  /* GIFT LIST */
+  .gift-box{max-width:480px; margin:0 auto; text-align:center; background:#fff; border:1px solid #E2D9C4; border-radius:var(--radius); padding:30px;}
+  .gift-box p{font-size:14px; color:var(--muted); margin-bottom:18px;}
+  .gift-btn{
+    display:inline-block; border:1px solid var(--navy); color:var(--navy); padding:12px 26px; border-radius:5px;
+    font-size:13px; letter-spacing:0.04em; text-decoration:none; transition:all .2s ease;
+  }
+  .gift-btn:hover{background:var(--navy); color:var(--ivory);}
+
+  footer{text-align:center; padding:36px 24px 48px; font-size:12px; color:var(--muted);}
+  footer .hashtag{font-family:'EB Garamond', serif; font-style:italic; font-size:16px; color:var(--taupe-dark); margin-bottom:10px;}
+  footer .demo-tag{font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:#B0A98F; display:block; margin-top:10px;}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-eyebrow">Événement professionnel — Charente</div>
+  <div class="hero-names" style="font-family:'EB Garamond',serif; font-style:italic; font-weight:500; font-size:clamp(40px,7vw,76px);">Forum Convergence</div>
+  <div class="hero-amp" style="font-style:normal; text-transform:uppercase; letter-spacing:0.08em; font-size:clamp(16px,2.2vw,22px);">Entreprises &amp; Numérique</div>
+  <div class="hero-date">14 OCTOBRE 2026</div>
+  <div class="hero-venue">Espace Carat — Angoulême</div>
+  <div class="scroll-cue">DÉFILER ↓</div>
+</section>
+
+<section class="countdown-section">
+  <div class="container">
+    <div class="eyebrow">Compte à rebours</div>
+    <div class="countdown" id="countdown"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Ce qui vous attend</div>
+      <h2>Pourquoi participer</h2>
+    </div>
+    <div class="story-row">
+      <div class="story-item"><div class="story-year">01</div><h3>Conférences inspirantes</h3><p>Des intervenants locaux et nationaux sur les mutations numériques du territoire.</p></div>
+      <div class="story-item"><div class="story-year">02</div><h3>Networking ciblé</h3><p>Rencontrez des entreprises et partenaires de toute la Charente autour d'un moment convivial.</p></div>
+      <div class="story-item"><div class="story-year">03</div><h3>Ateliers pratiques</h3><p>Des sessions concrètes animées par des experts, pour repartir avec des outils applicables.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section programme-section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Déroulé de la journée</div>
+      <h2>Le programme</h2>
+    </div>
+    <div class="prog-list">
+      <div class="prog-item"><div class="prog-time">09:00</div><div><h3>Accueil café</h3><p>Retrait des badges et networking d'ouverture.</p></div></div>
+      <div class="prog-item"><div class="prog-time">10:00</div><div><h3>Conférence d'ouverture</h3><p>Les mutations numériques du tissu économique charentais.</p></div></div>
+      <div class="prog-item"><div class="prog-time">14:00</div><div><h3>Ateliers thématiques</h3><p>Sessions au choix : marketing digital, cybersécurité, IA appliquée aux TPE/PME.</p></div></div>
+      <div class="prog-item"><div class="prog-time">17:00</div><div><h3>Networking &amp; cocktail</h3><p>Échanges informels entre participants, partenaires et exposants.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Où nous retrouver</div>
+      <h2>Le lieu</h2>
+    </div>
+    <div class="venue-grid">
+      <div class="venue-visual"><img src="assets/images/lieu.jpg" alt="Espace Carat, lieu du forum" loading="lazy"></div>
+      <div class="venue-info">
+        <h3>Espace Carat</h3>
+        <p>Centre de congrès moderne au cœur d'Angoulême, facilement accessible en train comme en voiture.</p>
+        <div class="venue-address">Rue de Bordeaux, 16000 Angoulême<br>Parking sur place — accès handicapé</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--ivory-deep);">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Retour en images</div>
+      <h2>Édition précédente</h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="assets/images/galerie-1.jpg" alt="Photo de l'édition précédente du forum" loading="lazy"></div><div class="gallery-item"><img src="assets/images/galerie-2.jpg" alt="Photo de l'édition précédente du forum" loading="lazy"></div>
+      <div class="gallery-item"><img src="assets/images/galerie-3.jpg" alt="Photo de l'édition précédente du forum" loading="lazy"></div><div class="gallery-item"><img src="assets/images/galerie-4.jpg" alt="Photo de l'édition précédente du forum" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section rsvp-section" id="rsvp">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Avant le 1er octobre</div>
+      <h2>Confirmez votre inscription</h2>
+    </div>
+    <div class="rsvp-card" id="rsvpCard"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Vous organisez, vendez, recrutez ?</div>
+      <h2>Devenir partenaire ou exposant</h2>
+    </div>
+    <div class="gift-box">
+      <p>Un stand, une prise de parole ou un partenariat de visibilité sont possibles sur cette édition. Places limitées, premiers arrivés premiers servis.</p>
+      <a class="gift-btn" href="#" onclick="event.preventDefault(); alert('Démonstration — lien vers un vrai dossier partenaires à intégrer.');">Demander le dossier partenaires</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="hashtag">#ForumConvergence2026</div>
+  <div>Au plaisir de vous accueillir à Angoulême.</div>
+  <span class="demo-tag">DÉMO — PHOENIX SOLUTIONS DIGITALES — événement et lieu fictifs</span>
+</footer>
+
+<script>
+/* Countdown to event date */
+const eventDate = new Date('2026-10-14T09:00:00');
+function renderCountdown(){
+  const now = new Date();
+  let diff = Math.max(0, eventDate - now);
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor((diff / (1000*60*60)) % 24);
+  const mins = Math.floor((diff / (1000*60)) % 60);
+  const secs = Math.floor((diff / 1000) % 60);
+  document.getElementById('countdown').innerHTML = `
+    <div class="cd-box"><div class="cd-num">${days}</div><div class="cd-label">Jours</div></div>
+    <div class="cd-box"><div class="cd-num">${String(hours).padStart(2,'0')}</div><div class="cd-label">Heures</div></div>
+    <div class="cd-box"><div class="cd-num">${String(mins).padStart(2,'0')}</div><div class="cd-label">Minutes</div></div>
+    <div class="cd-box"><div class="cd-num">${String(secs).padStart(2,'0')}</div><div class="cd-label">Secondes</div></div>
+  `;
+}
+renderCountdown();
+setInterval(renderCountdown, 1000);
+
+/* Inscription form */
+let attending = null;
+function renderRsvp(){
+  const card = document.getElementById('rsvpCard');
+  card.innerHTML = `
+    <div class="field">
+      <label>Serez-vous présent(e) ?</label>
+      <div class="attend-toggle">
+        <button type="button" class="attend-btn ${attending===true?'selected':''}" id="btnYes">Je m'inscris ✓</button>
+        <button type="button" class="attend-btn ${attending===false?'selected':''}" id="btnNo">Je ne pourrai pas venir</button>
+      </div>
+    </div>
+    <div class="field"><label>Nom et prénom</label><input type="text" id="rName" placeholder="Votre nom"></div>
+    ${attending ? `
+    <div class="field"><label>Société</label><input type="text" id="rCompany" placeholder="Nom de votre entreprise"></div>
+    <div class="field"><label>Secteur d'activité</label>
+      <select id="rSector">
+        <option>Commerce &amp; artisanat</option>
+        <option>Industrie</option>
+        <option>Numérique &amp; services</option>
+        <option>Tourisme &amp; hôtellerie</option>
+        <option>Autre</option>
+      </select>
+    </div>
+    <div class="field"><label>Nombre de participants</label><input type="number" id="rGuests" min="1" max="10" value="1"></div>` : ''}
+    <div class="field"><label>Message (facultatif)</label><textarea id="rMsg" rows="3" placeholder="Une question, un besoin spécifique..."></textarea></div>
+    <button class="rsvp-submit" id="rsvpSubmit">Envoyer mon inscription</button>
+  `;
+  document.getElementById('btnYes').addEventListener('click', () => { attending = true; renderRsvp(); });
+  document.getElementById('btnNo').addEventListener('click', () => { attending = false; renderRsvp(); });
+  document.getElementById('rsvpSubmit').addEventListener('click', () => {
+    if(attending === null){ alert('Merci de préciser si vous serez présent(e).'); return; }
+    card.innerHTML = `
+      <div class="rsvp-confirm">
+        <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 13 l4 4 L19 7"/></svg></div>
+        <h3>${attending ? 'Inscription enregistrée !' : 'Merci pour votre réponse'}</h3>
+        <p>${attending ? "Un email de confirmation avec votre badge vous serait envoyé dans une version en production." : "Nous espérons vous compter parmi nous lors d'une prochaine édition."}</p>
+      </div>
+    `;
+  });
+}
+renderRsvp();
+</script>
+</body>
+</html>

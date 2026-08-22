@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maquette — Démo secteur institut de beauté (L'Écrin)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Mulish:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rose:#C98A93;
+    --rose-dark:#A96670;
+    --plum:#6B4A52;
+    --taupe:#A98F7D;
+    --cream:#FBF6F2;
+    --card:#FFFFFF;
+    --dark:#3B2E30;
+    --grey:#8A7A7B;
+    --line:#EFE1DD;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Mulish',sans-serif;color:var(--dark);background:var(--cream);line-height:1.7;}
+  h1,h2,h3{font-family:'Italiana',serif;font-weight:400;color:var(--plum);letter-spacing:0.3px;}
+  a{text-decoration:none;color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 32px;}
+  .imgbox{position:relative;overflow:hidden;background:linear-gradient(135deg,#D9C2BE,#B99A94);border-radius:8px;}
+  .imgbox img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .imgbox .ph-fallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#6B4A46;font-size:12px;letter-spacing:0.5px;text-transform:uppercase;font-family:'Mulish',sans-serif;padding:20px;gap:8px;}
+  .imgbox .ph-fallback small{text-transform:none;letter-spacing:0;font-size:11px;color:#8A6864;font-family:monospace;background:rgba(255,255,255,0.35);padding:3px 8px;border-radius:3px;}
+
+  /* TOP BAR */
+  .topbar{background:var(--plum);color:#EAD9D5;font-size:12px;padding:8px 0;text-align:center;letter-spacing:0.3px;}
+  .topbar a{color:#F0C9CE;font-weight:600;}
+
+  /* HEADER */
+  header{background:var(--cream);padding:28px 0;}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:'Italiana',serif;font-size:26px;color:var(--plum);letter-spacing:1px;}
+  nav{display:flex;align-items:center;gap:30px;font-size:13.5px;font-weight:500;}
+  nav a{color:var(--dark);}
+  .btn-rdv{background:var(--rose);color:#fff!important;padding:11px 24px;border-radius:30px;font-size:13px;font-weight:600;}
+
+  /* HERO */
+  .hero{padding:20px 0 0;}
+  .hero-grid{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:56px;max-width:1080px;margin:0 auto;padding:40px 32px 90px;}
+  .hero-badge{display:inline-block;color:var(--rose-dark);font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:18px;}
+  .hero h1{font-size:44px;line-height:1.25;margin-bottom:20px;color:var(--plum);}
+  .hero p{color:var(--grey);font-size:15.5px;margin-bottom:30px;max-width:420px;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn-primary{background:var(--rose);color:#fff;padding:14px 30px;border-radius:30px;font-weight:600;font-size:13.5px;}
+  .btn-outline{border:1.5px solid var(--rose);color:var(--rose-dark);padding:12.5px 28px;border-radius:30px;font-weight:600;font-size:13.5px;}
+  .hero .imgbox{height:440px;}
+
+  /* SOINS */
+  .soins{padding:80px 0;background:var(--card);}
+  .section-eyebrow{color:var(--rose-dark);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;margin-bottom:14px;}
+  .soins h2{text-align:center;font-size:32px;margin-bottom:54px;}
+  .soins-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;}
+  .soin-card{text-align:center;padding:0 8px;}
+  .soin-card .circle{width:74px;height:74px;border-radius:50%;background:#F3E3E0;color:var(--rose-dark);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:'Italiana',serif;font-size:22px;}
+  .soin-card h3{font-size:17px;margin-bottom:10px;color:var(--plum);}
+  .soin-card p{font-size:13px;color:var(--grey);}
+
+  /* INSTITUT */
+  .institut{padding:80px 0;}
+  .institut-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;max-width:1016px;margin:0 auto;}
+  .institut-grid .imgbox{height:360px;}
+  .institut h2{font-size:30px;margin-bottom:16px;}
+  .institut p{color:var(--grey);font-size:15px;}
+
+  /* GALERIE */
+  .galerie{padding:80px 0;background:#F5E9E5;}
+  .galerie h2{text-align:center;font-size:30px;margin-bottom:50px;}
+  .gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .gal-grid .imgbox{height:200px;}
+
+  /* FORMULES */
+  .formules{padding:80px 0;}
+  .formules h2{text-align:center;font-size:30px;margin-bottom:50px;}
+  .form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .form-card{border:1px solid var(--line);padding:34px 26px;text-align:center;}
+  .form-card h3{font-size:19px;margin-bottom:12px;color:var(--plum);}
+  .form-card p{font-size:13.5px;color:var(--grey);margin-bottom:20px;}
+  .form-card a{color:var(--rose-dark);font-size:12.5px;font-weight:700;letter-spacing:0.3px;text-transform:uppercase;}
+
+  /* CTA BAND */
+  .cta-band{background:var(--rose);color:#fff;padding:70px 0;text-align:center;}
+  .cta-band h2{color:#fff;font-size:30px;margin-bottom:14px;}
+  .cta-band p{color:#FBE6E9;margin-bottom:28px;font-size:15px;}
+  .btn-cta-final{background:#fff;color:var(--rose-dark);padding:14px 32px;border-radius:30px;font-weight:700;font-size:13.5px;}
+
+  footer{background:var(--plum);color:#D8C4C2;padding:32px 0;text-align:center;font-size:12.5px;}
+  footer .credit{margin-top:8px;color:#A78B8A;}
+  footer .credit a{color:#F0C9CE;}
+</style>
+</head>
+<body>
+
+<div class="topbar">Sur rendez-vous — Angoulême — <a href="tel:0500000000">05 00 00 00 00</a></div>
+
+<header>
+  <div class="wrap">
+    <div class="logo">L'Écrin</div>
+    <nav>
+      <a href="#">Accueil</a>
+      <a href="#">Nos Soins</a>
+      <a href="#">L'Institut</a>
+      <a href="#">Galerie</a>
+      <a href="#" class="btn-rdv">Prendre rendez-vous</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <span class="hero-badge">Institut de beauté à Angoulême</span>
+      <h1>Un moment rien qu'à vous</h1>
+      <p>Soins du visage, du corps et des mains, réalisés avec des produits de qualité et une attention personnalisée.</p>
+      <div class="hero-ctas">
+        <a href="#" class="btn-primary">Découvrir nos soins</a>
+        <a href="#" class="btn-outline">Prendre rendez-vous</a>
+      </div>
+    </div>
+    <div class="imgbox"><div class="ph-fallback">Photo soin du visage / ambiance institut<small>images/institut-01-hero-soin.jpg</small></div><img src="images/institut-01-hero-soin.jpg" alt="Soin du visage à l'institut" onerror="this.remove()"></div>
+  </div>
+</section>
+
+<section class="soins">
+  <div class="wrap">
+    <div class="section-eyebrow">Nos soins</div>
+    <h2>Des prestations pensées pour vous</h2>
+    <div class="soins-grid">
+      <div class="soin-card">
+        <div class="circle">V</div>
+        <h3>Soins du visage</h3>
+        <p>Nettoyage de peau, soins hydratants et anti-âge.</p>
+      </div>
+      <div class="soin-card">
+        <div class="circle">C</div>
+        <h3>Soins du corps</h3>
+        <p>Modelages relaxants, gommages, enveloppements.</p>
+      </div>
+      <div class="soin-card">
+        <div class="circle">E</div>
+        <h3>Épilation</h3>
+        <p>Techniques traditionnelles et douces.</p>
+      </div>
+      <div class="soin-card">
+        <div class="circle">M</div>
+        <h3>Mains & pieds</h3>
+        <p>Manucure, semi-permanent, soins des pieds.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="institut">
+  <div class="institut-grid">
+    <div class="imgbox"><div class="ph-fallback">Portrait de l'esthéticienne<small>images/institut-02-portrait.jpg</small></div><img src="images/institut-02-portrait.jpg" alt="Portrait de l'esthéticienne" onerror="this.remove()"></div>
+    <div>
+      <div class="section-eyebrow" style="text-align:left;">L'institut</div>
+      <h2>Une esthéticienne à votre écoute</h2>
+      <p>Formée aux techniques de soin les plus récentes, [prénom] vous propose un accompagnement personnalisé, dans un institut pensé comme une parenthèse de douceur au cœur d'Angoulême.</p>
+    </div>
+  </div>
+</section>
+
+<section class="galerie">
+  <div class="wrap">
+    <h2>L'ambiance de L'Écrin</h2>
+    <div class="gal-grid">
+      <div class="imgbox"><div class="ph-fallback">Cabine de soin<small>images/institut-03-galerie-cabine.jpg</small></div><img src="images/institut-03-galerie-cabine.jpg" alt="Cabine de soin" onerror="this.remove()"></div>
+      <div class="imgbox"><div class="ph-fallback">Soin du visage<small>images/institut-04-galerie-soin-visage.jpg</small></div><img src="images/institut-04-galerie-soin-visage.jpg" alt="Soin du visage" onerror="this.remove()"></div>
+      <div class="imgbox"><div class="ph-fallback">Produits<small>images/institut-05-galerie-produits.jpg</small></div><img src="images/institut-05-galerie-produits.jpg" alt="Produits de soin" onerror="this.remove()"></div>
+      <div class="imgbox"><div class="ph-fallback">Accueil<small>images/institut-06-galerie-accueil.jpg</small></div><img src="images/institut-06-galerie-accueil.jpg" alt="Espace d'accueil" onerror="this.remove()"></div>
+      <div class="imgbox"><div class="ph-fallback">Manucure<small>images/institut-07-galerie-manucure.jpg</small></div><img src="images/institut-07-galerie-manucure.jpg" alt="Soin des mains" onerror="this.remove()"></div>
+      <div class="imgbox"><div class="ph-fallback">Ambiance générale<small>images/institut-08-galerie-ambiance.jpg</small></div><img src="images/institut-08-galerie-ambiance.jpg" alt="Ambiance générale de l'institut" onerror="this.remove()"></div>
+    </div>
+  </div>
+</section>
+
+<section class="formules">
+  <div class="wrap">
+    <h2>Des moments à s'offrir ou à offrir</h2>
+    <div class="form-grid">
+      <div class="form-card">
+        <h3>Parenthèse détente</h3>
+        <p>Un moment de relaxation pensé pour évacuer le stress du quotidien.</p>
+        <a href="#">En savoir plus →</a>
+      </div>
+      <div class="form-card">
+        <h3>Rituel visage éclat</h3>
+        <p>Un soin complet pour retrouver un teint lumineux.</p>
+        <a href="#">En savoir plus →</a>
+      </div>
+      <div class="form-card">
+        <h3>Carte cadeau</h3>
+        <p>Offrez un moment de beauté à quelqu'un que vous aimez.</p>
+        <a href="#">En savoir plus →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <h2>Offrez-vous ce moment</h2>
+    <p>Réservez votre créneau en quelques clics.</p>
+    <a href="#" class="btn-cta-final">Prendre rendez-vous</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>L'Écrin — Institut de Beauté — Angoulême, Charente</div>
+    <div class="credit">Maquette de démonstration — non fonctionnelle — Site vitrine conçu par <a href="#">Phoenix Solutions Digitales</a></div>
+  </div>
+</footer>
+
+</body>
+</html>

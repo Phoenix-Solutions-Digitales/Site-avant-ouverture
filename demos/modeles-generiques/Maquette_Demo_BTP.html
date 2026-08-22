@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maquette — Démo secteur BTP (Bâti Charente)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2530;
+    --navy-light:#28394A;
+    --orange:#E0611C;
+    --orange-dark:#B94D14;
+    --bg:#F3F1EC;
+    --card:#FFFFFF;
+    --dark:#20242A;
+    --grey:#6A6F76;
+    --line:#E2DFD6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;color:var(--dark);background:var(--bg);line-height:1.6;}
+  h1,h2,h3{font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;color:var(--navy);}
+  a{text-decoration:none;color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 32px;}
+  .imgbox{position:relative;overflow:hidden;background:linear-gradient(135deg,#3A4C5C,#232E38);}
+  .imgbox img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .imgbox .ph-fallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#B9C3CC;font-size:13px;letter-spacing:0.5px;text-transform:uppercase;padding:20px;gap:8px;}
+  .imgbox .ph-fallback small{text-transform:none;letter-spacing:0;font-size:11px;color:#8B96A0;font-family:monospace;background:rgba(0,0,0,0.25);padding:3px 8px;border-radius:3px;}
+
+  /* TOP BAR */
+  .topbar{background:var(--navy);color:#C9D2D9;font-size:12.5px;padding:7px 0;}
+  .topbar .wrap{display:flex;justify-content:space-between;}
+  .topbar a{color:#C9D2D9;}
+  .topbar .phone{color:var(--orange);font-weight:600;}
+
+  /* HEADER */
+  header{background:var(--card);padding:20px 0;border-bottom:3px solid var(--navy);}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:'Oswald',sans-serif;font-weight:700;font-size:23px;letter-spacing:0.5px;color:var(--navy);}
+  .logo span{color:var(--orange);}
+  nav{display:flex;align-items:center;gap:30px;font-size:14px;font-weight:500;}
+  nav a{color:var(--navy);}
+  .btn-devis{background:var(--orange);color:#fff!important;padding:11px 22px;font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:0.4px;}
+
+  /* HERO */
+  .hero{position:relative;}
+  .hero .imgbox{height:520px;}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(27,37,48,0.88) 0%,rgba(27,37,48,0.55) 55%,rgba(27,37,48,0.15) 100%);display:flex;align-items:center;}
+  .hero-content{max-width:560px;padding:0 32px;color:#fff;}
+  .hero-badge{display:inline-block;background:var(--orange);color:#fff;font-size:12px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;padding:6px 14px;margin-bottom:18px;}
+  .hero h1{color:#fff;font-size:38px;line-height:1.2;margin-bottom:18px;}
+  .hero p{color:#D7DCE0;font-size:16px;margin-bottom:28px;max-width:460px;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn-primary{background:var(--orange);color:#fff;padding:14px 28px;font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:0.4px;}
+  .btn-outline{border:2px solid #fff;color:#fff;padding:12px 26px;font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:0.4px;}
+
+  /* TRUST BAR */
+  .trustbar{background:var(--navy-light);padding:0;}
+  .trustbar .wrap{display:flex;}
+  .trust-item{flex:1;text-align:center;padding:22px 10px;border-right:1px solid rgba(255,255,255,0.12);}
+  .trust-item:last-child{border-right:none;}
+  .trust-item .num{font-family:'Oswald',sans-serif;font-size:26px;font-weight:700;color:var(--orange);}
+  .trust-item .lbl{font-size:12px;color:#C9D2D9;text-transform:uppercase;letter-spacing:0.4px;margin-top:4px;}
+
+  /* SERVICES */
+  .services{padding:80px 0;}
+  .section-head{text-align:center;margin-bottom:50px;}
+  .section-eyebrow{color:var(--orange);font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+  .section-head h2{font-size:30px;}
+  .svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;}
+  .svc-card{background:var(--card);padding:30px 22px;border-top:3px solid var(--orange);}
+  .svc-card .ico{width:44px;height:44px;background:var(--navy);color:var(--orange);display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-weight:700;margin-bottom:18px;}
+  .svc-card h3{font-size:16px;margin-bottom:10px;color:var(--navy);}
+  .svc-card p{font-size:13.5px;color:var(--grey);}
+  .svc-card.highlight{border-top-color:var(--navy);background:var(--navy);}
+  .svc-card.highlight .ico{background:var(--orange);color:var(--navy);}
+  .svc-card.highlight h3, .svc-card.highlight p{color:#fff;}
+  .svc-card.highlight p{color:#C9D2D9;}
+
+  /* REALISATIONS */
+  .realisations{padding:80px 0;background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .gallery .imgbox{height:190px;}
+  .gallery .g-item{position:relative;}
+  .gallery .tag{position:absolute;bottom:10px;left:10px;background:var(--orange);color:#fff;font-size:11px;font-weight:600;padding:4px 10px;text-transform:uppercase;letter-spacing:0.3px;}
+
+  /* AVANT-APRES */
+  .avant-apres{padding:80px 0;}
+  .aa-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;max-width:760px;margin:0 auto;}
+  .aa-grid .imgbox{height:280px;}
+  .aa-label{text-align:center;padding:10px;font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;font-size:13px;}
+  .aa-label.avant{background:var(--navy);color:#fff;}
+  .aa-label.apres{background:var(--orange);color:#fff;}
+
+  /* CTA BAND */
+  .cta-band{background:var(--navy);color:#fff;padding:70px 0;text-align:center;}
+  .cta-band h2{color:#fff;font-size:28px;margin-bottom:14px;}
+  .cta-band p{color:#C9D2D9;margin-bottom:30px;font-size:15px;}
+
+  footer{background:#161D25;color:#8D97A0;padding:36px 0;text-align:center;font-size:12.5px;}
+  footer .credit{margin-top:10px;color:#5C666F;}
+  footer .credit a{color:var(--orange);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span>Angoulême &amp; Grand Angoulême — Devis gratuit sous 48h</span>
+    <a href="tel:0500000000" class="phone">📞 05 00 00 00 00</a>
+  </div>
+</div>
+
+<header>
+  <div class="wrap">
+    <div class="logo">BÂTI<span>CHARENTE</span></div>
+    <nav>
+      <a href="#">Accueil</a>
+      <a href="#">Services</a>
+      <a href="#">Réalisations</a>
+      <a href="#">Contact</a>
+      <a href="#" class="btn-devis">Devis gratuit</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="imgbox" style="height:520px;">
+    <div class="ph-fallback">Photo drone — chantier / toiture en cours<small>images/btp-01-hero-chantier-drone.jpg</small></div>
+    <img src="images/btp-01-hero-chantier-drone.jpg" alt="Chantier de couverture vu par drone" onerror="this.remove()">
+  </div>
+  <div class="hero-overlay">
+    <div class="wrap">
+      <div class="hero-content">
+        <span class="hero-badge">Maçonnerie & Couverture</span>
+        <h1>Votre projet, entre des mains expertes</h1>
+        <p>Maçonnerie générale, couverture et rénovation à Angoulême et dans tout le Grand Angoulême — 15 ans d'expérience, assurance décennale, suivi de chantier photo & drone inclus.</p>
+        <div class="hero-ctas">
+          <a href="#" class="btn-primary">Demander un devis</a>
+          <a href="#" class="btn-outline">Voir nos réalisations</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trustbar">
+  <div class="wrap">
+    <div class="trust-item"><div class="num">15</div><div class="lbl">Ans d'expérience</div></div>
+    <div class="trust-item"><div class="num">200+</div><div class="lbl">Chantiers réalisés</div></div>
+    <div class="trust-item"><div class="num">4.9/5</div><div class="lbl">Satisfaction clients</div></div>
+    <div class="trust-item"><div class="num">48h</div><div class="lbl">Délai moyen de devis</div></div>
+  </div>
+</div>
+
+<section class="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">Nos savoir-faire</div>
+      <h2>Des travaux réalisés dans les règles de l'art</h2>
+    </div>
+    <div class="svc-grid">
+      <div class="svc-card">
+        <div class="ico">M</div>
+        <h3>Maçonnerie générale</h3>
+        <p>Construction, extension, murs et fondations, dans le respect des normes en vigueur.</p>
+      </div>
+      <div class="svc-card">
+        <div class="ico">C</div>
+        <h3>Couverture & toiture</h3>
+        <p>Pose, rénovation et réparation de toiture, zinguerie, isolation.</p>
+      </div>
+      <div class="svc-card">
+        <div class="ico">R</div>
+        <h3>Rénovation</h3>
+        <p>Rénovation complète ou partielle, avant/après valorisés pour votre bien.</p>
+      </div>
+      <div class="svc-card highlight">
+        <div class="ico">D</div>
+        <h3>Suivi de chantier par drone</h3>
+        <p>Un suivi visuel unique de l'avancement de vos travaux, en partenariat avec Phoenix Solutions Digitales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="realisations">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">Portfolio</div>
+      <h2>Nos dernières réalisations</h2>
+    </div>
+    <div class="gallery">
+      <div class="g-item"><div class="imgbox"><div class="ph-fallback">Photo chantier 1<small>images/btp-02-galerie-couverture.jpg</small></div><img src="images/btp-02-galerie-couverture.jpg" alt="Chantier de couverture" onerror="this.remove()"></div><span class="tag">Couverture</span></div>
+      <div class="g-item"><div class="imgbox"><div class="ph-fallback">Photo chantier 2<small>images/btp-03-galerie-extension.jpg</small></div><img src="images/btp-03-galerie-extension.jpg" alt="Chantier d'extension" onerror="this.remove()"></div><span class="tag">Extension</span></div>
+      <div class="g-item"><div class="imgbox"><div class="ph-fallback">Vue drone chantier 3<small>images/btp-04-galerie-vue-drone-1.jpg</small></div><img src="images/btp-04-galerie-vue-drone-1.jpg" alt="Vue aérienne de chantier par drone" onerror="this.remove()"></div><span class="tag">Vue aérienne</span></div>
+      <div class="g-item"><div class="imgbox"><div class="ph-fallback">Photo chantier 4<small>images/btp-05-galerie-renovation.jpg</small></div><img src="images/btp-05-galerie-renovation.jpg" alt="Chantier de rénovation" onerror="this.remove()"></div><span class="tag">Rénovation</span></div>
+      <div class="g-item"><div class="imgbox"><div class="ph-fallback">Photo chantier 5<small>images/btp-06-galerie-maconnerie.jpg</small></div><img src="images/btp-06-galerie-maconnerie.jpg" alt="Chantier de maçonnerie" onerror="this.remove()"></div><span class="tag">Maçonnerie</span></div>
+      <div class="g-item"><div class="imgbox"><div class="ph-fallback">Vue drone chantier 6<small>images/btp-07-galerie-vue-drone-2.jpg</small></div><img src="images/btp-07-galerie-vue-drone-2.jpg" alt="Vue aérienne de chantier par drone" onerror="this.remove()"></div><span class="tag">Vue aérienne</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="avant-apres">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">La différence Bâti Charente</div>
+      <h2>Avant / après</h2>
+    </div>
+    <div class="aa-grid">
+      <div>
+        <div class="imgbox"><div class="ph-fallback">Photo avant travaux<small>images/btp-08-avant.jpg</small></div><img src="images/btp-08-avant.jpg" alt="Chantier avant travaux" onerror="this.remove()"></div>
+        <div class="aa-label avant">Avant</div>
+      </div>
+      <div>
+        <div class="imgbox"><div class="ph-fallback">Photo après travaux<small>images/btp-09-apres.jpg</small></div><img src="images/btp-09-apres.jpg" alt="Chantier après travaux" onerror="this.remove()"></div>
+        <div class="aa-label apres">Après</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <h2>Un projet en tête ? Parlons-en.</h2>
+    <p>Devis gratuit et sans engagement, réponse sous 48h.</p>
+    <a href="#" class="btn-primary">Demander mon devis</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>Bâti Charente — Maçonnerie & Couverture — Angoulême, Charente</div>
+    <div class="credit">Maquette de démonstration — non fonctionnelle — Site vitrine conçu par <a href="#">Phoenix Solutions Digitales</a></div>
+  </div>
+</footer>
+
+</body>
+</html>

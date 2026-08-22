@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rénov Éco Charente — Isolez votre logement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#1F4D3D; --forest-dark:#153729; --amber:#E8873E; --amber-light:#F3AD73;
+    --ivory:#FBF9F4; --border:#E7E2D5; --ink:#20241F; --muted:#6b6f64; --radius:8px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--ivory); color:var(--ink); font-family:'Manrope', sans-serif; line-height:1.6; padding-bottom:64px;}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  h1,h2,h3{font-family:'Manrope', sans-serif; margin:0; font-weight:800;}
+  .container{max-width:980px; margin:0 auto; padding:0 24px;}
+  a{color:inherit;} button{font-family:inherit;}
+
+  /* URGENCY BAR */
+  .urgency-bar{background:var(--forest-dark); color:#fff; text-align:center; padding:9px 16px; font-size:13px; font-weight:600;}
+  .urgency-bar span{color:var(--amber-light); font-family:'IBM Plex Mono', monospace;}
+
+  /* HERO */
+  .hero{background:linear-gradient(165deg, var(--forest), var(--forest-dark)); color:#fff; padding:52px 0 60px;}
+  .hero-badge{
+    display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25);
+    padding:6px 14px; border-radius:20px; font-size:12px; font-family:'IBM Plex Mono', monospace; margin-bottom:18px;
+  }
+  .hero h1{font-size:clamp(30px,5vw,46px); line-height:1.12; max-width:16ch;}
+  .hero h1 em{font-style:normal; color:var(--amber-light);}
+  .hero p{font-size:16px; color:#DCE8DE; max-width:44ch; margin:16px 0 26px;}
+
+  .lead-form{
+    background:#fff; border-radius:var(--radius); padding:20px; display:grid; grid-template-columns:1fr 1fr; gap:10px; max-width:520px;
+  }
+  .lead-form .full{grid-column:1/-1;}
+  .lead-form input{
+    border:1px solid var(--border); border-radius:6px; padding:11px 12px; font-size:14px; font-family:inherit; color:var(--ink);
+  }
+  .lead-form input:focus{outline:2px solid var(--amber); outline-offset:1px;}
+  .lead-btn{
+    grid-column:1/-1; background:var(--amber); color:#fff; border:none; border-radius:6px; padding:14px; font-weight:700;
+    font-size:14.5px; cursor:pointer; transition:background .15s ease;
+  }
+  .lead-btn:hover{background:#D97B2E;}
+  .lead-note{grid-column:1/-1; font-size:11px; color:#8a8f80; text-align:center;}
+
+  .trust-row{display:flex; gap:22px; flex-wrap:wrap; margin-top:22px;}
+  .trust-item{display:flex; align-items:center; gap:8px; font-size:12.5px; color:#DCE8DE;}
+  .trust-item svg{width:16px; height:16px; color:var(--amber-light);}
+
+  /* SOCIAL PROOF */
+  .proof-bar{background:#fff; border-bottom:1px solid var(--border); padding:20px 0;}
+  .proof-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;}
+  .proof-stars{color:var(--amber); font-size:14px;}
+  .proof-text{font-size:13.5px; color:var(--muted); font-family:'IBM Plex Mono', monospace;}
+
+  /* SECTION */
+  .section{padding:64px 0;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--forest);}
+  .section-head{max-width:56ch; margin-bottom:36px; text-align:center; margin-left:auto; margin-right:auto;}
+  .section-head h2{font-size:clamp(24px,3.2vw,32px); margin-top:12px;}
+
+  /* PAIN -> BENEFIT */
+  .benefit-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media(max-width:760px){ .benefit-grid{grid-template-columns:1fr;} }
+  .benefit-card{background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:22px;}
+  .benefit-card .icon{width:32px; height:32px; color:var(--forest); margin-bottom:14px;}
+  .benefit-card h3{font-size:16px; margin-bottom:8px;}
+  .benefit-card p{font-size:13.5px; color:var(--muted); margin:0;}
+
+  /* STEPS */
+  .steps-row{display:grid; grid-template-columns:repeat(3,1fr); gap:0; position:relative;}
+  @media(max-width:760px){ .steps-row{grid-template-columns:1fr; gap:20px;} }
+  .step-item{text-align:center; padding:0 16px; position:relative;}
+  .step-num{
+    width:48px; height:48px; border-radius:50%; background:var(--forest); color:#fff; display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:17px; margin:0 auto 14px;
+  }
+  .step-item h3{font-size:15.5px; margin-bottom:6px;}
+  .step-item p{font-size:13px; color:var(--muted); margin:0;}
+
+  /* THERMAL VISUAL */
+  .thermal-section{background:var(--forest-dark); color:#fff;}
+  .thermal-section .eyebrow{color:var(--amber-light);}
+  .thermal-section .section-head h2{color:#fff;}
+  .thermal-grid{display:grid; grid-template-columns:1fr 1fr; gap:2px; border-radius:var(--radius); overflow:hidden;}
+  @media(max-width:700px){ .thermal-grid{grid-template-columns:1fr;} }
+  .thermal-panel{aspect-ratio:4/3; position:relative; overflow:hidden;}
+  .thermal-panel img{width:100%; height:100%; object-fit:cover; display:block;}
+  .thermal-panel.before{background:linear-gradient(135deg,#7A1F1F,#C24A2E 40%,#E8873E 70%,#F3D07A);}
+  .thermal-panel.after{background:linear-gradient(135deg,#1F3A7A,#2E5FC2 50%,#7AB8E8);}
+  .thermal-label{
+    position:absolute; bottom:14px; left:14px; z-index:2; font-family:'IBM Plex Mono', monospace; font-size:11px;
+    background:rgba(0,0,0,0.4); padding:5px 10px; border-radius:4px; text-transform:uppercase; letter-spacing:0.06em;
+  }
+  .thermal-caption{text-align:center; font-size:12.5px; color:#C9D6CC; margin-top:16px; font-family:'IBM Plex Mono', monospace;}
+
+  /* TESTIMONIALS */
+  .testi-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  @media(max-width:760px){ .testi-grid{grid-template-columns:1fr;} }
+  .testi-card{background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:20px;}
+  .testi-stars{color:var(--amber); font-size:13px; margin-bottom:10px;}
+  .testi-card p{font-size:13.5px; font-style:italic; color:var(--ink); margin:0 0 12px;}
+  .testi-save{
+    display:inline-block; background:#EAF3EC; color:var(--forest); font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    padding:4px 10px; border-radius:20px; font-weight:600; margin-bottom:8px;
+  }
+  .testi-name{font-size:11.5px; color:var(--muted); font-family:'IBM Plex Mono', monospace;}
+
+  /* FAQ ACCORDION */
+  .faq-list{display:flex; flex-direction:column; gap:10px;}
+  .faq-item{background:#fff; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;}
+  .faq-q{
+    width:100%; text-align:left; background:none; border:none; padding:16px 20px; font-size:14.5px; font-weight:600;
+    cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:12px; color:var(--ink);
+  }
+  .faq-q .plus{transition:transform .2s ease; color:var(--forest); font-size:18px; flex-shrink:0;}
+  .faq-item.open .plus{transform:rotate(45deg);}
+  .faq-a{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+  .faq-a-inner{padding:0 20px 18px; font-size:13.5px; color:var(--muted);}
+  .faq-item.open .faq-a{max-height:200px;}
+
+  /* FINAL CTA */
+  .final-cta{background:linear-gradient(165deg, var(--forest), var(--forest-dark)); color:#fff; text-align:center;}
+  .countdown{display:flex; justify-content:center; gap:14px; margin:22px 0 30px;}
+  .countdown-box{background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.25); border-radius:8px; padding:12px 16px; min-width:64px;}
+  .countdown-num{font-family:'IBM Plex Mono', monospace; font-size:24px; font-weight:600;}
+  .countdown-label{font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:#C9D6CC; margin-top:2px;}
+  .final-cta .lead-form{margin:0 auto; text-align:left;}
+
+  footer{text-align:center; padding:30px 24px; font-size:11px; color:#9a9c8f;}
+  footer .legal{max-width:60ch; margin:0 auto 10px; line-height:1.5;}
+  footer .demo-tag{font-family:'IBM Plex Mono', monospace; color:#b3b5a5;}
+
+  /* STICKY MOBILE CTA */
+  .sticky-cta{
+    position:fixed; bottom:0; left:0; right:0; background:#fff; border-top:1px solid var(--border);
+    padding:12px 16px; display:none; z-index:50; box-shadow:0 -6px 18px rgba(0,0,0,0.08);
+  }
+  .sticky-cta button{
+    width:100%; background:var(--amber); color:#fff; border:none; border-radius:6px; padding:13px; font-weight:700; font-size:14px; cursor:pointer;
+  }
+  @media(max-width:700px){ .sticky-cta{display:block;} body{padding-bottom:78px;} }
+</style>
+</head>
+<body>
+
+<div class="urgency-bar">Offre valable jusqu'au 15 juillet — <span id="placesLeft">7</span> créneaux de diagnostic restants ce mois-ci</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">✓ Certifié RGE — Éligible aides de l'État</div>
+    <h1>Isolez votre logement <em>dès 1€*</em> et divisez votre facture de chauffage.</h1>
+    <p>Diagnostic thermique gratuit à domicile, sous 48h, dans toute la Charente. Sans engagement.</p>
+    <form class="lead-form" onsubmit="event.preventDefault(); alert('Démonstration — aucune donnée n\'est réellement envoyée.');">
+      <input type="text" placeholder="Nom" required>
+      <input type="text" placeholder="Code postal" required>
+      <input type="tel" placeholder="Téléphone" class="full" required>
+      <button class="lead-btn" type="submit">Vérifier mon éligibilité gratuitement</button>
+      <div class="lead-note">Réponse sous 24h — aucun engagement de votre part</div>
+    </form>
+    <div class="trust-row">
+      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13 l4 4 L19 7"/></svg>Certifié RGE</div>
+      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13 l4 4 L19 7"/></svg>Sans engagement</div>
+      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13 l4 4 L19 7"/></svg>Réponse sous 24h</div>
+    </div>
+  </div>
+</section>
+
+<div class="proof-bar">
+  <div class="container proof-row">
+    <div class="proof-stars">★★★★★ <span class="proof-text">4,8/5 sur 210 avis</span></div>
+    <div class="proof-text">Plus de 500 foyers accompagnés en Charente</div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Pourquoi agir maintenant</div>
+      <h2>Une facture qui grimpe, une solution simple</h2>
+    </div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 C16 8 16 12 12 16 C8 12 8 8 12 2 Z"/><path d="M6 20 h12"/></svg>
+        <h3>Jusqu'à 30% d'économies</h3>
+        <p>Une isolation performante réduit significativement vos besoins en chauffage, hiver comme été.</p>
+      </div>
+      <div class="benefit-card">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10 h18"/></svg>
+        <h3>Aides de l'État mobilisées</h3>
+        <p>Nous montons votre dossier d'éligibilité aux aides à la rénovation énergétique.</p>
+      </div>
+      <div class="benefit-card">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M8 12 l3 3 l5-6"/></svg>
+        <h3>Confort toute l'année</h3>
+        <p>Fini les pièces froides en hiver et surchauffées en été — un intérieur stable et agréable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#fff; border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Comment ça marche</div>
+      <h2>Trois étapes, sans complexité</h2>
+    </div>
+    <div class="steps-row">
+      <div class="step-item"><div class="step-num">1</div><h3>Diagnostic gratuit</h3><p>Un technicien évalue votre logement et vos économies potentielles.</p></div>
+      <div class="step-item"><div class="step-num">2</div><h3>Dossier d'aides</h3><p>Nous constituons votre dossier d'éligibilité aux aides disponibles.</p></div>
+      <div class="step-item"><div class="step-num">3</div><h3>Travaux &amp; économies</h3><p>Une équipe certifiée intervient, vous constatez la différence dès le premier hiver.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section thermal-section">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Ce que la caméra thermique révèle</div>
+      <h2>Avant / après isolation</h2>
+    </div>
+    <div class="thermal-grid">
+      <div class="thermal-panel before">
+        <img src="assets/images/isolation-avant.jpg" alt="Logement avant travaux d'isolation" onerror="this.remove();">
+        <span class="thermal-label">Avant — déperdition élevée</span>
+      </div>
+      <div class="thermal-panel after">
+        <img src="assets/images/isolation-apres.jpg" alt="Logement après travaux d'isolation" onerror="this.remove();">
+        <span class="thermal-label">Après — logement isolé</span>
+      </div>
+    </div>
+    <div class="thermal-caption">Illustration à titre indicatif — remplaçable par une vraie image thermique du chantier</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Ils ont franchi le pas</div>
+      <h2>Ce qu'en disent nos clients</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-save">-28% sur la facture</div>
+        <p>"Diagnostic pris au sérieux, chantier propre et rapide. On sent vraiment la différence."</p>
+        <div class="testi-name">— Exemple de témoignage, Angoulême</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-save">-32% sur la facture</div>
+        <p>"L'équipe a géré tout le dossier d'aides à notre place. Simple du début à la fin."</p>
+        <div class="testi-name">— Exemple de témoignage, Cognac</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-save">-24% sur la facture</div>
+        <p>"Plus aucune pièce froide l'hiver. Un investissement qu'on ne regrette pas."</p>
+        <div class="testi-name">— Exemple de témoignage, Ruffec</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#fff; border-top:1px solid var(--border);">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Questions fréquentes</div>
+      <h2>Avant de vous décider</h2>
+    </div>
+    <div class="faq-list" id="faqList"></div>
+  </div>
+</section>
+
+<section class="section final-cta">
+  <div class="container">
+    <div class="eyebrow" style="color:var(--amber-light);">Offre limitée</div>
+    <h2 style="margin-top:12px;">Places de diagnostic limitées ce mois-ci</h2>
+    <div class="countdown" id="countdown"></div>
+    <form class="lead-form" onsubmit="event.preventDefault(); alert('Démonstration — aucune donnée n\'est réellement envoyée.');">
+      <input type="text" placeholder="Nom" required>
+      <input type="text" placeholder="Code postal" required>
+      <input type="tel" placeholder="Téléphone" class="full" required>
+      <button class="lead-btn" type="submit">Vérifier mon éligibilité gratuitement</button>
+      <div class="lead-note">Réponse sous 24h — aucun engagement de votre part</div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="legal">*Offre soumise à conditions de ressources, voir éligibilité lors du diagnostic. Rénov Éco Charente est un exemple fictif créé à des fins de démonstration.</div>
+  <span class="demo-tag">DÉMO — PHOENIX SOLUTIONS DIGITALES</span>
+</footer>
+
+<div class="sticky-cta">
+  <button onclick="document.querySelector('.lead-form input').focus(); document.querySelector('.hero').scrollIntoView({behavior:'smooth'});">Vérifier mon éligibilité</button>
+</div>
+
+<script>
+/* FAQ accordion */
+const FAQS = [
+  { q:"Quel est le coût réel des travaux ?", a:"Selon votre éligibilité aux aides de l'État, le reste à charge peut être très faible. Le diagnostic gratuit permet d'obtenir un chiffrage précis avant tout engagement." },
+  { q:"Combien de temps durent les travaux ?", a:"La majorité des chantiers d'isolation se réalisent en 1 à 3 jours selon la surface et le type d'isolation retenu." },
+  { q:"Suis-je éligible même si je ne suis pas propriétaire ?", a:"Le diagnostic est ouvert à tous, mais les aides principales concernent les propriétaires occupants ou bailleurs. Nous vérifions votre situation lors de l'appel." },
+  { q:"Le diagnostic est-il vraiment gratuit et sans engagement ?", a:"Oui, le diagnostic thermique à domicile est gratuit et ne vous engage à rien. Vous restez libre d'accepter ou non le devis proposé ensuite." },
+];
+const faqList = document.getElementById('faqList');
+FAQS.forEach((f, i) => {
+  const item = document.createElement('div');
+  item.className = 'faq-item';
+  item.innerHTML = `
+    <button class="faq-q">${f.q}<span class="plus">+</span></button>
+    <div class="faq-a"><div class="faq-a-inner">${f.a}</div></div>
+  `;
+  item.querySelector('.faq-q').addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('open'));
+    if(!isOpen) item.classList.add('open');
+  });
+  faqList.appendChild(item);
+});
+
+/* Countdown timer — targets 3 days from now, 23:59 */
+const target = new Date();
+target.setDate(target.getDate() + 3);
+target.setHours(23, 59, 0, 0);
+
+function renderCountdown(){
+  const now = new Date();
+  let diff = Math.max(0, target - now);
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor((diff / (1000*60*60)) % 24);
+  const mins = Math.floor((diff / (1000*60)) % 60);
+  const secs = Math.floor((diff / 1000) % 60);
+  const el = document.getElementById('countdown');
+  el.innerHTML = `
+    <div class="countdown-box"><div class="countdown-num">${days}</div><div class="countdown-label">Jours</div></div>
+    <div class="countdown-box"><div class="countdown-num">${String(hours).padStart(2,'0')}</div><div class="countdown-label">Heures</div></div>
+    <div class="countdown-box"><div class="countdown-num">${String(mins).padStart(2,'0')}</div><div class="countdown-label">Min</div></div>
+    <div class="countdown-box"><div class="countdown-num">${String(secs).padStart(2,'0')}</div><div class="countdown-label">Sec</div></div>
+  `;
+}
+renderCountdown();
+setInterval(renderCountdown, 1000);
+</script>
+</body>
+</html>

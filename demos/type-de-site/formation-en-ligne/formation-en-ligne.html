@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photo &amp; Vidéo Smartphone — Espace formation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo:#4F46E5; --indigo-dark:#3730A3; --indigo-light:#818CF8; --gold:#F0B429;
+    --bg:#F6F6FB; --surface:#FFFFFF; --border:#E4E3F0; --ink:#1E1B2E; --muted:#6C6884; --radius:8px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:'Inter', sans-serif; line-height:1.6;}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  h1,h2,h3{font-family:'Poppins', sans-serif; margin:0;}
+  a{color:inherit;} button{font-family:inherit;}
+
+  .layout{display:grid; grid-template-columns:290px 1fr; min-height:100vh;}
+  @media(max-width:820px){ .layout{grid-template-columns:1fr;} .sidebar{display:none;} }
+
+  /* SIDEBAR */
+  .sidebar{background:var(--surface); border-right:1px solid var(--border); padding:26px 20px; display:flex; flex-direction:column;}
+  .course-tag{font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--indigo); margin-bottom:8px;}
+  .course-title{font-size:17px; font-weight:600; margin-bottom:18px; line-height:1.35;}
+
+  .progress-wrap{margin-bottom:24px;}
+  .progress-label{display:flex; justify-content:space-between; font-size:11.5px; color:var(--muted); margin-bottom:6px; font-family:'IBM Plex Mono', monospace;}
+  .progress-track{height:8px; background:var(--border); border-radius:6px; overflow:hidden;}
+  .progress-fill{height:100%; background:linear-gradient(90deg, var(--indigo), var(--indigo-light)); border-radius:6px; transition:width .4s ease;}
+
+  .module-list{display:flex; flex-direction:column; gap:4px; flex:1;}
+  .module-item{
+    display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:7px; cursor:pointer;
+    font-size:13.5px; color:var(--muted); transition:background .15s ease, color .15s ease;
+  }
+  .module-item:hover{background:var(--bg);}
+  .module-item.active{background:#EEEDFB; color:var(--indigo-dark); font-weight:600;}
+  .module-check{
+    width:22px; height:22px; border-radius:50%; border:1.5px solid var(--border); flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:11px; color:var(--muted);
+  }
+  .module-check.done{background:var(--indigo); border-color:var(--indigo); color:#fff;}
+  .module-item.active .module-check{border-color:var(--indigo-dark);}
+
+  .sidebar-foot{font-size:10.5px; color:#a6a2bd; font-family:'IBM Plex Mono', monospace; margin-top:20px; padding-top:16px; border-top:1px solid var(--border);}
+
+  /* MAIN */
+  .main{padding:36px 44px; max-width:760px;}
+  @media(max-width:600px){ .main{padding:24px 20px;} }
+  .topbar-mobile{display:none; padding:16px 20px; background:var(--surface); border-bottom:1px solid var(--border); font-family:'Poppins',sans-serif; font-weight:600;}
+  @media(max-width:820px){ .topbar-mobile{display:block;} }
+
+  .lesson-eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--indigo);}
+  .lesson-title{font-size:26px; margin:12px 0 20px;}
+  .lesson-video{
+    aspect-ratio:16/9; border-radius:var(--radius); margin-bottom:24px; position:relative; overflow:hidden;
+    background:linear-gradient(135deg, var(--indigo-dark), var(--indigo));
+  }
+  .lesson-video .play{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:60px; height:60px; border-radius:50%;
+    background:rgba(255,255,255,0.95); display:flex; align-items:center; justify-content:center;
+  }
+  .lesson-video .play svg{width:20px; height:20px; color:var(--indigo-dark); margin-left:2px;}
+  .lesson-video-label{position:absolute; bottom:12px; left:14px; font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:#E0E0FA; background:rgba(0,0,0,0.3); padding:4px 9px; border-radius:4px;}
+
+  .lesson-body p{font-size:15px; color:#4A4660; margin-bottom:16px;}
+  .lesson-key{background:#EEEDFB; border-left:3px solid var(--indigo); border-radius:0 6px 6px 0; padding:14px 18px; font-size:13.5px; color:var(--indigo-dark); margin:20px 0;}
+
+  .nav-buttons{display:flex; justify-content:space-between; margin-top:34px;}
+  .nav-btn{border:none; border-radius:7px; padding:12px 20px; font-size:13.5px; font-weight:600; cursor:pointer; transition:all .15s ease;}
+  .nav-btn.primary{background:var(--indigo); color:#fff;}
+  .nav-btn.primary:hover{background:var(--indigo-dark);}
+  .nav-btn.ghost{background:none; border:1px solid var(--border); color:var(--ink);}
+  .nav-btn.ghost:hover{border-color:var(--indigo);}
+  .nav-btn:disabled{opacity:0.35; cursor:not-allowed;}
+
+  /* QUIZ */
+  .quiz-question{margin-bottom:26px;}
+  .quiz-question h3{font-size:15px; margin-bottom:12px; font-weight:600; font-family:'Inter',sans-serif;}
+  .quiz-options{display:flex; flex-direction:column; gap:8px;}
+  .quiz-option{
+    border:1px solid var(--border); border-radius:7px; padding:12px 14px; cursor:pointer; font-size:14px;
+    background:var(--surface); transition:all .15s ease;
+  }
+  .quiz-option:hover{border-color:var(--indigo-light);}
+  .quiz-option.selected{border-color:var(--indigo); background:#EEEDFB; font-weight:600;}
+  .quiz-option.correct{border-color:#2F9E5B; background:#E8F7EE;}
+  .quiz-option.incorrect{border-color:#D14B4B; background:#FBEBEB;}
+
+  .quiz-submit{
+    background:var(--gold); color:#3a2a05; border:none; border-radius:7px; padding:13px 22px; font-weight:700;
+    font-size:14px; cursor:pointer; margin-top:8px;
+  }
+  .quiz-submit:disabled{opacity:0.4; cursor:not-allowed;}
+
+  .result-card{text-align:center; padding:30px 20px;}
+  .result-score{font-family:'Poppins', sans-serif; font-size:48px; font-weight:700; color:var(--indigo);}
+  .result-badge{
+    display:inline-block; margin-top:6px; padding:6px 16px; border-radius:20px; font-size:12.5px; font-weight:600;
+  }
+  .result-badge.pass{background:#E8F7EE; color:#2F9E5B;}
+  .result-badge.fail{background:#FBEBEB; color:#D14B4B;}
+  .result-card p{color:var(--muted); font-size:14px; margin-top:16px;}
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="course-tag">Formation Phoenix</div>
+    <div class="course-title">Photo &amp; Vidéo Smartphone</div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Progression</span><span id="progressPct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <div class="module-list" id="moduleList"></div>
+    <div class="sidebar-foot">DÉMO — PHOENIX SOLUTIONS DIGITALES</div>
+  </aside>
+
+  <div>
+    <div class="topbar-mobile">Photo &amp; Vidéo Smartphone — <span id="progressPctMobile">0%</span></div>
+    <main class="main" id="mainContent"></main>
+  </div>
+</div>
+
+<script>
+const MODULES = [
+  {
+    id:'m1', type:'lesson', title:'Bases de la composition',
+    body:[
+      "La règle des tiers reste la base : imaginez votre image divisée en 9 zones égales, et placez le sujet principal sur une des intersections plutôt qu'au centre.",
+      "Pensez aussi aux lignes directrices (chemin, mur, horizon) qui guident naturellement le regard vers votre sujet."
+    ],
+    key:"À retenir : une composition réussie guide l'œil sans effort — elle ne se remarque pas, elle se ressent."
+  },
+  {
+    id:'m2', type:'lesson', title:'Réglages manuels sur smartphone',
+    body:[
+      "La plupart des smartphones récents permettent de verrouiller la mise au point et l'exposition en maintenant le doigt appuyé sur le sujet.",
+      "Baissez légèrement l'exposition en extérieur ensoleillé pour éviter de cramer les hautes lumières — vous pourrez toujours éclaircir en retouche, jamais l'inverse."
+    ],
+    key:"À retenir : mieux vaut sous-exposer légèrement que sur-exposer — les détails perdus dans les hautes lumières sont irrécupérables."
+  },
+  {
+    id:'m3', type:'lesson', title:'Éclairage naturel et artificiel',
+    body:[
+      "La lumière du matin et de fin de journée (l'heure dorée) offre des tons chauds et un contraste doux, idéal pour les portraits.",
+      "En intérieur, placez toujours votre sujet face à la source de lumière plutôt que dos à elle, pour éviter les silhouettes à contre-jour non désirées."
+    ],
+    key:"À retenir : la qualité de la lumière compte plus que sa quantité."
+  },
+  {
+    id:'m4', type:'lesson', title:'Bases du montage vidéo mobile',
+    body:[
+      "Tournez toujours quelques secondes de plus avant et après l'action principale : ces marges facilitent grandement le montage.",
+      "Variez les plans (large, moyen, serré) pour dynamiser un montage, même sur un sujet simple comme un produit ou un lieu."
+    ],
+    key:"À retenir : un bon montage se prépare dès le tournage, pas seulement en post-production."
+  },
+  {
+    id:'m5', type:'lesson', title:'Exporter et publier ses contenus',
+    body:[
+      "Adaptez le format à la plateforme : vertical (9:16) pour Stories et Réels, carré (1:1) ou horizontal (16:9) pour un post classique.",
+      "Exportez toujours en la meilleure qualité disponible : la compression des réseaux sociaux dégradera l'image de toute façon, inutile de partir d'un fichier déjà compressé."
+    ],
+    key:"À retenir : la qualité d'export ne remplace pas une bonne prise de vue, mais une mauvaise qualité d'export peut ruiner une bonne prise de vue."
+  },
+  { id:'quiz', type:'quiz', title:'Quiz final' },
+];
+
+const QUIZ = [
+  { q:"Où placer idéalement le sujet principal selon la règle des tiers ?", options:["Au centre exact de l'image","Sur une intersection des lignes de tiers","Toujours en haut à gauche"], correct:1 },
+  { q:"En cas de doute sur l'exposition en extérieur ensoleillé, il vaut mieux :", options:["Sur-exposer légèrement","Sous-exposer légèrement","Ne jamais toucher aux réglages"], correct:1 },
+  { q:"Quel moment de la journée est souvent privilégié pour les portraits en extérieur ?", options:["Plein midi","L'heure dorée (lever/coucher du soleil)","La nuit"], correct:1 },
+  { q:"Pourquoi tourner quelques secondes de plus avant et après l'action ?", options:["Pour économiser du temps","Pour faciliter le montage","Ce n'est pas utile"], correct:1 },
+  { q:"Quel format privilégier pour une story Instagram ?", options:["16:9 horizontal","1:1 carré","9:16 vertical"], correct:2 },
+];
+
+let state = { current:'m1', completed:new Set(), quizAnswers:{}, quizSubmitted:false };
+
+function computeProgress(){
+  const lessonCount = MODULES.filter(m => m.type === 'lesson').length;
+  const done = [...state.completed].filter(id => MODULES.find(m=>m.id===id)?.type === 'lesson').length;
+  let pct = Math.round((done / lessonCount) * 90); // lessons = 90%, quiz completion = final 10%
+  if(state.quizSubmitted) pct = 100;
+  return pct;
+}
+
+function renderSidebar(){
+  const list = document.getElementById('moduleList');
+  list.innerHTML = '';
+  MODULES.forEach((m, i) => {
+    const item = document.createElement('div');
+    item.className = 'module-item' + (state.current === m.id ? ' active' : '');
+    const isDone = m.type === 'quiz' ? state.quizSubmitted : state.completed.has(m.id);
+    item.innerHTML = `
+      <div class="module-check ${isDone ? 'done' : ''}">${isDone ? '✓' : (i+1)}</div>
+      <span>${m.title}</span>
+    `;
+    item.addEventListener('click', () => { state.current = m.id; render(); });
+    list.appendChild(item);
+  });
+  const pct = computeProgress();
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressPctMobile').textContent = pct + '%';
+}
+
+function goToModule(id){ state.current = id; render(); }
+
+function renderLesson(m){
+  const idx = MODULES.findIndex(x => x.id === m.id);
+  const prev = MODULES[idx-1];
+  const next = MODULES[idx+1];
+  const main = document.getElementById('mainContent');
+  main.innerHTML = `
+    <div class="lesson-eyebrow">Module ${idx+1} / ${MODULES.length}</div>
+    <h1 class="lesson-title">${m.title}</h1>
+    <div class="lesson-video">
+      <button class="play" aria-label="Lire la vidéo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5 L19 12 L8 19 Z"/></svg></button>
+      <div class="lesson-video-label">Vidéo de la leçon — à intégrer</div>
+    </div>
+    <div class="lesson-body">${m.body.map(p => `<p>${p}</p>`).join('')}</div>
+    <div class="lesson-key">💡 ${m.key}</div>
+    <div class="nav-buttons">
+      <button class="nav-btn ghost" id="prevBtn" ${prev ? '' : 'disabled'}>← Précédent</button>
+      <button class="nav-btn primary" id="nextBtn">${state.completed.has(m.id) ? 'Continuer' : 'Marquer comme terminé et continuer'} →</button>
+    </div>
+  `;
+  if(prev) document.getElementById('prevBtn').addEventListener('click', () => goToModule(prev.id));
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    state.completed.add(m.id);
+    if(next) goToModule(next.id); else render();
+  });
+}
+
+function renderQuiz(){
+  const main = document.getElementById('mainContent');
+  if(state.quizSubmitted){
+    const score = QUIZ.reduce((s,q,i) => s + (state.quizAnswers[i] === q.correct ? 1 : 0), 0);
+    const pct = Math.round((score / QUIZ.length) * 100);
+    const passed = pct >= 70;
+    main.innerHTML = `
+      <div class="lesson-eyebrow">Résultat</div>
+      <h1 class="lesson-title">Quiz final</h1>
+      <div class="result-card">
+        <div class="result-score">${score}/${QUIZ.length}</div>
+        <div class="result-badge ${passed ? 'pass' : 'fail'}">${passed ? 'Formation validée ✓' : 'Score insuffisant — réessayez'}</div>
+        <p>${passed ? "Félicitations, vous avez validé le module Photo & Vidéo Smartphone." : "Un score de 70% minimum est requis. Revoyez les modules concernés et retentez le quiz."}</p>
+      </div>
+      <div class="nav-buttons">
+        <button class="nav-btn ghost" onclick="state.quizAnswers={}; state.quizSubmitted=false; render();">Repasser le quiz</button>
+        <button class="nav-btn primary" onclick="goToModule('m1')">Revoir les modules</button>
+      </div>
+    `;
+    return;
+  }
+
+  main.innerHTML = `
+    <div class="lesson-eyebrow">Module ${MODULES.length} / ${MODULES.length}</div>
+    <h1 class="lesson-title">Quiz final</h1>
+    <div id="quizQuestions"></div>
+    <button class="quiz-submit" id="quizSubmitBtn">Valider mes réponses</button>
+  `;
+  const container = document.getElementById('quizQuestions');
+  QUIZ.forEach((q, qi) => {
+    const block = document.createElement('div');
+    block.className = 'quiz-question';
+    block.innerHTML = `
+      <h3>${qi+1}. ${q.q}</h3>
+      <div class="quiz-options">
+        ${q.options.map((opt, oi) => `<div class="quiz-option" data-q="${qi}" data-o="${oi}">${opt}</div>`).join('')}
+      </div>
+    `;
+    container.appendChild(block);
+  });
+  container.querySelectorAll('.quiz-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const qi = opt.dataset.q;
+      state.quizAnswers[qi] = parseInt(opt.dataset.o);
+      container.querySelectorAll(`.quiz-option[data-q="${qi}"]`).forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      updateSubmitState();
+    });
+  });
+  function updateSubmitState(){
+    document.getElementById('quizSubmitBtn').disabled = Object.keys(state.quizAnswers).length < QUIZ.length;
+  }
+  updateSubmitState();
+  document.getElementById('quizSubmitBtn').addEventListener('click', () => {
+    state.quizSubmitted = true;
+    render();
+  });
+}
+
+function render(){
+  renderSidebar();
+  const m = MODULES.find(x => x.id === state.current);
+  if(m.type === 'lesson') renderLesson(m); else renderQuiz();
+}
+render();
+</script>
+</body>
+</html>

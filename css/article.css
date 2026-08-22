@@ -1,0 +1,29 @@
+/* ==========================================================================
+   Phoenix Solutions Digitales 16 — article.css
+   Styles des pages article individuelles (blog/article-*.html)
+   ========================================================================== */
+
+body{line-height:1.7;}
+.wrap{max-width:760px;}
+
+.article-cat{display:inline-block;background:var(--cream-dark);color:var(--bordeaux);font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:5px 12px;border-radius:999px;margin:20px 0 16px;}
+h1{font-family:var(--font-heading);font-size:32px;line-height:1.3;margin-bottom:18px;color:var(--text-dark);}
+.article-meta{display:flex;gap:20px;font-size:12.5px;color:var(--text-muted);border-top:1px solid var(--cream-border);border-bottom:1px solid var(--cream-border);padding:14px 0;margin-bottom:30px;}
+
+/* Visuel d'en-tête d'article : accueille une photo Pexels dans <img>,
+   avec un dégradé de secours tant qu'aucune image n'est présente. */
+.article-hero-img{height:280px;border-radius:14px;margin-bottom:36px;overflow:hidden;position:relative;background:linear-gradient(135deg,var(--bordeaux),#3A0B0B);}
+.article-hero-img img{width:100%;height:100%;object-fit:cover;display:block;position:relative;z-index:1;}
+.article-hero-img .placeholder-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-family:var(--font-heading);font-size:17px;text-align:center;padding:14px;}
+
+article p{font-size:15.5px;color:var(--text-body);margin-bottom:20px;}
+article h2{font-family:var(--font-heading);font-size:22px;margin:36px 0 14px;color:var(--bordeaux);}
+article ul{margin:0 0 20px 20px;}
+article li{font-size:15px;margin-bottom:8px;}
+
+.cta-inline{background:var(--cream-dark);border:1px solid var(--gold);border-radius:12px;padding:26px 28px;margin:36px 0;text-align:center;}
+.cta-inline h3{font-family:var(--font-heading);font-size:17px;margin-bottom:10px;}
+.cta-inline p{font-size:13.5px;color:var(--text-muted);margin-bottom:16px;}
+
+.back-link{display:inline-block;margin:10px 0 60px;font-size:13.5px;font-weight:700;color:var(--bordeaux);text-decoration:none;}
+.back-link:hover{text-decoration:underline;}

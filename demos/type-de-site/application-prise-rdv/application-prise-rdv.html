@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Institut Céleste — Prise de rendez-vous</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sage-deep:#4A5D45; --sage:#8A9B7E; --rose:#C98B82; --rose-light:#EEDAD5;
+    --cream:#F5F6F1; --cream-deep:#E9E7DC; --ink:#2B2B26; --muted:#767066; --radius:8px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--cream); color:var(--ink); font-family:'Work Sans', sans-serif; line-height:1.6;}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  h1,h2,h3{font-family:'Libre Baskerville', serif; margin:0;}
+  .container{max-width:760px; margin:0 auto; padding:0 24px;}
+  a{color:inherit;} button{font-family:inherit;}
+
+  nav{background:#fff; border-bottom:1px solid var(--cream-deep); padding:18px 0;}
+  nav .container{display:flex; align-items:center; justify-content:space-between; max-width:900px;}
+  .brand{font-family:'Libre Baskerville', serif; font-size:19px; font-weight:700; color:var(--sage-deep);}
+  .brand-sub{font-size:11.5px; color:var(--muted); font-family:'IBM Plex Mono', monospace; margin-top:2px;}
+
+  .hero{text-align:center; padding:44px 24px 8px;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.12em; text-transform:uppercase; color:var(--rose); }
+  .hero h1{font-size:clamp(26px,4vw,34px); margin:12px 0 10px;}
+  .hero p{color:var(--muted); font-size:15px; max-width:44ch; margin:0 auto;}
+
+  /* PROGRESS */
+  .progress-wrap{max-width:640px; margin:34px auto 0; padding:0 24px;}
+  .progress-track{position:relative; height:2px; background:var(--cream-deep); border-radius:2px; margin:0 20px;}
+  .progress-fill{position:absolute; top:0; left:0; height:100%; background:var(--sage); border-radius:2px; transition:width .35s ease;}
+  .progress-steps{display:flex; justify-content:space-between; margin-top:-11px;}
+  .progress-step{
+    width:22px; height:22px; border-radius:50%; background:#fff; border:2px solid var(--cream-deep);
+    display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--muted);
+    transition:all .25s ease;
+  }
+  .progress-step.done{background:var(--sage); border-color:var(--sage); color:#fff;}
+  .progress-step.current{border-color:var(--sage); color:var(--sage-deep); font-weight:700;}
+  .progress-labels{display:flex; justify-content:space-between; margin-top:8px; font-size:11px; color:var(--muted); text-align:center;}
+  .progress-labels span{width:70px;}
+
+  .panel{max-width:640px; margin:34px auto 60px; padding:0 24px;}
+  .step-card{background:#fff; border:1px solid var(--cream-deep); border-radius:var(--radius); padding:28px;}
+  .step-card h2{font-size:20px; margin-bottom:6px;}
+  .step-card .step-desc{color:var(--muted); font-size:13.5px; margin-bottom:22px;}
+
+  /* SERVICES */
+  .service-list{display:flex; flex-direction:column; gap:10px;}
+  .service-row{
+    display:flex; align-items:center; justify-content:space-between; gap:14px;
+    border:1px solid var(--cream-deep); border-radius:6px; padding:14px 16px; cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .service-row:hover{border-color:var(--sage);}
+  .service-row.selected{border-color:var(--sage-deep); background:#F3F5EF; box-shadow:inset 0 0 0 1px var(--sage-deep);}
+  .service-row h4{font-size:15px; margin-bottom:3px; font-family:'Work Sans', sans-serif; font-weight:600;}
+  .service-row .service-meta{font-size:12.5px; color:var(--muted);}
+  .service-price{font-family:'IBM Plex Mono', monospace; font-weight:600; color:var(--sage-deep); white-space:nowrap;}
+
+  /* DATE + TIME */
+  .day-row{display:flex; gap:8px; overflow-x:auto; padding-bottom:6px; margin-bottom:22px;}
+  .day-chip{
+    flex:0 0 auto; border:1px solid var(--cream-deep); border-radius:8px; padding:10px 14px; text-align:center;
+    cursor:pointer; min-width:64px; transition:all .15s ease; background:#fff;
+  }
+  .day-chip .dow{font-size:11px; color:var(--muted); text-transform:uppercase;}
+  .day-chip .dnum{font-family:'Libre Baskerville', serif; font-size:19px; margin:2px 0;}
+  .day-chip.selected{border-color:var(--sage-deep); background:var(--sage-deep); color:#fff;}
+  .day-chip.selected .dow{color:#D8E0D3;}
+
+  .slot-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(84px,1fr)); gap:8px;}
+  .slot-btn{
+    border:1px solid var(--cream-deep); border-radius:20px; padding:9px 10px; font-family:'IBM Plex Mono', monospace;
+    font-size:13px; background:#fff; cursor:pointer; transition:all .15s ease; text-align:center;
+  }
+  .slot-btn:hover{border-color:var(--sage);}
+  .slot-btn.selected{background:var(--sage-deep); border-color:var(--sage-deep); color:#fff;}
+  .slot-btn.taken{opacity:0.35; text-decoration:line-through; cursor:not-allowed;}
+
+  /* FORM */
+  .field{margin-bottom:14px;}
+  .field label{font-size:12.5px; font-weight:600; display:block; margin-bottom:6px;}
+  .field input{width:100%; border:1px solid var(--cream-deep); border-radius:6px; padding:11px 12px; font-size:14.5px; font-family:inherit;}
+  .field input:focus{outline:2px solid var(--sage); outline-offset:1px;}
+
+  /* SUMMARY */
+  .summary-box{background:var(--cream); border-radius:6px; padding:16px 18px; margin-bottom:18px;}
+  .summary-row{display:flex; justify-content:space-between; font-size:13.5px; padding:6px 0; border-bottom:1px dashed var(--cream-deep);}
+  .summary-row:last-child{border-bottom:none;}
+  .summary-row span:last-child{font-weight:600; font-family:'IBM Plex Mono', monospace;}
+
+  .confirm-icon{width:56px; height:56px; border-radius:50%; background:#F0F3EC; color:var(--sage-deep); display:flex; align-items:center; justify-content:center; margin:0 auto 18px;}
+
+  .btn-row{display:flex; justify-content:space-between; gap:12px; margin-top:26px;}
+  .btn{border:none; border-radius:6px; padding:13px 22px; font-weight:600; font-size:14px; cursor:pointer; transition:all .15s ease;}
+  .btn-primary{background:var(--sage-deep); color:#fff;}
+  .btn-primary:hover{background:#3d4c39;}
+  .btn-primary:disabled{opacity:0.4; cursor:not-allowed;}
+  .btn-ghost{background:none; border:1px solid var(--cream-deep); color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--sage);}
+
+  footer{text-align:center; padding:30px 24px 44px; font-size:11.5px; color:var(--muted); font-family:'IBM Plex Mono', monospace;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div>
+      <div class="brand">Institut Céleste</div>
+      <div class="brand-sub">Soins &amp; bien-être — Angoulême</div>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="eyebrow">Application de réservation</div>
+  <h1>Prenez rendez-vous en ligne</h1>
+  <p>Choisissez votre soin, un créneau disponible, et confirmez en moins de deux minutes.</p>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-steps" id="progressSteps"></div>
+  <div class="progress-labels">
+    <span>Soin</span><span>Créneau</span><span>Coordonnées</span><span>Confirmation</span>
+  </div>
+</div>
+
+<div class="panel"><div class="step-card" id="stepCard"></div></div>
+
+<footer>DÉMO — PHOENIX SOLUTIONS DIGITALES — application de démonstration, aucune donnée conservée</footer>
+
+<script>
+const SERVICES = [
+  { id:'visage', name:'Soin du visage signature', duration:'45 min', price:65 },
+  { id:'massage', name:'Massage relaxant corps entier', duration:'60 min', price:80 },
+  { id:'manucure', name:'Manucure &amp; pose vernis', duration:'30 min', price:35 },
+  { id:'epilation', name:'Épilation jambes complètes', duration:'40 min', price:42 },
+  { id:'duo', name:'Rituel duo — visage + dos', duration:'75 min', price:105 },
+];
+
+const DAY_NAMES = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+function buildDays(){
+  const days = [];
+  const today = new Date();
+  for(let i=1; i<=7; i++){
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    days.push(d);
+  }
+  return days;
+}
+const DAYS = buildDays();
+
+const ALL_SLOTS = ['09:00','09:45','10:30','11:15','13:30','14:15','15:00','15:45','16:30','17:15'];
+function slotsForDay(dayIndex){
+  // deterministic pseudo-availability so the demo feels realistic without a backend
+  return ALL_SLOTS.map((s, i) => ({ time:s, taken: (dayIndex + i) % 4 === 0 }));
+}
+
+let state = { step:1, service:null, dayIndex:null, slot:null, name:'', email:'', phone:'' };
+
+function goTo(step){ state.step = step; render(); window.scrollTo({top:0, behavior:'smooth'}); }
+
+function renderProgress(){
+  const total = 4;
+  document.getElementById('progressFill').style.width = ((state.step-1)/(total-1))*100 + '%';
+  const stepsEl = document.getElementById('progressSteps');
+  stepsEl.innerHTML = '';
+  for(let i=1;i<=total;i++){
+    const dot = document.createElement('div');
+    dot.className = 'progress-step' + (i < state.step ? ' done' : i === state.step ? ' current' : '');
+    dot.textContent = i < state.step ? '✓' : i;
+    stepsEl.appendChild(dot);
+  }
+}
+
+function renderStep1(){
+  const card = document.getElementById('stepCard');
+  card.innerHTML = `
+    <h2>Choisissez votre soin</h2>
+    <div class="step-desc">Sélectionnez la prestation souhaitée.</div>
+    <div class="service-list" id="serviceList"></div>
+    <div class="btn-row" style="justify-content:flex-end;">
+      <button class="btn btn-primary" id="next1" ${state.service ? '' : 'disabled'}>Continuer</button>
+    </div>
+  `;
+  const list = document.getElementById('serviceList');
+  SERVICES.forEach(s => {
+    const row = document.createElement('div');
+    row.className = 'service-row' + (state.service === s.id ? ' selected' : '');
+    row.innerHTML = `
+      <div>
+        <h4>${s.name}</h4>
+        <div class="service-meta">${s.duration}</div>
+      </div>
+      <div class="service-price">${s.price} €</div>
+    `;
+    row.addEventListener('click', () => { state.service = s.id; render(); });
+    list.appendChild(row);
+  });
+  document.getElementById('next1').addEventListener('click', () => { if(state.service) goTo(2); });
+}
+
+function renderStep2(){
+  const card = document.getElementById('stepCard');
+  card.innerHTML = `
+    <h2>Choisissez un créneau</h2>
+    <div class="step-desc">Prochaines disponibilités.</div>
+    <div class="day-row" id="dayRow"></div>
+    <div id="slotArea"></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="back2">Retour</button>
+      <button class="btn btn-primary" id="next2" ${state.slot ? '' : 'disabled'}>Continuer</button>
+    </div>
+  `;
+  const dayRow = document.getElementById('dayRow');
+  DAYS.forEach((d, idx) => {
+    const chip = document.createElement('div');
+    chip.className = 'day-chip' + (state.dayIndex === idx ? ' selected' : '');
+    chip.innerHTML = `<div class="dow">${DAY_NAMES[d.getDay()]}</div><div class="dnum">${d.getDate()}</div>`;
+    chip.addEventListener('click', () => { state.dayIndex = idx; state.slot = null; render(); });
+    dayRow.appendChild(chip);
+  });
+
+  const slotArea = document.getElementById('slotArea');
+  if(state.dayIndex === null){
+    slotArea.innerHTML = `<div class="step-desc">Sélectionnez d'abord une date.</div>`;
+  } else {
+    const slots = slotsForDay(state.dayIndex);
+    const grid = document.createElement('div');
+    grid.className = 'slot-grid';
+    slots.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'slot-btn' + (s.taken ? ' taken' : (state.slot === s.time ? ' selected' : ''));
+      btn.textContent = s.time;
+      btn.disabled = s.taken;
+      btn.addEventListener('click', () => { state.slot = s.time; render(); });
+      grid.appendChild(btn);
+    });
+    slotArea.innerHTML = '';
+    slotArea.appendChild(grid);
+  }
+
+  document.getElementById('back2').addEventListener('click', () => goTo(1));
+  document.getElementById('next2').addEventListener('click', () => { if(state.slot) goTo(3); });
+}
+
+function renderStep3(){
+  const card = document.getElementById('stepCard');
+  card.innerHTML = `
+    <h2>Vos coordonnées</h2>
+    <div class="step-desc">Nécessaires pour confirmer votre rendez-vous.</div>
+    <div class="field"><label>Nom complet</label><input type="text" id="fName" placeholder="Camille Roussel" value="${state.name}"></div>
+    <div class="field"><label>Email</label><input type="email" id="fEmail" placeholder="vous@exemple.fr" value="${state.email}"></div>
+    <div class="field"><label>Téléphone</label><input type="tel" id="fPhone" placeholder="06 XX XX XX XX" value="${state.phone}"></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="back3">Retour</button>
+      <button class="btn btn-primary" id="next3">Vérifier ma demande</button>
+    </div>
+  `;
+  document.getElementById('back3').addEventListener('click', () => goTo(2));
+  document.getElementById('next3').addEventListener('click', () => {
+    state.name = document.getElementById('fName').value || 'Client';
+    state.email = document.getElementById('fEmail').value || 'non renseigné';
+    state.phone = document.getElementById('fPhone').value || 'non renseigné';
+    goTo(4);
+  });
+}
+
+function renderStep4(){
+  const card = document.getElementById('stepCard');
+  const service = SERVICES.find(s => s.id === state.service);
+  const day = DAYS[state.dayIndex];
+  const dayLabel = `${DAY_NAMES[day.getDay()]} ${day.getDate()} — ${state.slot}`;
+  card.innerHTML = `
+    <div class="confirm-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 13 l4 4 L19 7"/></svg>
+    </div>
+    <h2 style="text-align:center;">Rendez-vous confirmé</h2>
+    <div class="step-desc" style="text-align:center;">Un email de confirmation serait envoyé à ${state.email} dans une version en production.</div>
+    <div class="summary-box">
+      <div class="summary-row"><span>Prestation</span><span>${service.name}</span></div>
+      <div class="summary-row"><span>Durée</span><span>${service.duration}</span></div>
+      <div class="summary-row"><span>Créneau</span><span>${dayLabel}</span></div>
+      <div class="summary-row"><span>Client</span><span>${state.name}</span></div>
+      <div class="summary-row"><span>Total</span><span>${service.price} €</span></div>
+    </div>
+    <div class="btn-row" style="justify-content:center;">
+      <button class="btn btn-primary" id="restart">Nouvelle réservation</button>
+    </div>
+  `;
+  document.getElementById('restart').addEventListener('click', () => {
+    state = { step:1, service:null, dayIndex:null, slot:null, name:'', email:'', phone:'' };
+    render();
+  });
+}
+
+function render(){
+  renderProgress();
+  if(state.step === 1) renderStep1();
+  else if(state.step === 2) renderStep2();
+  else if(state.step === 3) renderStep3();
+  else renderStep4();
+}
+render();
+</script>
+</body>
+</html>

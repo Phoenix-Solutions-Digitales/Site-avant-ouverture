@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maquette — Démo secteur restauration (Le Comptoir des Remparts)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --terracotta:#C1502E;
+    --terracotta-dark:#9C3E22;
+    --charcoal:#2B2622;
+    --sage:#6B7A4F;
+    --cream:#F7EFE4;
+    --card:#FFFFFF;
+    --dark:#2B2622;
+    --grey:#7A7168;
+    --line:#E9DFCE;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Karla',sans-serif;color:var(--dark);background:var(--cream);line-height:1.65;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;color:var(--charcoal);}
+  a{text-decoration:none;color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 32px;}
+  .imgbox{position:relative;overflow:hidden;background:linear-gradient(135deg,#8A5A3E,#5C3A28);}
+  .imgbox img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .imgbox .ph-fallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#E9D9C8;font-size:12.5px;letter-spacing:0.5px;text-transform:uppercase;font-family:'Karla',sans-serif;padding:20px;gap:8px;}
+  .imgbox .ph-fallback small{text-transform:none;letter-spacing:0;font-size:11px;color:#C9B7A4;font-family:monospace;background:rgba(0,0,0,0.25);padding:3px 8px;border-radius:3px;}
+
+  /* TOP BAR */
+  .topbar{background:var(--charcoal);color:#D8CFC4;font-size:12px;padding:8px 0;}
+  .topbar .wrap{display:flex;justify-content:space-between;}
+  .topbar .phone{color:#E8A87C;font-weight:600;}
+
+  /* HEADER */
+  header{background:var(--cream);padding:24px 0;}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:'Fraunces',serif;font-weight:700;font-size:23px;color:var(--charcoal);}
+  nav{display:flex;align-items:center;gap:28px;font-size:14px;font-weight:500;}
+  nav a{color:var(--dark);}
+  .btn-reserver{background:var(--terracotta);color:#fff!important;padding:11px 24px;border-radius:24px;font-size:13.5px;font-weight:600;}
+
+  /* HERO */
+  .hero{position:relative;}
+  .hero .imgbox{height:540px;}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(43,38,34,0.80) 0%,rgba(43,38,34,0.35) 60%,rgba(43,38,34,0.05) 100%);display:flex;align-items:center;}
+  .hero-content{max-width:520px;padding:0 32px;color:#fff;}
+  .hero-badge{display:inline-block;background:var(--sage);color:#fff;font-size:12px;font-weight:600;padding:6px 16px;border-radius:20px;margin-bottom:20px;}
+  .hero h1{color:#fff;font-size:40px;line-height:1.25;margin-bottom:18px;}
+  .hero p{color:#EFE6D8;font-size:16px;margin-bottom:28px;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn-primary{background:var(--terracotta);color:#fff;padding:14px 28px;border-radius:26px;font-weight:600;font-size:14px;}
+  .btn-outline-w{border:1.5px solid #fff;color:#fff;padding:12.5px 26px;border-radius:26px;font-weight:600;font-size:14px;}
+
+  /* HISTOIRE */
+  .histoire{padding:80px 0;}
+  .histoire-grid{display:grid;grid-template-columns:0.9fr 1.1fr;gap:50px;align-items:center;max-width:1016px;margin:0 auto;}
+  .histoire-grid .imgbox{height:380px;border-radius:6px;}
+  .section-eyebrow{color:var(--terracotta);font-size:12.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+  .histoire h2{font-size:30px;margin-bottom:16px;}
+  .histoire p{color:var(--grey);font-size:15px;}
+
+  /* CARTE */
+  .carte{padding:80px 0;background:var(--charcoal);color:#EFE6D8;}
+  .carte .section-eyebrow{color:#E8A87C;text-align:center;}
+  .carte h2{color:#fff;text-align:center;font-size:30px;margin-bottom:50px;}
+  .carte-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;}
+  .carte-card{border:1px solid rgba(255,255,255,0.15);padding:26px 20px;text-align:center;}
+  .carte-card h3{color:#fff;font-size:17px;margin-bottom:10px;}
+  .carte-card p{font-size:13px;color:#C9BEB0;}
+  .carte-card.highlight{background:var(--terracotta);border-color:var(--terracotta);}
+  .carte-card.highlight h3, .carte-card.highlight p{color:#fff;}
+
+  /* GALERIE */
+  .galerie{padding:80px 0;}
+  .galerie h2{text-align:center;font-size:30px;margin-bottom:50px;}
+  .gal-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:170px;gap:16px;}
+  .gal-grid .imgbox{height:100%;border-radius:4px;}
+  .gal-grid .tall{grid-row:span 2;}
+
+  /* AVIS */
+  .avis{padding:80px 0;background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .avis h2{text-align:center;font-size:30px;margin-bottom:50px;}
+  .avis-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .avis-card{border:1px dashed var(--line);padding:28px 24px;text-align:center;color:var(--grey);font-size:13.5px;}
+  .avis-card .stars{color:var(--terracotta);font-size:15px;margin-bottom:10px;}
+
+  /* INFOS PRATIQUES */
+  .infos{padding:80px 0;}
+  .infos-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:1016px;margin:0 auto;}
+  .infos-grid .imgbox{height:320px;}
+  .infos-text{background:var(--terracotta);color:#fff;padding:46px 42px;display:flex;flex-direction:column;justify-content:center;}
+  .infos-text h2{color:#fff;font-size:26px;margin-bottom:20px;}
+  .infos-text p{font-size:14.5px;margin-bottom:8px;color:#FCE8DC;}
+
+  /* CTA BAND */
+  .cta-band{background:var(--sage);color:#fff;padding:66px 0;text-align:center;}
+  .cta-band h2{color:#fff;font-size:28px;margin-bottom:14px;}
+  .cta-band p{color:#E7EAD9;margin-bottom:28px;font-size:15px;}
+  .btn-cta-final{background:#fff;color:var(--sage);padding:14px 30px;border-radius:26px;font-weight:700;font-size:14px;}
+
+  footer{background:var(--charcoal);color:#9C948A;padding:32px 0;text-align:center;font-size:12.5px;}
+  footer .credit{margin-top:8px;color:#6E665C;}
+  footer .credit a{color:#E8A87C;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span>Ouvert du mardi au samedi, midi et soir — Angoulême</span>
+    <a href="tel:0500000000" class="phone">Réserver — 05 00 00 00 00</a>
+  </div>
+</div>
+
+<header>
+  <div class="wrap">
+    <div class="logo">Le Comptoir des Remparts</div>
+    <nav>
+      <a href="#">Accueil</a>
+      <a href="#">La Carte</a>
+      <a href="#">Notre Histoire</a>
+      <a href="#">Galerie</a>
+      <a href="#" class="btn-reserver">Réserver une table</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="imgbox" style="height:540px;">
+    <div class="ph-fallback">Photo ambiance salle / plat signature<small>images/resto-01-hero-ambiance.jpg</small></div>
+    <img src="images/resto-01-hero-ambiance.jpg" alt="Ambiance de la salle du restaurant" onerror="this.remove()">
+  </div>
+  <div class="hero-overlay">
+    <div class="wrap">
+      <div class="hero-content">
+        <span class="hero-badge">Cuisine de saison, produits locaux</span>
+        <h1>Une cuisine généreuse, au cœur d'Angoulême</h1>
+        <p>Une cuisine de saison élaborée à partir de producteurs charentais, dans une ambiance conviviale.</p>
+        <div class="hero-ctas">
+          <a href="#" class="btn-primary">Voir la carte</a>
+          <a href="#" class="btn-outline-w">Réserver une table</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="histoire">
+  <div class="histoire-grid">
+    <div class="imgbox"><div class="ph-fallback">Portrait du chef en cuisine<small>images/resto-02-portrait-chef.jpg</small></div><img src="images/resto-02-portrait-chef.jpg" alt="Portrait du chef en cuisine" onerror="this.remove()"></div>
+    <div>
+      <div class="section-eyebrow">Notre histoire</div>
+      <h2>Une passion pour les produits locaux</h2>
+      <p>Depuis [année], [prénom du chef] propose une cuisine généreuse et de saison, construite autour des producteurs de la région. Une cuisine simple mais soignée, qui met en valeur le meilleur du terroir charentais, revisité au fil des saisons.</p>
+    </div>
+  </div>
+</section>
+
+<section class="carte">
+  <div class="wrap">
+    <div class="section-eyebrow">La carte</div>
+    <h2>Une cuisine qui change au rythme des saisons</h2>
+    <div class="carte-grid">
+      <div class="carte-card">
+        <h3>Entrées</h3>
+        <p>Terrine de saison, pickles maison</p>
+      </div>
+      <div class="carte-card">
+        <h3>Plats</h3>
+        <p>Suggestion du jour selon arrivage</p>
+      </div>
+      <div class="carte-card">
+        <h3>Desserts</h3>
+        <p>Dessert du moment, fait maison</p>
+      </div>
+      <div class="carte-card highlight">
+        <h3>Suggestion du jour</h3>
+        <p>Une proposition différente chaque jour</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="galerie">
+  <div class="wrap">
+    <h2>L'ambiance du Comptoir</h2>
+    <div class="gal-grid">
+      <div class="imgbox tall"><div class="ph-fallback">Photo plat — Entrée<small>images/resto-03-galerie-entree.jpg</small></div><img src="images/resto-03-galerie-entree.jpg" alt="Plat — entrée" onerror="this.remove()"></div>
+      <div class="imgbox"><div class="ph-fallback">Photo plat — Plat<small>images/resto-04-galerie-plat.jpg</small></div><img src="images/resto-04-galerie-plat.jpg" alt="Plat principal" onerror="this.remove()"></div>
+      <div class="imgbox"><div class="ph-fallback">Photo ambiance terrasse<small>images/resto-05-galerie-terrasse.jpg</small></div><img src="images/resto-05-galerie-terrasse.jpg" alt="Ambiance terrasse" onerror="this.remove()"></div>
+      <div class="imgbox"><div class="ph-fallback">Photo plat — Dessert<small>images/resto-06-galerie-dessert.jpg</small></div><img src="images/resto-06-galerie-dessert.jpg" alt="Dessert" onerror="this.remove()"></div>
+      <div class="imgbox tall"><div class="ph-fallback">Photo ambiance salle<small>images/resto-07-galerie-salle.jpg</small></div><img src="images/resto-07-galerie-salle.jpg" alt="Ambiance de la salle" onerror="this.remove()"></div>
+    </div>
+  </div>
+</section>
+
+<section class="avis">
+  <div class="wrap">
+    <h2>Ce qu'en disent nos clients</h2>
+    <div class="avis-grid">
+      <div class="avis-card"><div class="stars">★★★★★</div>« Avis client à venir »</div>
+      <div class="avis-card"><div class="stars">★★★★★</div>« Avis client à venir »</div>
+      <div class="avis-card"><div class="stars">★★★★★</div>« Avis client à venir »</div>
+    </div>
+  </div>
+</section>
+
+<section class="infos">
+  <div class="infos-grid">
+    <div class="imgbox"><div class="ph-fallback">Plan / façade du restaurant<small>images/resto-08-facade.jpg</small></div><img src="images/resto-08-facade.jpg" alt="Façade du restaurant" onerror="this.remove()"></div>
+    <div class="infos-text">
+      <h2>Informations pratiques</h2>
+      <p>📍 [Adresse à préciser], Angoulême</p>
+      <p>🕐 Mardi au samedi, 12h–14h / 19h–22h</p>
+      <p>📞 05 00 00 00 00</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <h2>Une envie de bien manger ce soir ?</h2>
+    <p>Réservez votre table en quelques clics.</p>
+    <a href="#" class="btn-cta-final">Réserver une table</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>Le Comptoir des Remparts — Angoulême, Charente</div>
+    <div class="credit">Maquette de démonstration — non fonctionnelle — Site vitrine conçu par <a href="#">Phoenix Solutions Digitales</a></div>
+  </div>
+</footer>
+
+</body>
+</html>

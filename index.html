@@ -4,73 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Phoenix Solutions Digitales 16 — Bientôt à Angoulême</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap');
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Inter',sans-serif;background:#FBF7EF;color:#1C1008;line-height:1.6;}
-  .wrap{max-width:1100px;margin:0 auto;padding:0 24px;}
-
-  /* HERO */
-  header{background:#F2E9D8;padding:70px 0 90px;text-align:center;}
-  header img{width:600px;height:auto;margin-bottom:18px;}
-  header h1{font-family:'Playfair Display',serif;font-size:44px;font-weight:700;letter-spacing:.02em;}
-  header .triptyque{margin-top:14px;font-size:15px;font-weight:700;letter-spacing:.18em;color:#6E1414;text-transform:uppercase;}
-  header .slogan{margin-top:10px;font-size:19px;font-style:italic;color:#8B1A1A;}
-  .badge{display:inline-block;margin-top:30px;background:#C9A134;border:1px solid #C9A134;color:#8B1A1A;padding:9px 22px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
-  section{padding:64px 0;}
-  h2{font-family:'Playfair Display',serif;font-size:30px;color:#8B1A1A;text-align:center;margin-bottom:10px;}
-  .subtitle{text-align:center;color:#6b5c4a;font-size:16px;max-width:640px;margin:0 auto 40px;}
-
-  /* POLES */
-  .poles{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;}
-  .pole-card{background:#F2E9D8;border:1px solid #ecdfc4;border-radius:14px;padding:28px 24px;text-align:center;box-shadow:0 6px 18px rgba(139,26,26,.05);border-top:3px solid #C9A134;}
-  .pole-card .emoji{font-size:34px;margin-bottom:12px;}
-  .pole-card h3{font-family:'Playfair Display',serif;font-size:19px;color:#1C1008;margin-bottom:8px;}
-  .pole-card p{font-size:14px;color:#6b5c4a;}
-
-/*BANDEAU DEFILANT*/
-.bande-defilante {width: 100%;height: 100px;background-color: #6E1414;color: #C9A134;display: flex;align-items: center;overflow: hidden;white-space: nowrap;box-sizing: border-box;}    
-.texte-defilant {display: inline-block;padding-left: 100%;animation: defilement 45s linear infinite;font-family: Arial, sans-serif;font-size: 36px;font-weight: bold;}
-@keyframes defilement {from {transform: translateX(0);}to {transform: translateX(-100%);}}
-
-  /* METHODE */
-  .methode{background:#F2E9D8;}
-  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-top:10px;}
-  .step{background:#FBF7EF;border-radius:12px;padding:26px 20px;position:relative;border-top:3px solid #C9A134;}
-  .step .num{font-family:'Playfair Display',serif;font-size:30px;color:#C9A134;font-weight:700;margin-bottom:8px;}
-  .step h4{font-size:16px;font-weight:700;margin-bottom:6px;color:#1C1008;}
-  .step p{font-size:13.5px;color:#6b5c4a;}
-
-  /* ENGAGEMENT */
-  .engagement ul{list-style:none;max-width:640px;margin:0 auto;}
-  .engagement li{padding:12px 0 12px 32px;position:relative;font-size:15.5px;color:#3a2f24;border-bottom:1px solid #ecdfc4;}
-  .engagement li:before{content:"—";position:absolute;left:0;color:#C9A134;font-weight:700;}
-
-  /* ZONE */
-  .zone{text-align:center;background:#1C1008;color:#e8ded0;}
-  .zone h2{color:#E8C468;}
-  .zone p{max-width:600px;margin:0 auto;font-size:15.5px;}
-
-  /* CTA / CONTACT */
-  .cta{text-align:center;}
-  .cta .btn{display:inline-block;margin-top:20px;background:#8B1A1A;color:#fff;padding:16px 34px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;}
-  .contact-info{margin-top:28px;font-size:14.5px;color:#6b5c4a;}
-  .contact-info span{display:inline-block;margin:0 10px;}
-
-  footer{background:#1C1008;color:#a08a70;text-align:center;padding:28px 0;font-size:12.5px;}
-  footer .brand{color:#E8C468;font-family:'Playfair Display',serif;font-size:15px;margin-bottom:6px;}
-
-  @media(max-width:600px){
-    header h1{font-size:32px;}
-    header .triptyque{font-size:12px;letter-spacing:.12em;}
-  }
-</style>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/home.css">
 </head>
 <body>
 
-<header>
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">PHOENIX SOLUTIONS DIGITALES 16</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
+    <ul id="navList">
+      <li><a href="index.html">Accueil</a></li>
+      <li class="has-sub">
+        <a href="demos/type-de-site.html">Démos ▾</a>
+        <div class="sub">
+          <a href="demos/type-de-site.html">Démos par type de site</a>
+          <a href="demos/modeles-generiques.html">Démos par métier</a>
+        </div>
+      </li>
+      <li><a href="portfolio/index.html">Portfolio</a></li>
+      <li><a href="blog/index.html">Blog</a></li>
+      <li><a href="formations.html">Formations</a></li>
+      <li><a href="impressions.html">Impressions</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
   <div class="wrap">
-    <img src="asset\Phoenix Long-banderole-minitexte.png" alt="Logo Phoenix">
+    <img src="asset/Phoenix Long-banderole-minitexte.png" alt="Logo Phoenix">
     <div class="triptyque">Imaginer · Renaître · Accompagner</div>
     <div class="slogan">Ensemble, créons votre renaissance digitale.</div>
     <div class="badge">✦ Ouverture prochaine — Grand Angoulême &amp; Charente</div>
@@ -85,7 +48,7 @@
       <div class="pole-card">
         <div class="emoji">💻</div>
         <h3>Développement web</h3>
-        <p>Sites vitrines, boutiques en ligne et refontes, pensés pour votre activité — pas un modèle générique.</p>
+        <p>Sites vitrines, boutiques en ligne et refontes, pensés pour votre activité — modèle générique ou sur mesure.</p>
       </div>
       <div class="pole-card">
         <div class="emoji">📈</div>
@@ -122,6 +85,25 @@
   </div>
 </section>
 
+<section class="demos-teaser">
+  <div class="wrap">
+    <h2>Envie de voir notre travail ?</h2>
+    <p class="subtitle">Deux façons de parcourir nos démonstrations, avant même l'ouverture officielle.</p>
+    <div class="demo-links">
+      <a class="demo-link-card" href="demos/type-de-site.html">
+        <h3>Démos par type de site</h3>
+        <p>E-commerce, PWA, dashboard, configurateur de devis, landing page… 14 exemples fonctionnels classés par fonctionnalité.</p>
+        <span class="go">Voir les démos →</span>
+      </a>
+      <a class="demo-link-card" href="demos/modeles-generiques.html">
+        <h3>Démos par métier</h3>
+        <p>Restaurant, institut de beauté, BTP, viticulture, naturopathe, coach bien-être… des maquettes pensées pour votre secteur.</p>
+        <span class="go">Voir les démos →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <section class="methode">
   <div class="wrap">
     <h2>Notre méthode</h2>
@@ -155,7 +137,7 @@
   </div>
 </section>
 
-<section class="cta">
+<section class="cta" id="contact">
   <div class="wrap">
     <h2>Une idée, un projet ?</h2>
     <p class="subtitle">Le site complet arrive bientôt. En attendant, parlons de votre projet.</p>
@@ -163,7 +145,7 @@
     <div class="contact-info">
       <span>📍 Angoulême &amp; Charente (16)</span>
       <span>✉️ PhoenixSolutionsDigitales16@outlook.fr</span>
-      <span>📞 06 09 44 53 19</span>
+      <span>📞 07 66 93 62 14</span>
     </div>
   </div>
 </section>
@@ -172,6 +154,8 @@
   <div class="brand">PHOENIX SOLUTIONS DIGITALES 16</div>
   <div>Imaginer · Renaître · Accompagner — Ensemble, créons votre renaissance digitale.</div>
 </footer>
+
+<script src="js/nav.js"></script>
 
 </body>
 </html>

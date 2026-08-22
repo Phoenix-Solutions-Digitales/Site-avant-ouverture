@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nous nous adaptons à vos projets — Phoenix Solutions Digitales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bordeaux:#8B1A1A;
+    --bordeaux-dark:#6E1414;
+    --gold:#C9A134;
+    --ivory:#F5F0E8;
+    --card:#FFFFFF;
+    --dark:#2B2320;
+    --grey:#6B6259;
+    --line:#E4DCC8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;color:var(--dark);background:var(--ivory);line-height:1.6;}
+  h1,h2,h3{font-family:'Playfair Display',serif;font-weight:600;color:var(--dark);}
+  a{text-decoration:none;color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 32px;}
+
+  header{padding:20px 0;border-bottom:1px solid var(--line);}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:'Playfair Display',serif;font-weight:700;font-size:18px;color:var(--bordeaux);}
+
+  .hero{padding:64px 0 40px;text-align:center;}
+  .eyebrow{font-size:12.5px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:16px;}
+  .hero h1{font-size:36px;line-height:1.3;max-width:760px;margin:0 auto 18px;}
+  .hero p{font-size:15.5px;color:var(--grey);max-width:640px;margin:0 auto;}
+
+  /* SELECTOR */
+  .selector-zone{padding:20px 0 70px;}
+  .selector-bar{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:28px;}
+  .selector-bar label{font-size:13.5px;font-weight:600;color:var(--dark);}
+  select#demoSelect{
+    font-family:'Inter',sans-serif;font-size:14.5px;font-weight:600;color:var(--bordeaux);
+    background:var(--card);border:2px solid var(--bordeaux);border-radius:2px;
+    padding:11px 40px 11px 18px;cursor:pointer;
+    appearance:none;-webkit-appearance:none;
+    background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238B1A1A' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 12px center;background-size:16px;
+  }
+  .badge-current{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);padding:8px 16px;border-radius:20px;font-size:12.5px;font-weight:600;color:var(--grey);}
+  .badge-current .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);}
+
+  .preview-frame{
+    max-width:1000px;margin:0 auto;border:10px solid var(--card);
+    box-shadow:0 20px 50px rgba(43,35,32,0.18);border-radius:6px;overflow:hidden;
+    background:var(--card);
+  }
+  .browser-bar{background:#EDE7DA;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);}
+  .browser-dot{width:10px;height:10px;border-radius:50%;background:#D8CFC0;}
+  .browser-url{flex:1;background:#fff;border-radius:12px;padding:5px 14px;font-size:11.5px;color:var(--grey);margin-left:8px;font-family:monospace;}
+  iframe#demoFrame{width:100%;height:640px;border:none;display:block;background:#fff;}
+
+  /* WHY SECTION */
+  .why{padding:76px 0;background:var(--card);border-top:1px solid var(--line);}
+  .why h2{text-align:center;font-size:28px;margin-bottom:46px;}
+  .why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;max-width:1000px;margin:0 auto;}
+  .why-card{text-align:center;padding:0 8px;}
+  .why-card .icon{width:52px;height:52px;border-radius:50%;background:var(--ivory);color:var(--bordeaux);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:'Playfair Display',serif;font-size:18px;font-weight:700;}
+  .why-card h3{font-size:15.5px;margin-bottom:8px;}
+  .why-card p{font-size:13px;color:var(--grey);}
+
+  .cta-band{background:var(--bordeaux);color:var(--ivory);text-align:center;padding:64px 0;}
+  .cta-band h2{color:var(--ivory);font-size:26px;margin-bottom:14px;}
+  .cta-band p{color:#E8D9C8;margin-bottom:26px;font-size:14.5px;}
+  .btn-inverse{display:inline-block;background:var(--gold);color:var(--bordeaux-dark);padding:14px 30px;border-radius:2px;font-size:14px;font-weight:600;}
+
+  footer{padding:28px 0;text-align:center;font-size:12.5px;color:var(--grey);}
+
+  @media (max-width:720px){
+    .why-grid{grid-template-columns:1fr 1fr;}
+    iframe#demoFrame{height:480px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">Phoenix Solutions Digitales</div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Nos démonstrations sectorielles</div>
+    <h1>Nous nous adaptons à vos projets, quel que soit votre métier !</h1>
+    <p>Une structure de site pensée et éprouvée, que nous personnalisons entièrement — couleurs, typographie, ton, contenu — pour qu'elle vous ressemble, vous, et pas un autre. Choisissez un métier ci-dessous pour voir le même savoir-faire s'adapter en direct.</p>
+  </div>
+</section>
+
+<section class="selector-zone">
+  <div class="wrap">
+    <div class="selector-bar">
+      <label for="demoSelect">Choisissez un métier :</label>
+      <select id="demoSelect" onchange="switchDemo()">
+        <option value="Maquette_Demo_BTP.html" data-label="Artisan du BTP — Bâti Charente">Artisan du BTP</option>
+        <option value="Maquette_Demo_Viticole.html" data-label="Domaine viticole — Domaine de Belleroche">Domaine viticole</option>
+        <option value="Maquette_Demo_Restaurant.html" data-label="Restaurant — Le Comptoir des Remparts">Restaurant</option>
+        <option value="Maquette_Demo_InstitutBeaute.html" data-label="Institut de beauté — L'Écrin">Institut de beauté</option>
+        <option value="Maquette_Demo_CoachBienEtre.html" data-label="Coach bien-être — Élan Coaching">Coach bien-être</option>
+        <option value="Maquette_Demo_Naturopathe.html" data-label="Naturopathe — Racines">Naturopathe</option>
+      </select>
+      <span class="badge-current"><span class="dot"></span><span id="currentLabel">Artisan du BTP — Bâti Charente</span></span>
+    </div>
+
+    <div class="preview-frame">
+      <div class="browser-bar">
+        <span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span>
+        <span class="browser-url" id="urlBar">demos.phoenix-solutions-digitales.fr/artisan-btp</span>
+      </div>
+      <iframe id="demoFrame" src="Maquette_Demo_BTP.html" title="Aperçu de la démonstration sélectionnée"></iframe>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="wrap">
+    <h2>Pourquoi une structure commune, personnalisée à chaque fois</h2>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="icon">1</div>
+        <h3>Une base éprouvée</h3>
+        <p>Une structure pensée pour convertir, quel que soit le métier.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon">2</div>
+        <h3>Une adaptation totale</h3>
+        <p>Couleurs, typographies, ton et contenu, spécifiques à votre activité.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon">3</div>
+        <h3>Un déploiement rapide</h3>
+        <p>Moins de temps passé à réinventer la roue, plus de temps sur votre projet.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon">4</div>
+        <h3>Une qualité constante</h3>
+        <p>Le même niveau d'exigence, quel que soit votre secteur d'activité.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <h2>Votre métier n'est pas dans la liste ?</h2>
+    <p>C'est justement l'idée : on s'adapte à vous, pas l'inverse.</p>
+    <a href="#" class="btn-inverse">Discutons de votre projet</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Maquette de travail — non fonctionnelle — Phoenix Solutions Digitales</div>
+</footer>
+
+<script>
+function switchDemo(){
+  const select = document.getElementById('demoSelect');
+  const opt = select.options[select.selectedIndex];
+  document.getElementById('demoFrame').src = opt.value;
+  document.getElementById('currentLabel').textContent = opt.getAttribute('data-label');
+  const slug = opt.value.replace('Maquette_Demo_','').replace('.html','').toLowerCase();
+  document.getElementById('urlBar').textContent = 'demos.phoenix-solutions-digitales.fr/' + slug;
+}
+</script>
+
+</body>
+</html>
