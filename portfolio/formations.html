@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formations — Phoenix Solutions Digitales 16</title>
+<meta name="description" content="Ateliers courts et formations orientées résultat en marketing digital, réseaux sociaux et photographie professionnelle, pour artisans, indépendants et TPE du Grand Angoulême.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bordeaux:#6d1b2c;
+    --bordeaux-dark:#4f1220;
+    --or:#c8a24d;
+    --or-clair:#e4c878;
+    --creme:#faf5ec;
+    --creme-fonce:#f1e8d8;
+    --texte:#2b2320;
+    --texte-clair:#6b5e56;
+    --blanc:#ffffff;
+    --radius:14px;
+    --ombre:0 10px 30px rgba(79,18,32,0.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Inter',sans-serif;
+    color:var(--texte);
+    background:var(--creme);
+    line-height:1.6;
+  }
+  h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--bordeaux-dark);}
+  a{text-decoration:none;color:inherit;}
+  img{max-width:100%;display:block;}
+  .container{max-width:1120px;margin:0 auto;padding:0 24px;}
+
+  /* NAV */
+  header.site-nav{
+    background:var(--blanc);
+    border-bottom:1px solid var(--creme-fonce);
+    position:sticky;top:0;z-index:100;
+  }
+  .nav-inner{
+    max-width:1120px;margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  }
+  .nav-logo{font-family:'Playfair Display',serif;font-weight:700;font-size:1.05rem;color:var(--bordeaux-dark);letter-spacing:.02em;}
+  .nav-links{display:flex;gap:22px;flex-wrap:wrap;list-style:none;font-size:.95rem;font-weight:500;}
+  .nav-links a{color:var(--texte);padding:6px 2px;border-bottom:2px solid transparent;transition:border-color .2s,color .2s;}
+  .nav-links a:hover,.nav-links a.active{color:var(--bordeaux);border-bottom-color:var(--or);}
+
+  /* BREADCRUMB */
+  .breadcrumb{font-size:.85rem;color:var(--texte-clair);padding:18px 0 0;}
+  .breadcrumb a{color:var(--bordeaux);}
+
+  /* HERO */
+  .hero{
+    background:linear-gradient(135deg,var(--bordeaux) 0%,var(--bordeaux-dark) 100%);
+    color:var(--creme);
+    border-radius:var(--radius);
+    margin:24px 0 48px;
+    padding:56px 40px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 80% 20%, rgba(200,162,77,0.25), transparent 55%);
+  }
+  .hero-icon{font-size:2.4rem;margin-bottom:10px;}
+  .hero h1{color:var(--blanc);font-size:2.3rem;margin-bottom:14px;position:relative;}
+  .hero p{max-width:640px;margin:0 auto 18px;font-size:1.08rem;color:#f3e4d8;position:relative;}
+  .hero .triptyque{
+    color:var(--or-clair);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:.82rem;
+    position:relative;
+  }
+
+  /* SECTION HEADERS */
+  .section{margin:56px 0;}
+  .section-intro{max-width:680px;margin:0 auto 32px;text-align:center;}
+  .section-intro h2{font-size:1.75rem;margin-bottom:10px;}
+  .section-intro p{color:var(--texte-clair);}
+  .eyebrow{
+    display:inline-block;color:var(--or);font-weight:700;font-size:.78rem;
+    letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;
+  }
+
+  /* CARDS GRID */
+  .cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;}
+  .card{
+    background:var(--blanc);border-radius:var(--radius);padding:28px;
+    box-shadow:var(--ombre);border:1px solid var(--creme-fonce);
+  }
+  .card h3{font-size:1.15rem;margin-bottom:6px;}
+  .card .format-tag{
+    display:inline-block;background:var(--creme-fonce);color:var(--bordeaux);
+    font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:10px;
+  }
+  .card p{color:var(--texte-clair);font-size:.95rem;}
+  .card .livrable{
+    margin-top:12px;padding-top:12px;border-top:1px dashed var(--creme-fonce);
+    font-size:.88rem;color:var(--bordeaux);font-weight:500;
+  }
+  .card .prix{
+    display:block;margin-top:10px;font-family:'Playfair Display',serif;
+    font-weight:700;color:var(--or);font-size:1.05rem;
+  }
+
+  /* CATEGORY BLOCKS */
+  .category-block{margin-bottom:44px;}
+  .category-block > h3{font-size:1.35rem;margin-bottom:4px;}
+  .category-block > .cat-sub{color:var(--texte-clair);font-size:.92rem;margin-bottom:20px;}
+
+  /* INCLUS LIST */
+  .inclus-list{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+  .inclus-list li{
+    background:var(--blanc);border-radius:10px;padding:16px 18px;
+    border-left:3px solid var(--or);box-shadow:var(--ombre);font-size:.95rem;
+  }
+
+  /* POURQUOI NOUS */
+  .pourquoi{
+    background:var(--creme-fonce);border-radius:var(--radius);padding:40px;
+  }
+  .pourquoi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px;margin-top:20px;}
+  .pourquoi-grid h4{font-size:1.05rem;margin-bottom:6px;}
+  .pourquoi-grid p{color:var(--texte-clair);font-size:.93rem;}
+  .disclaimer{
+    margin-top:28px;padding-top:20px;border-top:1px solid #e2d5b8;
+    font-size:.85rem;color:var(--texte-clair);font-style:italic;
+  }
+
+  /* CERTIFICATIONS */
+  .cert-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;}
+  .cert-pill{
+    background:var(--blanc);border:1px solid var(--creme-fonce);
+    padding:8px 16px;border-radius:20px;font-size:.87rem;font-weight:500;
+    box-shadow:0 2px 8px rgba(79,18,32,0.05);
+  }
+  .cert-note{margin-top:16px;font-size:.85rem;color:var(--texte-clair);font-style:italic;}
+
+  /* CONTACT CTA */
+  .cta{
+    text-align:center;background:var(--bordeaux-dark);color:var(--creme);
+    border-radius:var(--radius);padding:44px 32px;
+  }
+  .cta h2{color:var(--blanc);margin-bottom:12px;}
+  .cta p{color:#e9d9cd;margin-bottom:22px;}
+  .btn{
+    display:inline-block;background:var(--or);color:var(--bordeaux-dark);
+    font-weight:700;padding:13px 30px;border-radius:30px;font-size:.95rem;
+    transition:background .2s;
+  }
+  .btn:hover{background:var(--or-clair);}
+  .contact-line{margin-top:22px;font-size:.9rem;color:#e9d9cd;}
+
+  /* FOOTER */
+  footer{
+    background:var(--bordeaux-dark);color:#e9d9cd;text-align:center;
+    padding:32px 24px;margin-top:60px;font-size:.85rem;
+  }
+  footer .foot-brand{font-family:'Playfair Display',serif;font-weight:700;color:var(--blanc);margin-bottom:6px;font-size:1rem;}
+
+  @media (max-width:640px){
+    .hero{padding:40px 22px;}
+    .hero h1{font-size:1.7rem;}
+    .pourquoi{padding:26px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">PHOENIX SOLUTIONS DIGITALES 16</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="demos/type-de-site.html">Démos</a></li>
+      <li><a href="portfolio/index.html">Portfolio</a></li>
+      <li><a href="blog/index.html">Blog</a></li>
+      <li><a href="formations.html" class="active">Formations</a></li>
+      <li><a href="impressions.html">Impressions</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<div class="container">
+  <p class="breadcrumb"><a href="index.html">Accueil</a> / Formations</p>
+
+  <section class="hero">
+    <div class="hero-icon">🎓</div>
+    <h1>Pôle Formation Professionnelle</h1>
+    <p>Marketing digital, réseaux sociaux et photographie professionnelle : des ateliers courts et concrets pour artisans, commerçants, indépendants et TPE du Grand Angoulême. Vous ne repartez pas avec des notes — vous repartez avec un résultat.</p>
+    <p class="triptyque">Imaginer · Renaître · Accompagner</p>
+  </section>
+
+  <section class="section">
+    <div class="section-intro">
+      <span class="eyebrow">Nos prestations</span>
+      <h2>Un catalogue pensé pour l'action</h2>
+      <p>Trois familles de formations, toutes construites autour d'un principe : l'Atelier-Action. Chaque session se termine avec un livrable concret, prêt à être utilisé dans votre activité.</p>
+    </div>
+
+    <div class="category-block">
+      <h3>Marketing Digital & Réseaux Sociaux</h3>
+      <p class="cat-sub">Pour artisans, indépendants, TPE et demandeurs d'emploi</p>
+      <div class="cards-grid">
+        <div class="card">
+          <span class="format-tag">Atelier d'initiation · 3h30</span>
+          <h3>Réels & vidéos courtes au smartphone</h3>
+          <p>Filmer et monter des vidéos courtes efficaces avec le matériel que vous avez déjà.</p>
+          <span class="prix">180 – 250 €</span>
+          <div class="livrable">→ Votre première vidéo montée, prête à publier</div>
+        </div>
+        <div class="card">
+          <span class="format-tag">Atelier d'initiation · 3h30</span>
+          <h3>Prise en main de Canva</h3>
+          <p>Créez vos visuels réseaux sociaux et supports de communication en autonomie.</p>
+          <span class="prix">180 – 250 €</span>
+          <div class="livrable">→ Un kit de templates personnalisés à votre charte</div>
+        </div>
+        <div class="card">
+          <span class="format-tag">Formation Action · 1 à 2 jours</span>
+          <h3>Prospection & vente sur LinkedIn</h3>
+          <p>Structurez votre présence LinkedIn pour générer de vraies opportunités commerciales.</p>
+          <span class="prix">300 – 450 € (1j) · 600 – 900 € (2j)</span>
+          <div class="livrable">→ Un profil optimisé et un plan de prospection</div>
+        </div>
+        <div class="card">
+          <span class="format-tag">Atelier d'initiation · 3h30</span>
+          <h3>Google Business Profile & SEO local</h3>
+          <p>Optimisez votre fiche Google pour transformer les recherches locales en clients.</p>
+          <span class="prix">180 – 250 €</span>
+          <div class="livrable">→ Une fiche Google Business Profile complète et optimisée</div>
+        </div>
+        <div class="card">
+          <span class="format-tag">Formation Action · Jour 1</span>
+          <h3>Stratégie de contenu & algorithmes</h3>
+          <p>Comprenez la logique Instagram/LinkedIn pour construire une stratégie qui dure.</p>
+          <span class="prix">600 – 900 € (forfait module 2 jours)</span>
+          <div class="livrable">→ Votre ligne éditoriale et votre calendrier du mois</div>
+        </div>
+        <div class="card">
+          <span class="format-tag">Formation Action · Jour 2</span>
+          <h3>Ateliers de création</h3>
+          <p>Mise en pratique directe : production de contenus réels prêts à diffuser.</p>
+          <span class="prix">600 – 900 € (forfait module 2 jours)</span>
+          <div class="livrable">→ Un stock de contenus prêts à publier</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="category-block">
+      <h3>Photographie Professionnelle</h3>
+      <p class="cat-sub">Pour artisans, créateurs, restaurateurs, indépendants — Reflex/Hybride ou smartphone</p>
+      <div class="cards-grid">
+        <div class="card">
+          <span class="format-tag">Atelier Flash · 2h à 3h</span>
+          <h3>Photos produits au smartphone</h3>
+          <p>Composition, lumière et retouche simple pour des photos produits professionnelles.</p>
+          <span class="prix">250 – 350 €</span>
+          <div class="livrable">→ Une série de photos produits finalisées</div>
+        </div>
+        <div class="card">
+          <span class="format-tag">Masterclass Intensive · 1 jour</span>
+          <h3>Lumière & mise en scène (Packshot)</h3>
+          <p>Théorie le matin, pratique encadrée l'après-midi, pour maîtriser vos prises de vue produits.</p>
+          <span class="prix">500 – 750 €</span>
+          <div class="livrable">→ Un book de photos produits en conditions pro</div>
+        </div>
+        <div class="card">
+          <span class="format-tag">Flash à Masterclass · selon niveau</span>
+          <h3>Portrait d'entreprise / Personal Branding</h3>
+          <p>Travaillez votre image professionnelle pour votre site, vos réseaux, vos supports.</p>
+          <span class="prix">250 – 750 € selon format</span>
+          <div class="livrable">→ Une série de portraits professionnels exploitables</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="category-block">
+      <h3>Offres hybrides</h3>
+      <p class="cat-sub">Notre atout : stratégie et production réunies</p>
+      <div class="cards-grid">
+        <div class="card">
+          <span class="format-tag">Formation Action · 1 à 2 jours</span>
+          <h3>Pack Image & Réseaux Sociaux</h3>
+          <p>Calendrier éditorial et production des visuels associés, dans une seule formation.</p>
+          <span class="prix">600 – 850 € (1j) · 1 100 – 1 600 € (2j)</span>
+          <div class="livrable">→ Un calendrier éditorial complet et sa banque de visuels</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-intro">
+      <span class="eyebrow">Ce qui est inclus</span>
+      <h2>Une approche pensée pour les indépendants</h2>
+    </div>
+    <ul class="inclus-list">
+      <li>Un formateur à la double compétence marketing digital et photographie professionnelle</li>
+      <li>Des formats courts, compatibles avec des emplois du temps chargés</li>
+      <li>Un livrable concret à chaque atelier</li>
+      <li>Un accompagnement individuel ou en petit groupe</li>
+      <li>Des supports construits à partir de ressources officielles (Google, Meta, Bpifrance Université)</li>
+      <li>Pack "Clé en main" Artisan et Audit & Conseil en option</li>
+    </ul>
+    <p class="disclaimer">Tarifs indicatifs HT, affinés selon le nombre de participants et le contexte — TVA non applicable, article 293 B du CGI. Un format individuel sur-mesure est également possible, sur devis.</p>
+  </section>
+
+  <!-- section à modifier après obtention des certifications prévues
+  <section class="section">
+    <div class="section-intro">
+      <span class="eyebrow">Formations & certifications prévues</span>
+      <h2>Une expertise en progression continue</h2>
+      <p>Nous préparons actuellement l'obtention de certifications professionnelles gratuites et reconnues.</p>
+    </div>
+    <div class="cert-list">
+      <span class="cert-pill">Google Ateliers Numériques</span>
+      <span class="cert-pill">Google Skillshop — GA4 & Ads</span>
+      <span class="cert-pill">HubSpot Academy — Réseaux Sociaux & Inbound</span>
+      <span class="cert-pill">Meta Blueprint</span>
+      <span class="cert-pill">IA & éthique technologique</span>
+    </div>
+    <p class="cert-note">Ces certifications seront affichées dès leur obtention officielle.</p>
+  </section> -->
+
+  <section class="section pourquoi">
+    <div class="section-intro" style="margin-bottom:0;">
+      <span class="eyebrow">Pourquoi nous choisir</span>
+      <h2>L'Atelier-Action, pas la théorie</h2>
+    </div>
+    <div class="pourquoi-grid">
+      <div>
+        <h4>Un résultat, pas des notes</h4>
+        <p>Chaque formation se termine avec un livrable concret utilisable dès le lendemain dans votre activité.</p>
+      </div>
+      <div>
+        <h4>Une double expertise rare</h4>
+        <p>Marketing digital et photographie professionnelle réunis chez le même interlocuteur.</p>
+      </div>
+      <div>
+        <h4>Un ancrage local</h4>
+        <p>Basé dans le Grand Angoulême, à l'écoute des besoins réels du territoire.</p>
+      </div>
+    </div>
+    <p class="disclaimer">Formation non certifiée Qualiopi à ce jour — nos formations s'adressent aux budgets directs (fonds propres, particuliers) et aux organismes de formation déjà certifiés.</p>
+  </section>
+
+  <section class="section cta">
+    <h2>Une idée, un projet de formation ?</h2>
+    <p>Discutons de vos besoins pour construire l'atelier qui vous correspond.</p>
+    <a href="index.html#contact" class="btn">Nous contacter</a>
+    <p class="contact-line">📧 PhoenixSolutionsDigitales16@outlook.fr &nbsp;·&nbsp; 📞 07 66 93 62 14 &nbsp;·&nbsp; 📍 Grand Angoulême (16)</p>
+  </section>
+</div>
+
+<footer>
+  <div class="foot-brand">PHOENIX SOLUTIONS DIGITALES 16</div>
+  <div>Imaginer · Renaître · Accompagner — Ensemble, créons votre renaissance digitale.</div>
+</footer>
+
+</body>
+</html>
